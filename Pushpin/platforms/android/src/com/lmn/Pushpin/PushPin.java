@@ -19,8 +19,13 @@
 
 package com.lmn.Pushpin;
 
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaWebViewClient;
+
 import android.os.Bundle;
-import org.apache.cordova.*;
+
 
 public class PushPin extends CordovaActivity 
 {
@@ -32,6 +37,22 @@ public class PushPin extends CordovaActivity
         // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl());
         //super.loadUrl("file:///android_asset/www/index.html")
+    }
+    
+    /**
+     * Construct the client for the default web view object.
+     *
+     * This is intended to be overridable by subclasses of CordovaIntent which
+     * require a more specialized web view.
+     *
+     * @param webView the default constructed web view object
+     */
+    protected CordovaWebViewClient makeWebViewClient(CordovaWebView webView) {
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            return new PushPinCordovaWebViewClient(this, webView);
+        } else {
+            return new PushPinIceCreamCordovaWebViewClient(this, webView);
+        }
     }
 }
 
