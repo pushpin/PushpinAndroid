@@ -163,6 +163,13 @@ module.exports = [
         "clobbers": [
             "device"
         ]
+    },
+    {
+        "file": "plugins/com.phonegap.plugins.sqlite/www/SQLitePlugin.js",
+        "id": "com.phonegap.plugins.sqlite.SQLitePlugin",
+        "clobbers": [
+            "SQLitePlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -171,7 +178,8 @@ module.exports.metadata =
     "org.apache.cordova.inappbrowser": "0.3.0",
     "org.apache.cordova.file": "0.2.5",
     "org.apache.cordova.geolocation": "0.3.5",
-    "org.apache.cordova.device": "0.2.7"
+    "org.apache.cordova.device": "0.2.7",
+    "com.phonegap.plugins.sqlite": "1.0.0"
 }
 // BOTTOM OF METADATA
 });
