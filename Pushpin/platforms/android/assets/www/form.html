@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="css/pushpin.css" type="text/css">
+	<script src="js/lib/jquery-1.11.0.min.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
+	
+    <title>PushPin</title>
+  </head>
+  <body>
+  	<div class="toolbar-top">
+  		<span class="badge-left"><button class="btn btn-primary" onclick="clearTesting()">Cancel</button></span>
+  		<span class="badge-right"><button class="btn btn-primary">Save</button></span>
+  		<span style="vertical-align: middle;"><h4>Add POI</h4></span>
+  	</div>
+  	<div class="panel-body">
+  	<button class="btn btn-block btn-default" type="button" style="margin-top:50px;"><span style="font-style: italic;color: #555555;">tap to move point</span></button>
+	<div class="list-group">
+		<a class="list-group-item active">Basic Info</a>
+		<a href="#" id="name-link" class="list-group-item" onmouseup="fieldFocus(this)">Name
+			<br><input id="name-field" type="text" style="border: 0px; outline: none; background-color: transparent;"/>
+  			<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>
+ 		<a href="types.html" class="list-group-item">Type
+ 			<br><p id="type-path"></p>
+ 			<!--img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/--></a>
+		<a class="list-group-item active">Address</a>
+  		<a href="#" class="list-group-item">Number
+  			<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>
+ 		<a href="#" class="list-group-item">Street
+ 			<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>
+  		<a href="#" class="list-group-item">City
+  			<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>
+  		<a href="#" class="list-group-item">Postal Code
+  			<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>
+	</div>
+	<div class="list-group">
+		<li class="list-group-item">
+			<span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>		
+	</div>
+	  	<button class="btn btn-block btn-danger" type="button" style="margin-top:10px;">Delete this POI</button>
+	  	<button class="btn btn-block btn-primary" type="button">View on Web</button>
+	</div>
+	
+	<script>
+		$('#type-path').html(localStorage.getItem("testing"));
+		
+		function fieldFocus(elmnt){
+			$('#name-field').focus();
+			$(elmnt).css('background-color','#f5f5f5');
+		};
+		
+		function clearTesting(){localStorage.setItem("testing",""); $('#type-path').html('');}
+	</script>
+
+  </body>
+</html>

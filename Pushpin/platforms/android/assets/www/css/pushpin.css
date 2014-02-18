@@ -1,0 +1,57 @@
+#header-toolbar{
+	background-image: url('../img/toolbar_bg.png');
+	width:auto;
+	height: 40px;
+	text-align:center;
+	font:"Arial Black";
+	color: #fff;
+	font-size:200%;
+	padding-top: 10px;
+}
+#left-btn{
+	
+	margin-left: 10px;
+	margin-right: auto;
+}
+#right-btn{
+	margin-right: 10px;
+	margin-left: auto;
+}
+#footer-toolbar{
+	background-image: url('../img/toolbar_bg.png');
+	width:auto;
+	height: 30px;
+}
+
+#wrapper{
+	width: auto;
+	background-color:#ffffff;
+}
+
+#content{
+	width: auto;
+	text-align:center;
+}
+
+.form-content{
+	padding: 15px;
+}
+.toolbar-top{
+	background-image: url('../img/toolbar_bg.png');
+	width:100%;
+	text-align:center;
+	font:"Arial Black";
+	color: #fff;
+	
+	padding: 10px;
+	position: fixed;
+	z-index: 3;
+	
+}
+
+.toolbar-top > .badge-left {
+	float: left;
+}
+.toolbar-top > .badge-right {
+  	float: right;
+}
