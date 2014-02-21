@@ -7,6 +7,10 @@ PushPin = (function(){
 			}
 			
 			return false;
+		},
+		
+		reportException: function(e){
+			console.log(e.stack);
 		}
 	};
 })();

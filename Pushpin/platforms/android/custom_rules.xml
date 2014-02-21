@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_rules">
+    <property name="public-project-base" value="/Users/Zusy/dev/lmn/PushpinAndroid/Pushpin/platforms/android" />
+    <property name="private-project-base" value="/Users/Zusy/dev/lmn/PushpinAndroidPrivate" />
+    
+    <property name="public-secrets-path" value="${public-project-base}/assets/www/js/PushPin/Secrets.js" />
+    <property name="private-secrets-path" value="${private-project-base}/Secrets.js" />
+    
+    <available file="${private-secrets-path}" type="file" property="secrets.exists"/>
+    
+	<target name="update-secrets-js" description="Replaces Secrets.js if it exists" if="${secrets.exists}">
+	    <echo>Updating Secrets.js</echo>
+	    <copy file="${private-secrets-path}" tofile="${public-secrets-path}" overwrite="true" />
+	</target>
+	
+    <target name="-pre-build" depends="update-secrets-js">
+		<echo>Updated Secrets.js</echo>
+    </target>
+</project>

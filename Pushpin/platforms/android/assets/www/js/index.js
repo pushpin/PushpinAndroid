@@ -28,22 +28,29 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+    
+    authenticate: function(db){
+    	var osmAuth = new PushPin.OSMAuth(PushPin.Secrets.OAUTH.CONSUMER_KEY,
+        		PushPin.Secrets.OAUTH.CONSUMER_SECRET, db);
+        
+        osmAuth.getRequestToken();
     },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
+    
+    onDeviceReady: function() {
+        var db = PushPin.Database.getDb();
+        
+        var preferences = new PushPin.Preferences(db);
+        
+        preferences.getAccessToken(function(accessToken){
+        	
+        	if(!PushPin.existsAndNotNull(accessToken)){
+        		app.authenticate(db);
+        	}else{
+        		console.log("Already authenticated!");
+        	}
+        }, function(e){
+        	
+        	// TODO: Handle failed to get access token
+        });
     }
 };

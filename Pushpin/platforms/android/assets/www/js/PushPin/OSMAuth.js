@@ -1,9 +1,14 @@
-PushPin.OSMAuth = function(){
-	this.consumerKey = '< Enter applications consumer key here >';
-	this.oauth_secret = '< Enter applications consumer secret here >';
+PushPin.OSMAuth = function(consumerKey, consumerSecret, db){
+	this.consumerKey = consumerKey;
+	this.oauth_secret = consumerSecret;
+	this.db = db;
+	
 	this.host = 'http://www.openstreetmap.org';
 	this.token = null;
 	this.accessToken = null;
+	
+	this.preferences = new PushPin.Preferences(this.db);
+	
 	var context = this;
 	
 	this.o = {
@@ -132,4 +137,14 @@ PushPin.OSMAuth.prototype.saveAccessToken = function(){
 	}
 	
 	console.log("Access token: " + JSON.stringify(this.accessToken));
+	
+	this.preferences.saveAccessToken(this.accessToken, function(){
+		
+		// TODO: Saved access token successfully
+		
+		console.log("Saved access token successfully!");
+	}, function(e){
+		
+		// TODO: Failed to save access token
+	});
 };
