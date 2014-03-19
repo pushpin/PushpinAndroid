@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
-    <link rel="stylesheet" href="css/pushpin.css" type="text/css">
-	<script src="js/jquery-1.11.0.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	<script src="js/ol/ol.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/layout.css" type="text/css">
+    <link rel="stylesheet" href="css/pushpin.css" type="text/css">	
 	<link rel="stylesheet" href="css/ol/ol.css" type="text/css">
+	<link rel="stylesheet" href="css/modal.css" type="text/css">	
+	
 	<!--script src="http://ol3js.org/en/master/build/ol.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="http://ol3js.org/en/master/build/ol.css" type="text/css"-->
 	
@@ -45,6 +45,13 @@
     		left: 50%;
     		margin-left: -130px;
     	}
+    	
+    	#username{
+			margin-left: auto;
+			margin-right: auto;
+			text-align: center;
+			font-size: x-large;
+		}
 
     </style>
     
@@ -52,7 +59,7 @@
   <body>
 
   	<div class="toolbar-top">
-  		<span class="badge-left"><button class="btn btn-primary" ><img src="resources/images/icon-download.png" /></button></span>
+  		<span class="badge-left"><button class="btn btn-primary" onclick="fetchPoints()"><img src="resources/images/icon-download.png"/></button></span>
   		<span class="badge-right"><button class="btn btn-primary" onclick="return addPointView()"><img src="resources/images/icon-add.png"/></button></span>
   		<span style="vertical-align: middle;"><h4>Pushpin OSM</h4></span>
   	</div>
@@ -60,40 +67,211 @@
   	<div id="map" class="map"></div>
   	<div id="tap-instr" >Tap download to fetch points</div>
   	
-	<div class="toolbar-bottom">
+	<div class="toolbar-bottom" style="position: absolute;">
 		<div class="row">
-		<a href="" class="col-xs-3"><img src="resources/images/icon-location-arrow-white.png" /></a>
-		<a href="" class="col-xs-3"><img src="resources/images/icon-map-white.png" /></a>
-		<a href="" class="col-xs-3"><img src="resources/images/icon-list-white.png" /></a>
-		<a href="" class="col-xs-3"><img src="resources/images/icon-settings-white.png" /></a>
+		<a onclick="goToPosition()" class="col-xs-3"><img src="resources/images/icon-location-arrow-white.png" /></a>
+		<a class="col-xs-3" data-toggle="modal" href="#selectMap"><img src="resources/images/icon-map-white.png" /></a>
+		<a href="#" class="col-xs-3"><img src="resources/images/icon-list-white.png" /></a>
+		<a class="col-xs-3" data-toggle="modal" href="#settings"><img src="resources/images/icon-settings-white.png" /></a>
 		</div>
 	</div>
 	
+	<div class="modal fade" id="selectMap" tabindex="-1" role="dialog" aria-labelledby="selectMap" aria-hidden="true">
+	<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+       	<div class="toolbar-top" style="position: relative; margin-left: 0px;">
+  		<span class="badge-right"><button class="btn btn-primary" data-dismiss="modal" onclick="updateMap()">Done</button></span>
+  		<span style="vertical-align: middle;"><h4>Select Map</h4></span>
+  	</div>
+  	
+	<div class="list-group" style="margin-top:0px;">
+  		<a href="#" class="list-group-item" style="border-radius: 0px;" onclick="selectBingMap()">
+  			<img id="bing-map-option" style="float: left; margin-right: 10px; margin-top:-3px;" src="resources/images/icon-not-selected.png" class="img-circle"/>Bing Satellite Imagery</a>
+ 		<a href="#" class="list-group-item" style="border-radius: 0px;" onclick="selectOSMMap()">
+ 			<img id="osm-map-option" style="float: left; margin-right: 10px; margin-top:-3px;" src="resources/images/icon-not-selected.png" class="img-circle"/>OpenStreetMap</a>
+
+	</div>
+      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="settings" aria-hidden="true">
+	<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      	<div class="toolbar-top" style="position: relative;">
+  		<span class="badge-right"><button class="btn btn-primary" data-dismiss="modal">Done</button></span>
+  		<span style="vertical-align: middle;"><h4>Pushpin OSM</h4></span>
+  	</div>
+  	<div class="panel-body" style="position: relative;">
+  		<p id='username'></p>
+  		<button class="btn btn-block btn-danger" type="button" onclick="logOut()">LOG OUT</button>
+  		
+		<div class="list-group">
+			<a class="list-group-item">Version 1.1 build 25</a>
+			<a class="list-group-item" onclick="sendEmail()">Contact us / Report issue</a>
+			<a class="list-group-item" onclick="showCredits()">Credits</a>
+			<a href="http://www.lmnsolutions.com" class="list-group-item">Built by @lmnsolutions</a>		
+		</div>
+		</div>
+      </div>
+      </div>
+      </div>
+	</div>
+
+	<script src="js/jquery-1.11.0.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<script src="js/ol/ol-whitespace.js"></script>
+	<script src="cordova.js" type="text/javascript" ></script>
+	<script src="js/selectMap.js"></script>
+	<!--script src="js/bingmaps.js" type="text/javascript"></script>
+	<script src="bing-maps.js" type="text/javascript"></script-->
+		
 	<script type="text/javascript">
+	//globals
+	var layers;
+	var map;
+	var geoX, geoY;
+	
+	//Wait for Cordova to load
+	document.addEventListener("deviceready", onDeviceReady, false);	
+	
+	//Cordova is ready
+	function onDeviceReady(){
+		navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	}
+	
+	//onSuccess Geolocation
+	function onSuccess(position){
+		//Set Coordinate variables
+		geoX = position.coords.longitude;
+		geoY = position.coords.latitude;		
+      	
+      	//Go to Position
+      	goToPosition();
+      	
+      	//Add Marker on Position
+      	marker = new ol.Overlay({
+		  	position: ol.proj.transform([geoX,geoY], 'EPSG:4326', 'EPSG:3857'),
+		  	element: $('<img id="geo-marble">').attr('src','resources/images/icon-location-marble.png')
+		  });
+	      map.addOverlay(marker);
+	    
+	    //Set up watchPosition
+		//watchID = navigator.geolocation.watchPosition(updatePosition, updateError);
+        
+	}
+	
+	//Update Current Position
+	function updatePosition(position){
+		geoX = position.coords.longitude;
+		geoY = position.coords.latitude; 
+		alert('hmm: ' + geoX + ', ' + geoY);
+	}
+	
+	//onError Callback receives a PositionError object
+	function updateError(error){
+		alert(error.message);
+	}
+	
+	function onError(error){
+		$('#tap-instr').html(error.message);	
+	}
+	  
+	  //Push BaseMaps to Layers (Bing, OSM)
+	  var layers = [
+	  		new ol.layer.Tile({
+	  		  visible: false,
+		      source: new ol.source.BingMaps({
+		      	key: 'AlcyscghNheU6SjKl-_AfYD8_UvdBkghZ_d5y3_g_H574kTHa8031xO79vEUp4Qt',
+		      	style: 'AerialWithLabels'
+		      })
+		    }),
+		    new ol.layer.Tile({
+	  			visible: true,
+            	source: new ol.source.OSM({layer: 'sat'})
+            })];
 		
 	  //Create Map Object
       var map = new ol.Map({
         target: 'map',
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM({layer: 'sat'})
-          })
-        ],
+        layers: layers,
         view: new ol.View2D({
           center: ol.proj.transform([-77.360415, 38.95947], 'EPSG:4326', 'EPSG:3857'),
           zoom: 17
         })
       });
       
+      //Set Visible Selected Map Layer
+      var mapLayer = localStorage.getItem('mapLayer');
+      if(mapLayer == 'bing'){
+      	layers[0].set('visible', true);
+      	layers[1].set('visible', false);
+      }
+      else {
+      	layers[1].set('visible', true);
+      	layers[0].set('visible', false);
+      }
+      
+      //Fetch Points
+      function fetchPoints(){
+		//Add fetch junx
+		window.location.href='addPoint.html';
+      }
+      
+      //GeoLocation Button
+      function goToPosition(){
+      	//[geoX, geoY] = geolocation.getPosition(); 
+      	map.setView(new ol.View2D({
+          center: ol.proj.transform([geoX, geoY], 'EPSG:4326', 'EPSG:3857'),
+          zoom: 17
+        }));
+      }
+      
       //Navigation functions
 		function addPointView(){	
 			//Store most recent Map View Center		
-			[mapViewCenterX, mapViewCenterY] = map.getView().getCenter();
-			localStorage.setItem("mapViewCenterX",mapViewCenterX);
-			localStorage.setItem("mapViewCenterY",mapViewCenterY);
+			mapViewCenter = map.getView().getCenter();
+			localStorage.setItem("mapViewCenterX",mapViewCenter[0]);
+			localStorage.setItem("mapViewCenterY",mapViewCenter[1]);
 			window.location.href ='addPoint.html';
 		}
+		
+		//Update Base Map layer
+		function updateMap(){
+		  var mapLayer = localStorage.getItem('mapLayer');
+	      if(mapLayer == 'bing'){
+	      	layers[0].set('visible', true);
+	      	layers[1].set('visible', false);
+	      }
+	      else {
+	      	layers[1].set('visible', true);
+	      	layers[0].set('visible', false);
+	      }
+		}
       
+      	//Show credits
+      	function showCredits(){
+      		credits = 'OpenStreetMap is open data, licensed under the Open Data Commons Open Database License (ODbL). http://www.openstreetmap.org/copyright\n\n\
+Nearby objects powered by the Overpass API http://wiki.openstreetmap.org/wiki/Overpass_API\n\n\
+Search powered by Nominatim http://wiki.openstreetmap.org/wiki/Nominatim\n\n\
+Pin icons are from maki (http://mapbox.com/maki/) and the Noun Project (http://thenounproject.com/)\n\n\
+Libraries used under license:\n\n\
+Route-Me, 9c) Route-Me Contributors https://github.com/route-me/route-me';
+      		alert(credits);
+      	}
+      	
+      	//Send Email
+      	//Email
+		function sendEmail(){
+			window.location.href = "mailto:?subject=Pushpin OSM Android";
+		}
+		
+		//Set username
+		localStorage.setItem('username', 'jpmendieta');
+		$('#username').html(localStorage.getItem('username'));
     </script>
 
   </body>

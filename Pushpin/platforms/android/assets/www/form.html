@@ -5,17 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/layout.css" type="text/css">
     <link rel="stylesheet" href="css/pushpin.css" type="text/css">
-	<script src="js/lib/jquery-1.11.0.min.js"></script>
+	<script src="js/jquery-1.11.0.js"></script>
 	<script src="bootstrap/js/bootstrap.js"></script>
+	
+	<style>
+		.type-delimiter{
+			transform: rotate(90deg);
+			-ms-transform: rotate(90deg); /* IE 9 */
+			-webkit-transform: rotate(90deg); /* Safari and Chrome */
+			-o-transform: rotate(90deg); /* Opera */
+			-moz-transform: rotate(90deg); /* Firefox */
+			width: 10px;
+			margin: auto 5px;
+		}
+	</style>
 	
     <title>PushPin</title>
   </head>
   <body>
   	<div class="toolbar-top">
-  		<span class="badge-left"><button class="btn btn-primary" onclick="clearTesting()">Cancel</button></span>
-  		<span class="badge-right"><button class="btn btn-primary">Save</button></span>
+  		<span class="badge-left"><button class="btn btn-primary" onclick="cancelForm()">Cancel</button></span>
+  		<span class="badge-right"><button class="btn btn-primary" onclick="savePOI()">Save</button></span>
   		<span style="vertical-align: middle;"><h4>Add POI</h4></span>
   	</div>
   	<div class="panel-body">
@@ -23,7 +36,7 @@
 	<div class="list-group">
 		<a class="list-group-item active">Basic Info</a>
 		<a href="#" id="name-link" class="list-group-item" onmouseup="fieldFocus(this)">Name
-			<br><input id="name-field" type="text" style="border: 0px; outline: none; background-color: transparent;"/>
+			<br><input id="name-field" type="text" style="border: 0px; outline: none; background-color: transparent;" onblur="saveName($('#name-field').val())"/>
   			<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>
  		<a href="types.html" class="list-group-item">Type
  			<br><p id="type-path"></p>
@@ -42,19 +55,49 @@
 		<li class="list-group-item">
 			<span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>		
 	</div>
-	  	<button class="btn btn-block btn-danger" type="button" style="margin-top:10px;">Delete this POI</button>
+	  	<button class="btn btn-block btn-danger" type="button" style="margin-top:10px;" onclick="clearTesting()">Delete this POI</button>
 	  	<button class="btn btn-block btn-primary" type="button">View on Web</button>
 	</div>
 	
 	<script>
-		$('#type-path').html(localStorage.getItem("testing"));
+		//Save Name Field
+		function saveName(val){
+			$('#name-link').css('background','#ffffff');
+			localStorage.setItem("name-val", val);
+		}
+		//Set Name Val if exists
+		$('#name-field').val(localStorage.getItem('name-val'));
+		
+		//Display Type path
+		var typePath = localStorage.getItem("testing");
+		if(typePath.length > 0){
+			$('#type-path').html(localStorage.getItem("testing").replace(/,/g,'<img class="type-delimiter" src="resources/images/arrow-type.png"/>'));
+		}
+		
+		
 		
 		function fieldFocus(elmnt){
 			$('#name-field').focus();
 			$(elmnt).css('background-color','#f5f5f5');
 		};
 		
-		function clearTesting(){localStorage.setItem("testing",""); $('#type-path').html('');}
+		function clearTesting(){
+			localStorage.setItem("name-val",""); $('#name-field').val('');
+			localStorage.setItem("testing",""); $('#type-path').html('');
+		}
+		
+		function savePOI(){
+			var poi = new Object();
+			poi.Name = localStorage.getItem('name-val');
+			poi.Type = localStorage.getItem('testing');
+			poi.Position = localStorage.getItem('pin-pos');
+			
+			alert(JSON.stringify(poi));
+		}
+		
+		function cancelForm(){
+			window.location.href ='mapView.html';
+		}
 	</script>
 
   </body>

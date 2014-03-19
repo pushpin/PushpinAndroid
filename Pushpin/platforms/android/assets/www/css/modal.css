@@ -1,0 +1,33 @@
+.modal-content {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 0px;
+  border: 0px;
+  outline: none;
+  -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0px 0px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+}
+.modal-backdrop.in {
+  opacity: 1;
+  filter: alpha(opacity=50);
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
+  background-color: #ffffff;
+}
+.modal-body {
+  position: relative;
+  padding: 0px;
+}
+.modal-dialog {
+  position: relative;
+  z-index: 1050;
+  width: auto;
+  margin: 0px;
+}
