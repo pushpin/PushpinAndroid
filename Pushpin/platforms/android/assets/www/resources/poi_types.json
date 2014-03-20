@@ -1,0 +1,62 @@
+[
+	{
+		"value": "002",
+		"label": "Banking"
+	},
+	{
+		"value": "008",
+		"label": "Education"
+	},
+	{
+		"value": "014",
+		"label": "Government"
+	},
+	{
+		"value": "010",
+		"label": "Health / Medical"
+	},
+	{
+		"value": "012",
+		"label": "Historical"
+	},
+	{
+		"value": "011",
+		"label": "Industrial / Manufacturing"
+	},
+	{
+		"value": "016",
+		"label": "Infrastructure"
+	},
+	{
+		"value": "005",
+		"label": "Lodging"
+	},
+	{
+		"value": "004",
+		"label": "Market"
+	},
+	{
+		"value": "001",
+		"label": "Non-POI Building"
+	},
+	{
+		"value": "006",
+		"label": "Public Facilities / Services"
+	},
+	{
+		"value": "007",
+		"label": "Recreation"
+	},
+	{
+		"value": "013",
+		"label": "Religious"
+	},
+	{
+		"value": "003",
+		"label": "Restaurant / Dining"
+	},
+	{
+		"value": "015",
+		"label": "Transportation"
+	}
+]

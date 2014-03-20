@@ -1,0 +1,1748 @@
+{
+  "current_page": 1,
+  "forms": [
+    {
+      "bounding_box": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "created_at": "2012-11-02T02:39:42Z",
+      "description": "OpenStreetMap",
+      "elements": [
+        {
+          "disabled": false,
+          "elements": [
+            {
+              "data_name": "name",
+              "description": "http://pushpinosm.org/help/name.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "06867ef7-9a1e-253c-7fa3-5c24c93ac083",
+              "label": "Name",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "allow_other": false,
+              "classification_set_id": "50932f1fa93448390b0000ff",
+              "data_name": "type",
+              "description": "http://pushpinosm.org/help/type.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+              "label": "Type",
+              "required": false,
+              "type": "ClassificationField"
+            },
+            {
+              "allow_other": false,
+              "classification_set_id": "509339c0a93448391300051d",
+              "data_name": "building",
+              "description": "http://pushpinosm.org/help/building.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "3317dcc6-860d-3b81-0d30-18668c54b740",
+              "label": "Building",
+              "required": false,
+              "type": "ClassificationField",
+              "visible_conditions": [
+                {
+                  "field_key": "8f607997-bdaf-57c4-f18c-c45e4a88e09c",
+                  "operator": "equal_to",
+                  "value": "relation"
+                },
+                {
+                  "field_key": "3317dcc6-860d-3b81-0d30-18668c54b740",
+                  "operator": "is_not_empty",
+                  "value": ""
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "classification_set_id": "50aaee76a9344877790007f2",
+              "data_name": "landuse",
+              "description": "http://pushpinosm.org/help/landuse.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "6ae4312c-52e1-0d35-83d2-eff6556e8a5e",
+              "label": "Landuse",
+              "required": false,
+              "type": "ClassificationField",
+              "visible_conditions": [
+                {
+                  "field_key": "6ae4312c-52e1-0d35-83d2-eff6556e8a5e",
+                  "operator": "is_not_empty",
+                  "value": ""
+                }
+              ],
+              "visible_conditions_type": "all"
+            }
+          ],
+          "hidden": false,
+          "key": "4fb6c042144140674e000016",
+          "label": "Basic Info",
+          "required": false,
+          "type": "Section"
+        },
+        {
+          "data_name": "additional_info",
+          "disabled": false,
+          "elements": [
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Carports",
+                  "value": "parking=carports"
+                },
+                {
+                  "label": "Multiple Levels / Stories",
+                  "value": "parking=multi-storey"
+                },
+                {
+                  "label": "Sheds",
+                  "value": "parking=sheds"
+                },
+                {
+                  "label": "Ground Level / Surface",
+                  "value": "parking=surface"
+                },
+                {
+                  "label": "Underground",
+                  "value": "parking=underground"
+                }
+              ],
+              "data_name": "parking",
+              "description": "http://pushpinosm.org/help/parking.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "1b4b1160-194e-8af7-b5d2-5e42da3032c6",
+              "label": "Parking",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Asphalt",
+                  "value": "surface=asphalt"
+                },
+                {
+                  "label": "Bricks",
+                  "value": "surface=bricks"
+                },
+                {
+                  "label": "Clay",
+                  "value": "surface=clay"
+                },
+                {
+                  "label": "Cobblestone",
+                  "value": "surface=cobblestone"
+                },
+                {
+                  "label": "Compacted",
+                  "value": "surface=compacted"
+                },
+                {
+                  "label": "Concrete",
+                  "value": "surface=concrete"
+                },
+                {
+                  "label": "Dirt",
+                  "value": "surface=dirt"
+                },
+                {
+                  "label": "Fine Gravel",
+                  "value": "surface=fine_gravel"
+                },
+                {
+                  "label": "Grass",
+                  "value": "surface=grass"
+                },
+                {
+                  "label": "Gravel",
+                  "value": "surface=gravel"
+                },
+                {
+                  "label": "Ground",
+                  "value": "surface=ground"
+                },
+                {
+                  "label": "Metal",
+                  "value": "surface=metal"
+                },
+                {
+                  "label": "Mud",
+                  "value": "surface=mud"
+                },
+                {
+                  "label": "Paved",
+                  "value": "surface=paved"
+                },
+                {
+                  "label": "Paving Stones",
+                  "value": "surface=paving_stones"
+                },
+                {
+                  "label": "Pebblestone",
+                  "value": "surface=pebblestone"
+                },
+                {
+                  "label": "Rock",
+                  "value": "surface=rock"
+                },
+                {
+                  "label": "Sand",
+                  "value": "surface=sand"
+                },
+                {
+                  "label": "Shells",
+                  "value": "surface=shells"
+                },
+                {
+                  "label": "Stone",
+                  "value": "surface=stone"
+                },
+                {
+                  "label": "Unpaved",
+                  "value": "surface=unpaved"
+                },
+                {
+                  "label": "Wood",
+                  "value": "surface=wood"
+                }
+              ],
+              "data_name": "surface",
+              "description": "http://pushpinosm.org/help/surface.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "6e0cd953-3f3b-9520-bd37-ae453f4d523c",
+              "label": "Surface",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "park_ride=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "park_ride=no"
+                },
+                {
+                  "label": "Bus",
+                  "value": "park_ride=bus"
+                },
+                {
+                  "label": "Ferry",
+                  "value": "park_ride=ferry"
+                },
+                {
+                  "label": "Metro",
+                  "value": "park_ride=metro"
+                },
+                {
+                  "label": "Train",
+                  "value": "park_ride=train"
+                },
+                {
+                  "label": "Tram",
+                  "value": "park_ride=tram"
+                }
+              ],
+              "data_name": "park_and_ride",
+              "description": "http://pushpinosm.org/help/park-and-ride.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "3c9bc7c6-7004-c0ec-eca9-3c8ae987560f",
+              "label": "Park and Ride?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking,amenity=parking"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Anchors",
+                  "value": "bicycle_parking=anchors"
+                },
+                {
+                  "label": "Building",
+                  "value": "bicycle_parking=building"
+                },
+                {
+                  "label": "Front Wheel",
+                  "value": "bicycle_parking=front_wheel"
+                },
+                {
+                  "label": "Ground Slots",
+                  "value": "bicycle_parking=ground_slots"
+                },
+                {
+                  "label": "High Capacity",
+                  "value": "bicycle_parking=high_capacity"
+                },
+                {
+                  "label": "Lockers",
+                  "value": "bicycle_parking=lockers"
+                },
+                {
+                  "label": "Shed",
+                  "value": "bicycle_parking=shed"
+                },
+                {
+                  "label": "Sheffield",
+                  "value": "bicycle_parking=sheffield"
+                },
+                {
+                  "label": "Stands",
+                  "value": "bicycle_parking=stands"
+                },
+                {
+                  "label": "Wall Loops",
+                  "value": "bicycle_parking=wall_loops"
+                }
+              ],
+              "data_name": "bicycle_parking",
+              "description": "http://pushpinosm.org/help/bicycle-parking.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "1cc03a2f-f921-006c-aff0-cbe647ad7bcf",
+              "label": "Bicycle Parking",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_parking"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Hut",
+                  "value": "shelter_type=basic_hut"
+                },
+                {
+                  "label": "Lean-to",
+                  "value": "shelter_type=lean_to"
+                },
+                {
+                  "label": "Picnic Shelter",
+                  "value": "shelter_type=picnic_shelter"
+                },
+                {
+                  "label": "Public Transport",
+                  "value": "shelter_type=public_transport"
+                },
+                {
+                  "label": "Rock Shelter",
+                  "value": "shelter_type=rock_shelter"
+                },
+                {
+                  "label": "Weather Shelter",
+                  "value": "shelter_type=weather_shelter"
+                }
+              ],
+              "data_name": "shelter_type",
+              "description": "http://pushpinosm.org/help/shelter.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "7c59d9dd-4c42-7d51-03ab-414caad99572",
+              "label": "Shelter Type",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=shelter"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "data_name": "building_height_in_meters",
+              "description": "http://pushpinosm.org/help/building-height.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "56dcc60a-39db-7524-6a7c-20bb3ddc2443",
+              "label": "Building Height (in meters)",
+              "numeric": true,
+              "required": false,
+              "type": "TextField",
+              "visible_conditions": [
+                {
+                  "field_key": "3317dcc6-860d-3b81-0d30-18668c54b740",
+                  "operator": "is_not_empty",
+                  "value": ""
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "infrastructure"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "data_name": "number_of_floors_levels",
+              "description": "http://pushpinosm.org/help/floors.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "51cabbd1-d003-1a81-a0d2-f0abd518d75d",
+              "label": "Number of Floors / Levels",
+              "numeric": true,
+              "required": false,
+              "type": "TextField",
+              "visible_conditions": [
+                {
+                  "field_key": "3317dcc6-860d-3b81-0d30-18668c54b740",
+                  "operator": "is_not_empty",
+                  "value": ""
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "infrastructure"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "fee=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "fee=no"
+                },
+                {
+                  "label": "Designated Times",
+                  "value": "fee=interval"
+                }
+              ],
+              "data_name": "fee",
+              "description": "http://pushpinosm.org/help/fee.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "ab5feba9-87fb-d927-a88d-91497dc02da8",
+              "label": "Fee",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Banking,amenity=atm"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_parking"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking,amenity=parking"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_rental"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "leisure,leisure=slipway"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "data_name": "network",
+              "description": "http://pushpinosm.org/help/network.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "b48e72e3-875f-0e7e-71ce-765990549129",
+              "label": "Network",
+              "numeric": false,
+              "required": false,
+              "type": "TextField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_rental"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,buses"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,airports"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,railways"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,public_transport=stop_area"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "dispensing=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "dispensing=no"
+                }
+              ],
+              "data_name": "prescription_drugs",
+              "description": "http://pushpinosm.org/help/prescription-drugs.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "3ade0e69-1671-9477-f238-e279beb1e1ae",
+              "label": "Prescription Drugs?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "medical,amenity=pharmacy"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "food=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "food=no"
+                }
+              ],
+              "data_name": "food",
+              "description": "http://pushpinosm.org/help/serves-food.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "d0948d47-f310-4fda-85d7-a6596de52d2c",
+              "label": "Serves Food?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=bar"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=pub"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "data_name": "capacity",
+              "description": "http://pushpinosm.org/help/capacity.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "93f5b85a-a33a-a88e-5e8f-011f49f9e882",
+              "label": "Capacity",
+              "numeric": false,
+              "required": false,
+              "type": "TextField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_parking"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "leisure,leisure=stadium"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking,amenity=parking"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking,amenity=motorcycle_parking"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_rental"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "data_name": "brand",
+              "description": "http://pushpinosm.org/help/brand.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "ecd288c5-f67b-dc12-44f4-889e64cc87b5",
+              "label": "Brand",
+              "numeric": false,
+              "required": false,
+              "type": "TextField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Shopping"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,amenity=fuel"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Diesel",
+                  "value": "fuel:diesel=yes"
+                },
+                {
+                  "label": "87 Octane",
+                  "value": "fuel:octane_87=yes"
+                },
+                {
+                  "label": "89 Octane",
+                  "value": "fuel:octane_89=yes"
+                },
+                {
+                  "label": "91 Octane",
+                  "value": "fuel:octane_91=yes"
+                },
+                {
+                  "label": "93 Octane",
+                  "value": "fuel:octane_93=yes"
+                },
+                {
+                  "label": "95 Octane",
+                  "value": "fuel:octane_95=yes"
+                },
+                {
+                  "label": "98 Octane",
+                  "value": "fuel:octane_98=yes"
+                },
+                {
+                  "label": "Ethanol",
+                  "value": "fuel:E10=yes"
+                },
+                {
+                  "label": "LPG",
+                  "value": "fuel:lpg=yes"
+                }
+              ],
+              "data_name": "fuel_types",
+              "description": "What specific fuel types are available?",
+              "disabled": false,
+              "hidden": true,
+              "key": "e25596f8-9d91-f471-5617-d484c7923e5c",
+              "label": "Fuel Types",
+              "multiple": true,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Amenities,amenity=fuel"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "car_wash=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "car_wash=no"
+                }
+              ],
+              "data_name": "car_wash",
+              "description": "http://pushpinosm.org/help/car-wash.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "bcd2a7f4-9907-9b7c-8d97-a3cffe3948e5",
+              "label": "Car Wash?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,amenity=fuel"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "WiFi",
+                  "value": "internet_access=wlan"
+                },
+                {
+                  "label": "Wired",
+                  "value": "internet_access=wired"
+                },
+                {
+                  "label": "None",
+                  "value": "internet_access=no"
+                }
+              ],
+              "data_name": "internet_access",
+              "description": "http://pushpinosm.org/help/internet-access.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "f1477d45-91bf-d54e-18e6-62c641a93083",
+              "label": "Internet Access",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Shopping"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "office"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "medical"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "education"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "tourism"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Private",
+                  "value": "access=private"
+                },
+                {
+                  "label": "Official",
+                  "value": "access=official"
+                },
+                {
+                  "label": "Public",
+                  "value": "access=yes"
+                }
+              ],
+              "data_name": "access",
+              "description": "http://pushpinosm.org/help/access.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "edb339a9-e878-89dd-961b-158393a64c60",
+              "label": "Access?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Amenities,amenity=bicycle_parking"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "drive_through=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "drive_through=no"
+                }
+              ],
+              "data_name": "drive_through",
+              "description": "http://pushpinosm.org/help/drive-through.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "c523c7ee-0aca-a1d8-f991-6fc8f0627e9d",
+              "label": "Drive Through?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Shopping,shop=alcohol"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant,amenity=fast_food"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=cafe"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Banking,amenity=atm"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Banking,amenity=bank"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "medical,amenity=pharmacy"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=post_box"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "delivery=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "delivery=no"
+                }
+              ],
+              "data_name": "delivery",
+              "description": "http://pushpinosm.org/help/delivery.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "7ba3f048-779b-9f48-be18-37d20ad2fc13",
+              "label": "Delivery?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant,amenity=fast_food"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant,amenity=restaurant"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Shopping,shop=supermarket"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Shopping,shop=convenience"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "covered=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "covered=no"
+                }
+              ],
+              "data_name": "covered",
+              "description": "http://pushpinosm.org/help/covered.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "62865072-ad4a-8ff2-5f32-01f18a2ab5ff",
+              "label": "Covered?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_parking"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=telephone"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Banking,amenity=atm"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant,amenity=bbq"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bench"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=bicycle_rental"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,buses,public_transport=station"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,buses,highway=bus_stop"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=drinking_water"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "leisure,leisure=swimming_pool"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=telephone"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,parking"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "atm=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "atm=no"
+                }
+              ],
+              "data_name": "atm",
+              "description": "http://pushpinosm.org/help/atm.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "98287789-ecf4-b218-8bf0-23ead28cc15e",
+              "label": "ATM?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "arts_entertainment"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Banking,amenity=bank"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "public_services,amenity=post_office"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "Shopping"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "tourism,tourism=hotel"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "tourism,tourism=motel"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "tourism,tourism=museum"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "tourism,tourism=theme_park"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "tourism,tourism=zoo"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "medical,amenity=pharmacy"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,amenity=fuel"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "transportation,highway,highway=rest_area"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choice_list_id": "50932e30a93448390b0000eb",
+              "data_name": "religion",
+              "description": "http://pushpinosm.org/help/religion.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "0592cbff-b76b-56ac-9654-ebd6fc4f04b2",
+              "label": "Religion",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "public_services,amenity=place_of_worship"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "classification_set_id": "50932e9fa9344839320001fa",
+              "data_name": "religious_denomination",
+              "description": "http://pushpinosm.org/help/denomination.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "75a50d95-400a-8635-48cd-209101a6dcd9",
+              "label": "Religious Denomination",
+              "required": false,
+              "type": "ClassificationField",
+              "visible_conditions": [
+                {
+                  "field_key": "0592cbff-b76b-56ac-9654-ebd6fc4f04b2",
+                  "operator": "is_not_empty",
+                  "value": ""
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "data_name": "collection_time",
+              "description": "http://pushpinosm.org/help/collection-times.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "48aba3bb-c8ae-d19c-1c66-70f62e88d86f",
+              "label": "Collection Time",
+              "numeric": false,
+              "required": false,
+              "type": "TextField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=post_box"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": true,
+              "choice_list_id": "50932e72a934483923000060",
+              "data_name": "vending",
+              "description": "http://pushpinosm.org/help/vending-contents.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "77a358c1-c21d-73d3-f302-8524c756026c",
+              "label": "Vending Contents",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "amenities_outdoor,amenity=vending_machine"
+                }
+              ],
+              "visible_conditions_type": "all"
+            },
+            {
+              "allow_other": false,
+              "choice_list_id": "50932e51a93448390e000185",
+              "data_name": "sport",
+              "description": "http://pushpinosm.org/help/sport.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "7c175ba0-2418-aa5b-a118-3dea6b12f605",
+              "label": "Sport",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "leisure,leisure=pitch"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "leisure,leisure=sports_centre"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "leisure,leisure=stadium"
+                }
+              ],
+              "visible_conditions_type": "any"
+            }
+          ],
+          "hidden": false,
+          "key": "4fb6c042144140674e000019",
+          "label": "Additional Info",
+          "required": false,
+          "type": "Section"
+        },
+        {
+          "data_name": "restaurants_and_cafes",
+          "disabled": false,
+          "elements": [
+            {
+              "allow_other": false,
+              "classification_set_id": "50932ec9a93448392300006b",
+              "data_name": "cuisine",
+              "description": "http://pushpinosm.org/help/cuisine.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "56e112b3-d30d-a29b-1f0b-b6218e79d292",
+              "label": "Cuisine",
+              "required": false,
+              "type": "ClassificationField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=pub"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=cafe"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "takeaway=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "takeaway=no"
+                },
+                {
+                  "label": "Only Takeout",
+                  "value": "takeaway=only"
+                }
+              ],
+              "data_name": "takeaway",
+              "description": "http://pushpinosm.org/help/takeout.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "e0248629-f936-0896-f0f9-a5eb1bcaf783",
+              "label": "Takeout?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=cafe"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes,amenity=pub"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "outdoor_seating=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "outdoor_seating=no"
+                }
+              ],
+              "data_name": "outdoor_seating",
+              "description": "http://pushpinosm.org/help/outdoor-seating.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "ffff0804-7312-dd27-f130-0d2b21e0b22c",
+              "label": "Outdoor Seating?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant"
+                }
+              ],
+              "visible_conditions_type": "any"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "smoking=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "smoking=no"
+                },
+                {
+                  "label": "Designated Area",
+                  "value": "smoking=separated"
+                },
+                {
+                  "label": "Outside",
+                  "value": "smoking=outside"
+                }
+              ],
+              "data_name": "smoking",
+              "description": "http://pushpinosm.org/help/smoking.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "b15c2229-16ed-e591-7956-44d93f16f703",
+              "label": "Smoking?",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField",
+              "visible_conditions": [
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "bars_cafes"
+                },
+                {
+                  "field_key": "9b0f2274-d66f-e79b-40b4-651d9e4581cf",
+                  "operator": "equal_to",
+                  "value": "restaurant"
+                }
+              ],
+              "visible_conditions_type": "any"
+            }
+          ],
+          "hidden": false,
+          "key": "4fb6c042144140674e000066",
+          "label": "Restaurants & Cafes",
+          "required": false,
+          "type": "Section"
+        },
+        {
+          "data_name": "address",
+          "disabled": false,
+          "elements": [
+            {
+              "data_name": "addr:housenumber",
+              "description": "http://pushpinosm.org/help/addr-housenumber.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "9f5ed5a1-e1c0-fdf0-edab-07c5a161478b",
+              "label": "Number",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "addr:street",
+              "disabled": false,
+              "hidden": false,
+              "key": "4e4c98ee-a209-b8eb-38c6-5935e4d9d306",
+              "label": "Street",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "addr:city",
+              "disabled": false,
+              "hidden": false,
+              "key": "d2bdffbf-cc5f-f716-7fe1-1bdd2742003f",
+              "label": "City",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "addr:state",
+              "disabled": false,
+              "hidden": true,
+              "key": "1ee9d870-6ce7-d3f6-e894-2a44d93c2dae",
+              "label": "State",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "addr:postcode",
+              "disabled": false,
+              "hidden": false,
+              "key": "0d40bee5-972b-b3fc-676b-0a71c80c6376",
+              "label": "Postal Code",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "addr:country",
+              "disabled": false,
+              "hidden": true,
+              "key": "d1b60903-4414-d2b9-a3f1-7a89133f7af9",
+              "label": "Country",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "unit_suite",
+              "description": "http://pushpinosm.org/help/addr-unit.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "41d6153a-ebf7-6b38-ad18-dbfdc09745b7",
+              "label": "Unit / Suite",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            }
+          ],
+          "hidden": false,
+          "key": "4fb6c042144140674e000083",
+          "label": "Address",
+          "required": false,
+          "type": "Section"
+        },
+        {
+          "data_name": "other_information",
+          "disabled": false,
+          "elements": [
+            {
+              "data_name": "operator",
+              "description": "http://pushpinosm.org/help/operator.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "6a12e3b2-f030-b429-0c47-6675329f1c6f",
+              "label": "Operator",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "Yes",
+                  "value": "wheelchair=yes"
+                },
+                {
+                  "label": "No",
+                  "value": "wheelchair=no"
+                },
+                {
+                  "label": "Limited",
+                  "value": "wheelchair=limited"
+                }
+              ],
+              "data_name": "wheelchair",
+              "description": "http://pushpinosm.org/help/wheelchair-access.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "e78bf83a-752c-7b31-efb7-fddda55af8d0",
+              "label": "Wheelchair Access",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField"
+            },
+            {
+              "data_name": "opening_hours",
+              "description": "http://pushpinosm.org/help/opening-hours.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "2fcfa410-ce2d-1fd2-c1c5-c8c50e2a53e8",
+              "label": "Opening Hours",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            }
+          ],
+          "hidden": false,
+          "key": "4fb6c042144140674e00008a",
+          "label": "Other Information",
+          "required": false,
+          "type": "Section"
+        },
+        {
+          "data_name": "contact_info",
+          "disabled": false,
+          "elements": [
+            {
+              "data_name": "contact:phone",
+              "description": "http://pushpinosm.org/help/phone.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "74796b16-3497-a4b1-1e93-53184c07aed8",
+              "label": "Phone",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "contact:fax",
+              "description": "http://pushpinosm.org/help/fax.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "3279f6ce-2fd7-41fe-b1d3-30fb5205eb54",
+              "label": "Fax",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "contact:website",
+              "description": "http://pushpinosm.org/help/website.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "4fbd6475-cad0-67e8-8bc3-b8b66b7bca1b",
+              "label": "Website",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "contact:email",
+              "description": "http://pushpinosm.org/help/email.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "527178a5-afe7-11c9-77ae-bf4c492f71c7",
+              "label": "Email",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            }
+          ],
+          "hidden": false,
+          "key": "65c1314f-493b-1fa3-3457-b76be502f0c3",
+          "label": "Contact Info",
+          "required": false,
+          "type": "Section"
+        },
+        {
+          "data_name": "metadata",
+          "disabled": false,
+          "elements": [
+            {
+              "data_name": "description",
+              "description": "http://pushpinosm.org/help/description.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "a73f0744-722c-4a8c-75fb-2c10311e6be7",
+              "label": "Description",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "attribution",
+              "description": "http://pushpinosm.org/help/attribution.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "4b8290c5-a7a2-c188-b6fb-4ed84fcd5ee6",
+              "label": "Attribution",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "source",
+              "description": "http://pushpinosm.org/help/source.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "866418c8-ef6b-e72b-42c3-8b36ab7ae74b",
+              "label": "Source",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "fixme",
+              "description": "http://pushpinosm.org/help/fixme.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "d8ec5af9-f513-2156-bfee-5c81e16bac0d",
+              "label": "Correction Notes (fixme)",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "notes",
+              "description": "http://pushpinosm.org/help/notes.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "4819006f-f553-aad2-e5d6-867f2aeb06cc",
+              "label": "General Notes",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "data_name": "tags",
+              "disabled": true,
+              "hidden": true,
+              "key": "2fc8e67e-2a01-77d2-3ac2-273f449091d3",
+              "label": "Tags",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            },
+            {
+              "allow_other": false,
+              "choices": [
+                {
+                  "label": "node",
+                  "value": "node"
+                },
+                {
+                  "label": "way",
+                  "value": "way"
+                },
+                {
+                  "label": "relation",
+                  "value": "relation"
+                }
+              ],
+              "data_name": "object_type",
+              "disabled": true,
+              "hidden": true,
+              "key": "8f607997-bdaf-57c4-f18c-c45e4a88e09c",
+              "label": "Object Type",
+              "multiple": false,
+              "required": false,
+              "type": "ChoiceField"
+            },
+            {
+              "data_name": "change_comment",
+              "description": "http://pushpinosm.org/help/changeset-comment.html",
+              "disabled": false,
+              "hidden": false,
+              "key": "0a407078-2b6b-c2fe-354b-f397b7ca61cc",
+              "label": "Change Comment",
+              "numeric": false,
+              "required": false,
+              "type": "TextField"
+            }
+          ],
+          "hidden": false,
+          "key": "63abfe65-344d-3d92-e0e9-99b211c6bf0c",
+          "label": "Metadata",
+          "required": false,
+          "type": "Section"
+        }
+      ],
+      "id": "5093326ea93448390e0001af",
+      "name": "OpenStreetMap",
+      "record_count": 0,
+      "record_title_key": "06867ef7-9a1e-253c-7fa3-5c24c93ac083",
+      "updated_at": "2012-11-12T16:13:23Z"
+    }
+  ],
+  "per_page": 50,
+  "total_count": 1,
+  "total_pages": 1
+}
