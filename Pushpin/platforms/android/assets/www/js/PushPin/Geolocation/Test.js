@@ -3,8 +3,8 @@
 		this.position = {};
 		
 		this.position.coords = {
-			latitude: "38.9558",
-			longitude: "-77.3577"
+			latitude: 38.9558,
+			longitude: -77.3577
 		};
 	};
 	

@@ -15,6 +15,35 @@ PushPin.OSMAuth = function(consumerKey, consumerSecret, db){
 		oauth_consumer_key: context.consumerKey,
 		oauth_signature_method: 'HMAC-SHA1'
 	};
+	
+	this.authenticatedSuccessCallback = null;
+	this.authenticatedFailureCallback = null;
+};
+
+PushPin.OSMAuth.prototype.onAuthenticated = function(){
+	
+	console.log("authenticated successfully!");
+	
+	if(PushPin.existsAndNotNull(this.authenticatedSuccessCallback)){
+		this.authenticatedSuccessCallback();
+	}
+};
+
+PushPin.OSMAuth.prototype.onAuthenticationFailed = function(e){
+	
+	console.log("authentication failed");
+	
+	if(PushPin.existsAndNotNull(this.authenticatedFailureCallback)){
+		this.authenticatedFailureCallback(e);
+	}
+};
+
+PushPin.OSMAuth.prototype.authenticate = function(onSuccess, onFailure){
+	
+	this.authenticatedSuccessCallback = onSuccess;
+	this.authenticatedFailureCallback = onFailure;
+	
+	this.getRequestToken();
 };
 
 PushPin.OSMAuth.prototype.getRequestToken = function(){
@@ -43,6 +72,8 @@ PushPin.OSMAuth.prototype.getRequestToken = function(){
 	
 	request.fail(function(jqXHR, textStatus, errorThrown){
 		console.log('request token error', errorThrown);
+		
+		context.onAuthenticationFailed(errorThrown);
 	});
 	
 	request.always(function(){
@@ -81,6 +112,7 @@ PushPin.OSMAuth.prototype.getUserAuthorization = function(){
 	});
 	
 	authWindow.addEventListener('loaderror', function(event){
+		context.onAuthenticationFailed(event);
 		authWindow.close();
 	});
 };
@@ -115,6 +147,8 @@ PushPin.OSMAuth.prototype.getAccessToken = function(){
 	
 	request.fail(function(jqXHR, textStatus, errorThrown){
 		console.log('request token error', errorThrown);
+		
+		context.onAuthenticationFailed(errorThrown);
 	});
 	
 	request.always(function(){
@@ -123,6 +157,8 @@ PushPin.OSMAuth.prototype.getAccessToken = function(){
 };
 
 PushPin.OSMAuth.prototype.saveAccessToken = function(){
+	
+	var context = this;
 	
 	if(!PushPin.existsAndNotNull(this.accessToken)){
 		throw "Access token must exist.";
@@ -142,9 +178,15 @@ PushPin.OSMAuth.prototype.saveAccessToken = function(){
 		
 		// TODO: Saved access token successfully
 		
-		console.log("Saved access token successfully!");
+		context.onAuthenticated();
 	}, function(e){
 		
 		// TODO: Failed to save access token
+		context.onAuthenticationFailed(e);
 	});
+};
+
+PushPin.OSMAuth.prototype.logout = function(onSuccess, onFailure){
+	
+	this.preferences.removeAccessToken(onSuccess, onFailure);
 };

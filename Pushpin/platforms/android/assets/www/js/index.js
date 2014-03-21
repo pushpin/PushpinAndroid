@@ -17,23 +17,67 @@
  * under the License.
  */
 var app = {
+	
+	map: null,
+	
+	mapView: null,
+	
+	positionHandler: null,
+	
+	
     // Application Constructor
     initialize: function() {
-        this.bindEvents();
+        app.bindEvents();
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('deviceready', app.onDeviceReady, false);
+    },
+    
+    reportError: function(errorMessage){
+		$('#tap-instr').html(errorMessage);
+	},
+	
+    load: function(){
+    	app.map = new PushPin.Map();
+    	app.map.loadMap();
+    	
+    	app.test = new PushPin.Geolocation.Test();
+    	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
+    	
+    	app.positionHandler.watchPosition();
+    	
+    	app.localStorage = new PushPin.LocalStorage();
+    	
+    	app.mapView = new PushPin.MapView(app.map, app.osmAuth,
+    			app.localStorage, app.positionHandler);
+    	
+    	app.mapView.registerEvents(app.map);
+    	
+    	app.map.setVisibleLayerFromLocalStorage();
+    },
+    
+    onAuthenticated: function(){
+    	app.load();
     },
     
     authenticate: function(db){
-    	var osmAuth = new PushPin.OSMAuth(PushPin.Secrets.OAUTH.CONSUMER_KEY,
+    	app.osmAuth = new PushPin.OSMAuth(PushPin.Secrets.OAUTH.CONSUMER_KEY,
         		PushPin.Secrets.OAUTH.CONSUMER_SECRET, db);
         
-        osmAuth.getRequestToken();
+        app.osmAuth.authenticate(function(){
+        	
+        	app.onAuthenticated();
+        	
+        }, function(e){
+        	
+        	console.log("Authentication Failed!: ", e);
+        	
+        	PushPin.reportException(e);
+        });
     },
     
     onDeviceReady: function() {
@@ -47,10 +91,12 @@ var app = {
         		app.authenticate(db);
         	}else{
         		console.log("Already authenticated!");
+        		app.onAuthenticated();
         	}
         }, function(e){
         	
         	// TODO: Handle failed to get access token
+        	
         });
     }
 };

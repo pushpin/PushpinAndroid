@@ -42,6 +42,10 @@ PushPin.Preferences.prototype.saveAccessToken = function(accessToken, onSuccess,
 	this.put(this.ACCESS_TOKEN, accessToken, onSuccess, onFailure);
 };
 
+PushPin.Preferences.prototype.removeAccessToken = function(onSuccess, onFailure){
+	this.remove(this.ACCESS_TOKEN, onSuccess, onFailure);
+};
+
 PushPin.Preferences.prototype.get = function(key, onSuccess, onFailure){
 	
 	var context = this;
@@ -86,6 +90,29 @@ PushPin.Preferences.prototype.put = function(key, value, onSuccess, onFailure){
 			+ context.KEY + "," + context.VALUE + ") VALUES (?,?);";
 		
 		tx.executeSql(sql, [key, value], function(tx, res){
+			
+			if(PushPin.existsAndNotNull(onSuccess)){
+				onSuccess();
+			}
+		}, function(tx, e){
+			
+			context.onError(e, onFailure);
+		});
+	}, function(e){
+		
+		context.onError(e, onFailure);
+	});
+};
+
+PushPin.Preferences.prototype.remove = function(key, onSuccess, onFailure){
+	
+	var context = this;
+	
+	this.db.transaction(function(tx){
+		
+		var sql = "DELETE FROM " + context.TABLE_NAME + " WHERE " + key + "=?";
+		
+		tx.executeSql(sql, [key], function(tx, res){
 			
 			if(PushPin.existsAndNotNull(onSuccess)){
 				onSuccess();
