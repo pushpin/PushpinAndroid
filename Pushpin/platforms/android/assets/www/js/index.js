@@ -42,6 +42,11 @@ var app = {
 	},
 	
     load: function(){
+    	
+    	if(!PushPin.existsAndNotNull(app.osmAuth)){
+    		app.initAuth();
+    	}
+    	
     	app.localStorage = new PushPin.LocalStorage();
     	
     	app.map = new PushPin.Map(app.localStorage);
@@ -60,13 +65,17 @@ var app = {
     	app.map.setVisibleLayerFromLocalStorage();
     },
     
+    initAuth: function(){
+    	app.osmAuth = new PushPin.OSMAuth(PushPin.Secrets.OAUTH.CONSUMER_KEY,
+        		PushPin.Secrets.OAUTH.CONSUMER_SECRET, app.db);
+    },
+    
     onAuthenticated: function(){
     	app.load();
     },
     
-    authenticate: function(db){
-    	app.osmAuth = new PushPin.OSMAuth(PushPin.Secrets.OAUTH.CONSUMER_KEY,
-        		PushPin.Secrets.OAUTH.CONSUMER_SECRET, db);
+    authenticate: function(){
+    	app.initAuth();
         
         app.osmAuth.authenticate(function(){
         	
@@ -81,14 +90,14 @@ var app = {
     },
     
     onDeviceReady: function() {
-        var db = PushPin.Database.getDb();
+        app.db = PushPin.Database.getDb();
         
-        var preferences = new PushPin.Preferences(db);
+        var preferences = new PushPin.Preferences(app.db);
         
         preferences.getAccessToken(function(accessToken){
         	
         	if(!PushPin.existsAndNotNull(accessToken)){
-        		app.authenticate(db);
+        		app.authenticate();
         	}else{
         		app.onAuthenticated();
         	}
