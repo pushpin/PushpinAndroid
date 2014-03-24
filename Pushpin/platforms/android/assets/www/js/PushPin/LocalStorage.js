@@ -28,7 +28,7 @@
 	
 	prototype.getMapCenter = function(){
 		
-		return [localStorage.getItem(this.mapViewCenterX),
-		        localStorage.getItem(this.mapViewCenterY)];
+		return [parseFloat(localStorage.getItem(this.mapViewCenterX)),
+		        parseFloat(localStorage.getItem(this.mapViewCenterY))];
 	};
 })();
