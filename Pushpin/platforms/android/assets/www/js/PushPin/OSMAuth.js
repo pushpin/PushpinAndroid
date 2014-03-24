@@ -22,16 +22,12 @@ PushPin.OSMAuth = function(consumerKey, consumerSecret, db){
 
 PushPin.OSMAuth.prototype.onAuthenticated = function(){
 	
-	console.log("authenticated successfully!");
-	
 	if(PushPin.existsAndNotNull(this.authenticatedSuccessCallback)){
 		this.authenticatedSuccessCallback();
 	}
 };
 
 PushPin.OSMAuth.prototype.onAuthenticationFailed = function(e){
-	
-	console.log("authentication failed");
 	
 	if(PushPin.existsAndNotNull(this.authenticatedFailureCallback)){
 		this.authenticatedFailureCallback(e);
@@ -102,7 +98,6 @@ PushPin.OSMAuth.prototype.getUserAuthorization = function(){
 	
 	var authWindow = window.open(url, '_blank', 'location=no');
 	authWindow.addEventListener('loadstart', function(event){
-		console.log("loadstart", JSON.stringify(event));
 		var url = event.url;
 		
 		if(url.indexOf('http://localhost') !== -1){
