@@ -41,10 +41,10 @@
 	width:100%;
 	text-align:center;
 	font:"Arial Black";
-	color: #fff;
-	
+	color: #fff;	
 	padding: 10px;
-	position: fixed;
+	position: absolute;
+	top: 0px;
 	z-index: 3;
 	
 }
@@ -54,4 +54,17 @@
 }
 .toolbar-top > .badge-right {
   	float: right;
+}
+
+.toolbar-bottom{
+	background-image: url('../img/toolbar_bg.png');
+	width:100%;
+	text-align:center;
+	font:"Arial Black";
+	color: #fff;
+	position: absolute;
+	padding: 10px;
+	bottom: 0px;
+	z-index: 3;
+	
 }
