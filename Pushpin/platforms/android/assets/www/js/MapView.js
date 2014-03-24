@@ -24,11 +24,11 @@
 		var context = this;
 		
     	this.fetchPointsBtn.click(function(){
-    		//fetchPoints();
+    		context.fetchPoints();
     	});
     	
     	this.addPointViewBtn.click(function(){
-    		//return addPointView();
+    		return context.addPointView();
     	});
     	
     	this.goToPositionBtn.click(function(){
@@ -58,6 +58,19 @@
     	this.showCreditsBtn.click(function(){
     		context.showCredits();
     	});
+    };
+    
+    prototype.fetchPoints = function(){
+    	// TODO: Fetch points for bounds of map
+    };
+    
+    prototype.addPointView = function(){
+    	//Store most recent Map View Center		
+		var mapViewCenter = this.map.getCenter();
+		
+		this.localStorage.saveMapCenter(mapViewCenter);
+		
+		window.location.href ='addPoint.html';
     };
     
     prototype.selectBingMap = function(){

@@ -42,15 +42,15 @@ var app = {
 	},
 	
     load: function(){
-    	app.map = new PushPin.Map();
+    	app.localStorage = new PushPin.LocalStorage();
+    	
+    	app.map = new PushPin.Map(app.localStorage);
     	app.map.loadMap();
     	
     	app.test = new PushPin.Geolocation.Test();
     	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
     	
     	app.positionHandler.watchPosition();
-    	
-    	app.localStorage = new PushPin.LocalStorage();
     	
     	app.mapView = new PushPin.MapView(app.map, app.osmAuth,
     			app.localStorage, app.positionHandler);
@@ -90,13 +90,13 @@ var app = {
         	if(!PushPin.existsAndNotNull(accessToken)){
         		app.authenticate(db);
         	}else{
-        		console.log("Already authenticated!");
         		app.onAuthenticated();
         	}
         }, function(e){
         	
-        	// TODO: Handle failed to get access token
+        	console.log("Error: Could not authenticate", e);
         	
+        	PushPin.reportException(e);
         });
     }
 };

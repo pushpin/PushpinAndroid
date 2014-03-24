@@ -1,7 +1,7 @@
 (function(){
 	
-	PushPin.Map = function(){
-
+	PushPin.Map = function(localStorage){
+		this.localStorage = localStorage;
 		this.layers = null;
 		this.map = null;
 		this.mapProj = 'EPSG:3857';
@@ -43,7 +43,7 @@
 	prototype.setVisibleLayerFromLocalStorage = function(){
 		
 		//Set Visible Selected Map Layer
-		var mapLayer = localStorage.getItem('mapLayer');
+		var mapLayer = this.localStorage.getMapLayer();
 		if(mapLayer == 'bing'){
 		    this.layers[0].set('visible', true);
 		  	this.layers[1].set('visible', false);
@@ -71,5 +71,9 @@
 		}else{
 			this.locationMarker.setPosition(coordinate);
 		}
+	};
+	
+	prototype.getCenter = function(){
+		return this.map.getView().getCenter();
 	};
 })();

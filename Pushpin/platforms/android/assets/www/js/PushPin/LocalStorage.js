@@ -2,6 +2,8 @@
 	
 	PushPin.LocalStorage = function(){
 		this.mapLayer = 'mapLayer';
+		this.mapViewCenterX = "mapViewCenterX";
+		this.mapViewCenterY = "mapViewCenterY";
 	};
 	
 	var prototype = PushPin.LocalStorage.prototype;
@@ -13,5 +15,20 @@
 	
 	prototype.setMapLayer = function(layerOption){
 		localStorage.setItem(this.mapLayer, layerOption);
+	};
+	
+	prototype.getMapLayer = function(){
+		return localStorage.getItem(this.mapLayer);
+	};
+	
+	prototype.saveMapCenter = function(mapViewCenter){
+		localStorage.setItem(this.mapViewCenterX,mapViewCenter[0]);
+		localStorage.setItem(this.mapViewCenterY,mapViewCenter[1]);
+	};
+	
+	prototype.getMapCenter = function(){
+		
+		return [localStorage.getItem(this.mapViewCenterX),
+		        localStorage.getItem(this.mapViewCenterY)];
 	};
 })();
