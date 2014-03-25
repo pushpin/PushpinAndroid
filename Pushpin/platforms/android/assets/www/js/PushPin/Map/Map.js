@@ -76,4 +76,12 @@
 	prototype.getCenter = function(){
 		return this.map.getView().getCenter();
 	};
+	
+	prototype.addOverlay = function(overlay){
+		this.map.addOverlay(overlay);
+	};
+	
+	prototype.getPixelFromCoordinate = function(coord){
+		return this.map.getPixelFromCoordinate(coord);
+	};
 })();

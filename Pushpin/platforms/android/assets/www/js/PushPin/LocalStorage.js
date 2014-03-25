@@ -4,6 +4,7 @@
 		this.mapLayer = 'mapLayer';
 		this.mapViewCenterX = "mapViewCenterX";
 		this.mapViewCenterY = "mapViewCenterY";
+		this.pinPosition = 'pin-pos';
 	};
 	
 	var prototype = PushPin.LocalStorage.prototype;
@@ -30,5 +31,9 @@
 		
 		return [parseFloat(localStorage.getItem(this.mapViewCenterX)),
 		        parseFloat(localStorage.getItem(this.mapViewCenterY))];
+	};
+	
+	prototype.setPinPosition = function(position){
+		localStorage.setItem(this.pinPosition,position);
 	};
 })();

@@ -20,13 +20,15 @@ var app = {
 	
 	map: null,
 	
-	mapView: null,
+	view: null,
 	
 	positionHandler: null,
 	
+	viewType: null,	
 	
     // Application Constructor
-    initialize: function() {
+    initialize: function(view) {
+    	viewType = view;
         app.bindEvents();
     },
     // Bind Event Listeners
@@ -38,7 +40,7 @@ var app = {
     },
     
     reportError: function(errorMessage){
-		$('#tap-instr').html(errorMessage);
+		alert(errorMessage);
 	},
 	
     load: function(){
@@ -52,10 +54,8 @@ var app = {
     	
     	app.positionHandler.watchPosition();
     	
-    	app.mapView = new PushPin.MapView(app.map, app.osmAuth,
-    			app.localStorage, app.positionHandler);
+    	app.setView(viewType);  	  	
     	
-    	app.mapView.registerEvents(app.map);
     	
     	app.map.setVisibleLayerFromLocalStorage();
     },
@@ -98,5 +98,22 @@ var app = {
         	
         	PushPin.reportException(e);
         });
+    },
+    
+    setView: function(viewType) {
+    	switch(viewType){    		
+    		case 'mapView':
+    			app.view = new PushPin.MapView(app.map, app.osmAuth,
+    					app.localStorage, app.positionHandler);
+    			app.view.registerEvents(app.map);  			
+				break;
+			case 'addPointView':
+				app.view = new PushPin.AddPointView(app.map, app.localStorage);
+				app.view.addCrosshair();
+				app.view.registerEvents();
+				break;
+			default:
+				console.log("Error: Could not assign view");
+    	}
     }
 };

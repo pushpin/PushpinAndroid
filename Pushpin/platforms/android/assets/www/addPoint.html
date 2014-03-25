@@ -32,7 +32,7 @@
     		height: 100%;   		
     	}
     	
-    	#tap-instr{
+    	#addPinBtn{
     		color: #FFFFFF;
     		background-color: rgba(0,0,0,0.5);
     		padding: 10px;
@@ -55,72 +55,29 @@
   <body>
 
   	<div class="toolbar-top">
-  		<span class="badge-left"><button class="btn btn-primary" onclick="cancelPoint()">Cancel</button></span>
-  		<span class="badge-right"><button class="btn btn-primary" onclick="donePoint()">Done</button></span>
+  		<span class="badge-left"><button id="cancelPointBtn" class="btn btn-primary">Cancel</button></span>
+  		<span class="badge-right"><button id="donePointBtn" class="btn btn-primary">Done</button></span>
   		<span style="vertical-align: middle;"><h4>Select a location</h4></span>
   	</div>
   	
   	<div id="map" class="map"></div>
-  	<div id="tap-instr" >Tap here to set the location</div>
+  	<div id="addPinBtn" >Tap here to set the location</div>
   	<div id="crosshair"><img src="resources/images/icon-crosshair.png" /></div>
 
 	<script src="js/lib/jquery-1.11.0.min.js"></script>
 	<script src="bootstrap/js/bootstrap.js"></script>
 	<script src="js/ol/ol-whitespace.js"></script>
-	<script type="text/javascript">	
-		
-	  //Grab Map View Center to use in Map
-	  //-8611722.005356323,4715867.659517035
-	  var centerX = parseFloat(localStorage.getItem("mapViewCenterX"));
-	  var centerY = parseFloat(localStorage.getItem("mapViewCenterY"));
-	  
-	  var layers = [
-	      new ol.layer.Tile({
-	      	visible: true,
-	        source: new ol.source.OSM({layer: 'sat'})
-	      })/*,
-	      new ol.layer.Tile({
-		    style: 'Aerial',
-		    visible: false,
-		    source: new ol.source.MapQuest({layer: 'sat'})
-		  })*/
-	    ];
-	  //Create Map Object
-	  var map = new ol.Map({
-	    target: 'map',
-	    layers: layers,
-	    view: new ol.View2D({
-	      center: [centerX, centerY],//ol.proj.transform([-77.360415, 38.95947], 'EPSG:4326', 'EPSG:3857'),
-	      zoom: 17
-	    })
-	  });
-	 	 	       
-     //Add Crosshair
-     var mapCenter = map.getView().getCenter();
-     mapCenterPixel = map.getPixelFromCoordinate(mapCenter);
-     $('#crosshair').css('left',mapCenterPixel[0]-8);
-     $('#crosshair').css('bottom',mapCenterPixel[1]-15);
-      
-      //On Tap here, add/update Pin
-      $('#tap-instr').click(function(){    	 
-      	$('#poi-pin').remove(); 
-          var pos = map.getView().getCenter();  
-          localStorage.setItem('pin-pos',pos);
-		  pin = new ol.Overlay({
-		  	position: pos,
-		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png')
-		  });
-	      map.addOverlay(pin);	
-      });    
-    
-    //Navigation functions
-  	function cancelPoint(){
-		window.location.href ='mapView.html';
-	}
-	function donePoint(){
-		window.location.href ='form.html';
-	}
-      
+	<script>
+       	// Bootstrap fix for android stock browser.  
+       	// See --> http://getbootstrap.com/getting-started/#support-android-stock-browser
+		var nua = navigator.userAgent;
+		var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1);
+		if (isAndroid) {
+		  $('select.form-control').removeClass('form-control').css('width', '100%');
+		}
+	</script>
+	<script type="text/javascript">				 	 	           
+     app.initialize('addPointView');     
     </script>
 
   </body>
