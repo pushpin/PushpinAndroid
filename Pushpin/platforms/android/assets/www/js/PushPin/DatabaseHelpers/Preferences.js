@@ -110,7 +110,7 @@ PushPin.Preferences.prototype.remove = function(key, onSuccess, onFailure){
 	
 	this.db.transaction(function(tx){
 		
-		var sql = "DELETE FROM " + context.TABLE_NAME + " WHERE " + key + "=?";
+		var sql = "DELETE FROM " + context.TABLE_NAME + " WHERE " + context.KEY + "=?";
 		
 		tx.executeSql(sql, [key], function(tx, res){
 			

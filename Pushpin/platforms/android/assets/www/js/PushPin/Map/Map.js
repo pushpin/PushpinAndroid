@@ -17,15 +17,17 @@
 		this.layers = [
 	  		new ol.layer.Tile({
 	  		  visible: false,
-		      source: new ol.source.BingMaps({
+		      source: new PushPin.ol.BingMaps({
 		      	key: 'AlcyscghNheU6SjKl-_AfYD8_UvdBkghZ_d5y3_g_H574kTHa8031xO79vEUp4Qt',
-		      	style: 'AerialWithLabels'
+		      	style: 'Aerial'
 		      })
 		    }),
 		    new ol.layer.Tile({
 	  			visible: true,
 	  	        source: new ol.source.OSM({layer: 'sat'})
 	    })];
+		
+		console.log("layers", this.layers);
 		
 		//Create Map Object
 	    this.map = new ol.Map({
@@ -36,8 +38,6 @@
 	        zoom: 17
 	      })
 	    });
-	    
-	    this.setVisibleLayerFromLocalStorage();
 	};
 	
 	prototype.setVisibleLayerFromLocalStorage = function(){
