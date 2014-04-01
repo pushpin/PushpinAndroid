@@ -43,7 +43,12 @@
 	    var map = this.map;
 	    this.map.on('singleclick', function(evt) {
 	    	
-			map.getOverlays().clear();
+	    	//Clear Popup Overlay
+			var overlays = map.getOverlays();
+			if(overlays.getLength() > 1){
+				overlays.removeAt(1);
+			}
+			
 		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
 		        
 			  	console.log(feature.get('name'));
