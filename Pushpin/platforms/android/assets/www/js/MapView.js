@@ -61,7 +61,93 @@
     };
     
     prototype.fetchPoints = function(){
-    	// TODO: Fetch points for bounds of map
+    	//Remove Existing Vector Layer (Clear Previous Features)
+    	var layers = this.map.getLayers();
+    	if(layers.getLength() > 2){
+    		layers.removeAt(2);
+    	}
+    	
+    	//BBOX
+    	var leftTop = this.map.getCoordinateFromPixel([0,60]);
+		leftTop = ol.proj.transform([leftTop[0], leftTop[1]], 'EPSG:3857', 'EPSG:4326');
+		var left = leftTop[0];
+		var top = leftTop[1];		
+		var mapSize = this.map.getSize();		
+		var rightBottom = this.map.getCoordinateFromPixel(mapSize);
+		rightBottom = ol.proj.transform([rightBottom[0], rightBottom[1]], 'EPSG:3857', 'EPSG:4326');
+		var right = rightBottom[0];
+		var bottom = rightBottom[1];    	
+    	var poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox='+left+','+bottom+','+right+','+top;
+		
+		//GET OSMXML
+    	var vectorSource = new ol.source.OSMXML({
+		  projection: 'EPSG:3857',
+		  url: poiURL
+		});
+		
+		//POI Pin Style
+		var styleFunction = function(feature,resolution){
+			var keys = ['aerialway','aeroway','amenity', 'barrier','boundary','craft','emergency',
+							'geological','highway','historic','landuse','leisure','man_made', 'military','natural',
+							'office','place','power','public_transport','railway','route','shop', 'sport', 'tourism','waterway'];
+			
+			var values = ['aboveground-rail','airfield','airport','archery','art-gallery','attraction','bar','barber','base',
+						'baseball','basketball','battery','beach','beer','belowground-rail','bench','bicycle','binoculars','boat','bread',
+						'bulb','bus','cafe','camera','campsite','canoe','car','cellphone','cemetery','chef','cinema','climbing','clothes',
+						'college','commerical-building','commerical-building-sm','computer','court','credit-card','cricket',
+						'cupcake','dog','drinking_fountain','dvd','embassy','fast-food','ferry','fire-hydrant','fire-station','fish',
+						'football','fountain','fuel','garden','gate','giraffe','glasses','golf','grocery-store','hammer','hanger','harbor',
+						'heliport','horse','hospital','icecream','industrial-building','information','laundry','leaf','library',
+						'lighthouse','lodging','london-underground','market','minefield','money','monument','motorcycle','multipolygon',
+						'museum','music','news','office','outlet','park','parking','pharmacy','phone','pin','pitch','playground','police',
+						'polygon','post','power','prison','rail','realestate','recycle','religious-christian','religious-islam',
+						'religious-jewish','restaurant','roadblock','runner','school','scissors','scuba','shelter','shoe','shooting',
+						'shop','skateboard','skiing','soccer','social','sofa','supermarket','surveillance','swimming','taxi','tennis',
+						'theatre','toilet','toilet2','tool','tooth','tower','town-hall','training','trash','tree-1','tree-2','tree-sm',
+						'veterinary','walk','warehouse','water','wrench'];
+			
+			var value = null, tmpValue = null;
+			for (var i in keys){
+				tmpValue = feature.get(keys[i]);
+				if (tmpValue != undefined && tmpValue != null){
+					value = tmpValue;
+					break;
+				}
+			}
+			
+			if($.inArray(value,values) > -1){
+					var iconPath = 'resources/icons/'+ value +'-icon.png';
+
+					var pinStyle = [
+						  		new ol.style.Style({
+						  			/*stroke: new ol.style.Stroke({
+							          color: 'rgba(255, 255, 0, 1.0)',
+							          width: 1
+							        }),
+							        fill: new ol.style.Fill({
+							          color: 'rgba(246, 99, 79, 0.3)'
+							        }),*/
+						    		image: new ol.style.Icon( {
+								    anchor: [0.5, 46],
+								    anchorXUnits: 'fraction',
+								    anchorYUnits: 'pixels',
+								    src: iconPath
+								  })
+						    	})
+						  	
+						  	];	
+					return pinStyle;
+						
+				}
+		};
+		
+		//SET VECTOR LAYER
+		var vector = new ol.layer.Vector({
+		  source: vectorSource,
+		  style: styleFunction
+		});
+    	
+    	this.map.addLayer(vector);
     };
     
     prototype.addPointView = function(){

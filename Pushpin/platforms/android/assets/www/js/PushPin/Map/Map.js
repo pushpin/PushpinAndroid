@@ -38,6 +38,33 @@
 	        zoom: 17
 	      })
 	    });
+	    
+	    //Feature Popup On Map Click
+	    var map = this.map;
+	    this.map.on('singleclick', function(evt) {
+	    	
+			map.getOverlays().clear();
+		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+		        
+			  	console.log(feature.get('name'));
+			  	
+			  	var pos;
+			  	if(feature.getGeometry().getType() == 'Point'){
+			  		pos = feature.getGeometry().getCoordinates();
+			  	}
+			  	else {
+			  		pos = feature.getGeometry().getInteriorPoint().getCoordinates();
+			  	}
+			  	
+			  	var popup = new ol.Overlay({
+				  	position: pos,
+				  	element: $('<div class="popup">').html(feature.get('name') + '<a href="form.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				});
+				
+		     	map.addOverlay(popup);
+		    
+		  	});
+		});
 	};
 	
 	prototype.setVisibleLayerFromLocalStorage = function(){
@@ -83,5 +110,21 @@
 	
 	prototype.getPixelFromCoordinate = function(coord){
 		return this.map.getPixelFromCoordinate(coord);
+	};
+	
+	prototype.getCoordinateFromPixel = function(pixel){
+		return this.map.getCoordinateFromPixel(pixel);
+	};
+	
+	prototype.addLayer = function(layer){
+		this.map.addLayer(layer);
+	};
+	
+	prototype.getSize = function(){
+		return this.map.getSize();
+	};
+	
+	prototype.getLayers = function(){
+		return this.map.getLayers();
 	};
 })();
