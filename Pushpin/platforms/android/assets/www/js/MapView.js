@@ -171,6 +171,18 @@
     	this.localStorage.setMapLayer(this.localStorage.layerOptions.OSM);
     };
     
+    prototype.initializeLayerSelection = function(){
+    	var initLayer = this.localStorage.getMapLayer();
+    	if (initLayer === this.localStorage.layerOptions.BING){
+    		this.bingMapOption.attr('src','resources/images/icon-selected.png');
+    		this.osmMapOption.attr('src','resources/images/icon-not-selected.png');
+    	}
+    	else{
+    		this.osmMapOption.attr('src','resources/images/icon-selected.png');
+    		this.bingMapOption.attr('src','resources/images/icon-not-selected.png');
+    	}
+    };
+    
     prototype.showCredits = function(){
     	credits = 'OpenStreetMap is open data, licensed under the Open Data Commons Open Database License (ODbL). http://www.openstreetmap.org/copyright\n\n\
     		Nearby objects powered by the Overpass API http://wiki.openstreetmap.org/wiki/Overpass_API\n\n\

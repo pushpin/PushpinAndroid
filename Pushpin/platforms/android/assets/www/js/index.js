@@ -114,7 +114,8 @@ var app = {
     		case 'mapView':
     			app.view = new PushPin.MapView(app.map, app.osmAuth,
     					app.localStorage, app.positionHandler);
-    			app.view.registerEvents(app.map);  			
+    			app.view.registerEvents(app.map);
+    			app.view.initializeLayerSelection();  			
 				break;
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
