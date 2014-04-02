@@ -12,8 +12,8 @@
 		this.selectBingMapBtn = $('#selectBingMapBtn');
 		this.selectOSMMapBtn = $('#selectOSMMapBtn');
 		this.logoutBtn = $('#logoutBtn');
-		this.sendMailBtn = $('#sendMailBtn');
-		this.showCreditsBtn = $('#sendCreditsBtn');
+		this.sendMailBtn = $('#sendEmailBtn');
+		this.showCreditsBtn = $('#showCreditsBtn');
 		this.bingMapOption = $('#bing-map-option');
 		this.osmMapOption = $('#osm-map-option');
 	};
