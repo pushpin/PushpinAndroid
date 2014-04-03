@@ -121,10 +121,12 @@ var app = {
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
 				app.view.addCrosshair();
-				app.view.registerEvents();
+				app.view.registerEvents();				
 				break;
 			default:
 				console.log("Error: Could not assign view");
     	}
+    	
+    	app.map.setCenter(app.localStorage.getMapCenter(),'EPSG:3857');
     }
 };

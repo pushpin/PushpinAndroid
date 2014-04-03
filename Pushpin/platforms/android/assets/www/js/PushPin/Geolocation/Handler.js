@@ -78,6 +78,6 @@
 	};
 	
 	prototype.goToPosition = function(){
-		this.map.setCenter(this.geoX, this.geoY, this.locationProj);
+		this.map.setCenter([this.geoX, this.geoY], this.locationProj);
 	};
 })();

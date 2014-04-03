@@ -27,6 +27,9 @@
 	};
 	
 	prototype.cancelPoint = function(){
+		var mapViewCenter = this.map.getCenter();		
+		this.localStorage.saveMapCenter(mapViewCenter);
+		
     	window.location.href ='mapView.html';
     };
     

@@ -154,8 +154,7 @@
     
     prototype.addPointView = function(){
     	//Store most recent Map View Center		
-		var mapViewCenter = this.map.getCenter();
-		
+		var mapViewCenter = this.map.getCenter();		
 		this.localStorage.saveMapCenter(mapViewCenter);
 		
 		window.location.href ='addPoint.html';

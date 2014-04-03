@@ -54,9 +54,9 @@
 		}
 	};
 	
-	prototype.setCenter = function(geoX, geoY, projection){
+	prototype.setCenter = function(center, projection){
 		this.map.setView(new ol.View2D({
-		    center: ol.proj.transform([geoX, geoY], projection, this.mapProj),
+		    center: ol.proj.transform(center, projection, this.mapProj),
 		    zoom: 17
 		}));
 	};
