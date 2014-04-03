@@ -115,18 +115,20 @@
 				}
 			}
 			
+			var iconReassignment = {'household':'shop','copyshop':'shop','boutique':'shop','wine':'bar','fast_food':'fast-food','toilets':'toilet',
+								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'shop','hotel':'lodging','electronics':'battery',
+								'mobile_phone':'cellphone','company':'office','art':'art-gallery','dry_cleaning':'clothes','bank':'money',
+								'confectionery':'restaurant','running':'runner','beauty':'shop'};
+				
+			if(iconReassignment[value]){
+				value = iconReassignment[value];
+			}
+			
 			if($.inArray(value,values) > -1){
 					var iconPath = 'resources/icons/'+ value +'-icon.png';
 
 					var pinStyle = [
 						  		new ol.style.Style({
-						  			/*stroke: new ol.style.Stroke({
-							          color: 'rgba(255, 255, 0, 1.0)',
-							          width: 1
-							        }),
-							        fill: new ol.style.Fill({
-							          color: 'rgba(246, 99, 79, 0.3)'
-							        }),*/
 						    		image: new ol.style.Icon( {
 								    anchor: [0.5, 46],
 								    anchorXUnits: 'fraction',

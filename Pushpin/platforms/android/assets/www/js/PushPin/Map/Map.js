@@ -39,37 +39,6 @@
 	      })
 	    });
 	    
-	    //Feature Popup On Map Click
-	    var map = this.map;
-	    this.map.on('singleclick', function(evt) {
-	    	
-	    	//Clear Popup Overlay
-			var overlays = map.getOverlays();
-			if(overlays.getLength() > 1){
-				overlays.removeAt(1);
-			}
-			
-		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-		        
-			  	console.log(feature.get('name'));
-			  	
-			  	var pos;
-			  	if(feature.getGeometry().getType() == 'Point'){
-			  		pos = feature.getGeometry().getCoordinates();
-			  	}
-			  	else {
-			  		pos = feature.getGeometry().getInteriorPoint().getCoordinates();
-			  	}
-			  	
-			  	var popup = new ol.Overlay({
-				  	position: pos,
-				  	element: $('<div class="popup">').html(feature.get('name') + '<a href="form.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
-				});
-				
-		     	map.addOverlay(popup);
-		    
-		  	});
-		});
 	};
 	
 	prototype.setVisibleLayerFromLocalStorage = function(){
@@ -131,5 +100,36 @@
 	
 	prototype.getLayers = function(){
 		return this.map.getLayers();
+	};
+	
+	prototype.setOnClickGrabFeature = function(){
+	
+	    var map = this.map;
+	    this.map.on('singleclick', function(evt) {	    	
+	    	//Clean Popup Overlay
+			var overlays = map.getOverlays();
+			if(overlays.getLength() > 1){
+				overlays.removeAt(1);
+			}
+			
+		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+	  	
+			  	var pos = null;
+			  	if(feature.getGeometry().getType() == 'Point'){
+			  		pos = feature.getGeometry().getCoordinates();
+			  	}
+			  	else {
+			  		pos = feature.getGeometry().getInteriorPoint().getCoordinates();
+			  	}
+			  	
+			  	var popup = new ol.Overlay({
+				  	position: pos,
+				  	element: $('<div class="popup">').html(feature.get('name') + '<a href="form.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				});
+				
+		     	map.addOverlay(popup);
+		    
+		  	});
+		});
 	};
 })();

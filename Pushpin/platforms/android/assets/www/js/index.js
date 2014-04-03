@@ -53,6 +53,7 @@ var app = {
     	
     	app.map = new PushPin.Map(app.localStorage);
     	app.map.loadMap();
+    	app.map.setOnClickGrabFeature();
     	
     	app.test = new PushPin.Geolocation.Test();
     	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
