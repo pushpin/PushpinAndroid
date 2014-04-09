@@ -27,8 +27,6 @@
 	  	        source: new ol.source.OSM({layer: 'sat'})
 	    })];
 		
-		console.log("layers", this.layers);
-		
 		//Create Map Object
 	    this.map = new ol.Map({
 	      target: 'map',

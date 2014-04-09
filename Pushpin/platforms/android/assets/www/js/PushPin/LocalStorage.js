@@ -28,9 +28,17 @@
 	};
 	
 	prototype.getMapCenter = function(){
+		var mapViewCenterX = localStorage.getItem(this.mapViewCenterX);
+		var mapViewCenterY = localStorage.getItem(this.mapViewCenterY);
 		
-		return [parseFloat(localStorage.getItem(this.mapViewCenterX)),
-		        parseFloat(localStorage.getItem(this.mapViewCenterY))];
+		var center = null;
+		
+		if(PushPin.existsAndNotNull(mapViewCenterX) && PushPin.existsAndNotNull(mapViewCenterY)){
+			center = [parseFloat(mapViewCenterX),
+				        parseFloat(mapViewCenterY)];
+		}
+		
+		return center;
 	};
 	
 	prototype.setPinPosition = function(position){
