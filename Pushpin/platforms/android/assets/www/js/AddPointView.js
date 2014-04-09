@@ -34,7 +34,10 @@
     };
     
     prototype.donePoint = function(){
-    	window.location.href = 'form.html';
+    	var mapViewCenter = this.map.getCenter();		
+		this.localStorage.saveMapCenter(mapViewCenter);
+
+    	window.location.href = 'formView.html';
     };
     
     prototype.addPin = function(){

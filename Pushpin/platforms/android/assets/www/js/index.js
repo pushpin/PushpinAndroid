@@ -26,6 +26,8 @@ var app = {
 	
 	viewType: null,	
 	
+	form: null,
+	
     // Application Constructor
     initialize: function(view) {
     	viewType = view;
@@ -59,6 +61,10 @@ var app = {
     	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
     	
     	app.positionHandler.watchPosition();
+    	
+    	app.form = new PushPin.Form();
+    	app.form.populateForm(app.localStorage.getFeature());
+    	app.form.loadForm("resources/form.json");
     	
     	app.setView(viewType);  	  	
     	
@@ -121,6 +127,10 @@ var app = {
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
 				app.view.addCrosshair();
+				app.view.registerEvents();				
+				break;
+			case 'formView':
+				app.view = new PushPin.FormView(app.form, app.localStorage);
 				app.view.registerEvents();				
 				break;
 			default:

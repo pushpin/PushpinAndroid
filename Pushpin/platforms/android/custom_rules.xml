@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
-    <property name="public-project-base" value="/Users/Zusy/dev/lmn/PushpinAndroid" />
-    <property name="private-project-base" value="/Users/Zusy/dev/lmn/PushpinAndroidPrivate" />
+    <property name="public-project-base" value="/Users/jp/Documents/Projects/PushpinAndroid" />
+    <property name="private-project-base" value="/Users/jp/Documents/Projects/PushpinAndroidPrivate" />
     
     <property name="public-secrets-path" value="${public-project-base}/Pushpin/platforms/android/assets/www/js/PushPin/Secrets.js" />
     <property name="private-secrets-path" value="${private-project-base}/Secrets.js" />

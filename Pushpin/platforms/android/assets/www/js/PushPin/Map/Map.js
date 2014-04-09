@@ -27,8 +27,6 @@
 	  	        source: new ol.source.OSM({layer: 'sat'})
 	    })];
 		
-		console.log("layers", this.layers);
-		
 		//Create Map Object
 	    this.map = new ol.Map({
 	      target: 'map',
@@ -105,6 +103,7 @@
 	prototype.setOnClickGrabFeature = function(){
 	
 	    var map = this.map;
+	    var localStorage = this.localStorage;
 	    this.map.on('singleclick', function(evt) {	    	
 	    	//Clean Popup Overlay
 			var overlays = map.getOverlays();
@@ -124,11 +123,29 @@
 			  	
 			  	var popup = new ol.Overlay({
 				  	position: pos,
-				  	element: $('<div class="popup">').html(feature.get('name') + '<a href="form.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				  	element: $('<div class="popup">').html(feature.get('name') + '<a href="formView.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
 				});
 				
 		     	map.addOverlay(popup);
-		    
+		     	
+		     	var properties = feature.getProperties();	     	
+		     	var poi = new Object();
+		     	var items = ['name','type','building','landuse','parking','surface','park_and_ride','bicycle_parking','shelter_type',
+						'building_height_in_meters','number_of_floors_levels','fee','network','prescription_drugs','food','capacity',
+						'brand','fuel_types','car_wash','internet_access','access','drive_through','delivery','covered','atm',
+						'religion','religious_denomination','collection_time','vending','sport','cuisine','takeaway','outdoor_seating',
+						'smoking','addr:housenumber','addr:street','addr:city','addr:state','addr:postcode','addr:country','unit_suite',
+						'operator','wheelchair','opening_hours','contact:phone','contact:fax','contact:website','contact:email',
+						'description','attribution','source','fixme','notes','tags','object_type','change_comment'];
+		     	$.each(items, function(i,val){
+		     		var index = val.replace(':','_');
+		     		if(properties[val] !== undefined){
+		     			poi[index] = properties[val]; 
+		     		}
+		     	});
+		     	
+		     	localStorage.saveFeature(JSON.stringify(poi));
+		     			    
 		  	});
 		});
 	};

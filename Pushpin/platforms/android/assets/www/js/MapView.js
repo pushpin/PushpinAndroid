@@ -78,7 +78,7 @@
 		var right = rightBottom[0];
 		var bottom = rightBottom[1];    	
     	var poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox='+left+','+bottom+','+right+','+top;
-		
+		console.log(poiURL);
 		//GET OSMXML
     	var vectorSource = new ol.source.OSMXML({
 		  projection: 'EPSG:3857',
