@@ -68,17 +68,10 @@
     	}
     	
     	//BBOX
-    	var leftTop = this.map.getCoordinateFromPixel([0,60]);
-		leftTop = ol.proj.transform([leftTop[0], leftTop[1]], 'EPSG:3857', 'EPSG:4326');
-		var left = leftTop[0];
-		var top = leftTop[1];		
-		var mapSize = this.map.getSize();		
-		var rightBottom = this.map.getCoordinateFromPixel(mapSize);
-		rightBottom = ol.proj.transform([rightBottom[0], rightBottom[1]], 'EPSG:3857', 'EPSG:4326');
-		var right = rightBottom[0];
-		var bottom = rightBottom[1];    	
-    	var poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox='+left+','+bottom+','+right+','+top;
+    	var bbox = this.map.getBoundingBox();
+    	var poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox='+bbox;
 		console.log(poiURL);
+		
 		//GET OSMXML
     	var vectorSource = new ol.source.OSMXML({
 		  projection: 'EPSG:3857',
@@ -118,7 +111,8 @@
 			var iconReassignment = {'household':'shop','copyshop':'shop','boutique':'shop','wine':'bar','fast_food':'fast-food','toilets':'toilet',
 								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'shop','hotel':'lodging','electronics':'battery',
 								'mobile_phone':'cellphone','company':'office','art':'art-gallery','dry_cleaning':'clothes','bank':'money',
-								'confectionery':'restaurant','running':'runner','beauty':'shop'};
+								'confectionery':'restaurant','running':'runner','beauty':'shop','barber':'shop', 'doityourself':'wrench',
+								'car_repair':'car','department_store':'shop'};
 				
 			if(iconReassignment[value]){
 				value = iconReassignment[value];
@@ -156,6 +150,8 @@
     	//Store most recent Map View Center		
 		var mapViewCenter = this.map.getCenter();
 		this.localStorage.saveMapCenter(mapViewCenter);
+		this.localStorage.clearPinPosition();
+		this.localStorage.clearFeature();
 		
 		window.location.href ='addPoint.html';
     };

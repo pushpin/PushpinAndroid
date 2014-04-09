@@ -100,6 +100,13 @@
 		return this.map.getLayers();
 	};
 	
+	prototype.getBoundingBox = function(){
+		var bbox = this.map.getView().calculateExtent(this.map.getSize());
+		bbox = ol.proj.transform(bbox, 'EPSG:3857', 'EPSG:4326');
+
+		return bbox;
+	};
+	
 	prototype.setOnClickGrabFeature = function(){
 	
 	    var map = this.map;
@@ -145,6 +152,7 @@
 		     	});
 		     	
 		     	localStorage.saveFeature(JSON.stringify(poi));
+		     	localStorage.setPinPosition(pos);
 		     			    
 		  	});
 		});
