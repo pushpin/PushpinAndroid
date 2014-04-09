@@ -56,6 +56,21 @@
 		this.map.addOverlay(pin);
     };
     
+    prototype.addPinForSelectedPoint = function(){
+    	var position,pin;
+    	
+    	position = this.localStorage.getPinPosition();
+    	this.localStorage.saveMapCenter(position);
+    	
+    	pin = new ol.Overlay({
+			position: position,
+		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png')
+		});
+		
+		this.map.addOverlay(pin);
+		this.map.setCenter(position,'EPSG:3857');
+    };
+    
     prototype.addCrosshair = function(){    	
 	    var mapCenter = this.map.getCenter();
 	    mapCenterPixel = this.map.getPixelFromCoordinate(mapCenter);

@@ -4,7 +4,8 @@
 		this.mapLayer = 'mapLayer';
 		this.mapViewCenterX = "mapViewCenterX";
 		this.mapViewCenterY = "mapViewCenterY";
-		this.pinPosition = 'pin-pos';
+		this.pinPositionX = 'pinPositionX';
+		this.pinPositionY = 'pinPositionY';
 		this.feature = 'feature';
 	};
 	
@@ -42,8 +43,28 @@
 		return center;
 	};
 	
-	prototype.setPinPosition = function(position){
-		localStorage.setItem(this.pinPosition,position);
+	prototype.setPinPosition = function(pinPosition){
+		localStorage.setItem(this.pinPositionX,pinPosition[0]);
+		localStorage.setItem(this.pinPositionY,pinPosition[1]);
+	};
+	
+	prototype.getPinPosition = function(){
+		var pinPositionX = localStorage.getItem(this.pinPositionX);
+		var pinPositionY = localStorage.getItem(this.pinPositionY);
+		
+		var position = null;
+		
+		if(PushPin.existsAndNotNull(pinPositionX) && PushPin.existsAndNotNull(pinPositionY)){
+			position = [parseFloat(pinPositionX),
+				        parseFloat(pinPositionY)];
+		}
+		
+		return position;
+	};
+	
+	prototype.clearPinPosition = function(){
+		localStorage.setItem(this.pinPositionX,null);
+		localStorage.setItem(this.pinPositionY,null);
 	};
 
 	prototype.saveFeature = function(poi){

@@ -6,6 +6,7 @@
 		
 		this.cancelFormBtn = $('#cancelFormBtn');
 		this.saveFormBtn = $('#saveFormBtn');
+		this.movePointBtn = $('#movePointBtn');
 	};
 	
 	var prototype = PushPin.FormView.prototype;
@@ -20,6 +21,10 @@
     	this.saveFormBtn.click(function(){
     		return context.saveForm();
     	});
+    	
+    	this.movePointBtn.click(function(){
+    		return context.movePoint();
+    	});
 	};
 	
 	prototype.cancelForm = function(){	
@@ -28,8 +33,11 @@
     };
     
     prototype.saveForm = function(){
-    	alert($('#form-name').val());
-    	alert(this.form.name);
+    	//TODO
+    };
+    
+    prototype.movePoint = function(){
+    	window.location.href = 'addPoint.html';
     };
 
 })();

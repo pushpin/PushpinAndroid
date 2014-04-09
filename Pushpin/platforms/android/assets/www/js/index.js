@@ -127,7 +127,12 @@ var app = {
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
 				app.view.addCrosshair();
-				app.view.registerEvents();				
+				app.view.registerEvents();	
+				var pinPosition = app.localStorage.getPinPosition();
+
+				if(!(isNaN(pinPosition[0]) && isNaN(pinPosition[1]))){
+					app.view.addPinForSelectedPoint();
+				}			
 				break;
 			case 'formView':
 				app.view = new PushPin.FormView(app.form, app.localStorage);
@@ -138,8 +143,8 @@ var app = {
     	}
     	
     	var savedMapCenter = app.localStorage.getMapCenter();
-    	
-    	if(PushPin.existsAndNotNull(savedMapCenter)){
+    	console.log(savedMapCenter);
+    	if(!(isNaN(savedMapCenter[0]) && isNaN(savedMapCenter[1]))){
     		app.map.setCenter(savedMapCenter,'EPSG:3857');
     	}
     }
