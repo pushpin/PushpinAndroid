@@ -137,6 +137,10 @@ var app = {
 				console.log("Error: Could not assign view");
     	}
     	
-    	app.map.setCenter(app.localStorage.getMapCenter(),'EPSG:3857');
+    	var savedMapCenter = app.localStorage.getMapCenter();
+    	
+    	if(PushPin.existsAndNotNull(savedMapCenter)){
+    		app.map.setCenter(savedMapCenter,'EPSG:3857');
+    	}
     }
 };
