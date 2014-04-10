@@ -89,9 +89,22 @@
 		var formElement = function(obj, context){
 			var item = null;
 			if(obj.type === 'TextField'){
-				item = '<a id="name-link" class="list-group-item">'+obj.label+'<br>\
-						<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text" style="border: 0px; outline: none; background-color: transparent;"/>\
-		  				<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/></a>';	
+				item = '<a id="name-link" class="list-group-item">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+						<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text"/></a>';	
+			}
+			else if(obj.type === 'ChoiceField' && PushPin.existsAndNotNull(obj.choices)){
+				var choices = '<option value=""></option>';
+				$.each(obj.choices, function(i, choice){
+					if(context[obj.data_name] === choice.value.split('=')[1]){
+						choices = choices + '<option value="'+choice.value+'" selected>'+choice.label+'</option>';
+					}
+					else{
+						choices = choices + '<option value="'+choice.value+'">'+choice.label+'</option>';
+					}					
+				});
+				
+				item = '<a id="name-link" class="list-group-item">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+						<select>'+choices+'</select>';
 			}
 			
 			return item;
@@ -101,6 +114,7 @@
 	prototype.populateForm = function(feature){
 		if (feature !== 'null' ){
 			var poi = JSON.parse(feature);
+			console.log(feature);
 			var context = this;
 			var items = ['name','type','building','landuse','parking','surface','park_and_ride','bicycle_parking','shelter_type',
 						'building_height_in_meters','number_of_floors_levels','fee','network','prescription_drugs','food','capacity',

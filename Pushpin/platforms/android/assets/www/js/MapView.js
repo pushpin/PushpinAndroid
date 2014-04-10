@@ -99,9 +99,10 @@
 						'theatre','toilet','toilet2','tool','tooth','tower','town-hall','training','trash','tree-1','tree-2','tree-sm',
 						'veterinary','walk','warehouse','water','wrench'];
 			
-			var value = null, tmpValue = null;
+			var value = null, tmpValue = null, key = null;
 			for (var i in keys){
-				tmpValue = feature.get(keys[i]);
+				key = keys[i];
+				tmpValue = feature.get(key);
 				if (tmpValue != undefined && tmpValue != null){
 					value = tmpValue;
 					break;

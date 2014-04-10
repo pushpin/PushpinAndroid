@@ -40,3 +40,18 @@ a.list-group-item.active:focus {
   background-color: #000000;
   border-color: #000000;
 }
+
+input{
+	border: 0px; 
+	outline: none; 
+	background-color: transparent;
+}
+
+select{
+	background: #FFFFFF;
+	border: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+}
