@@ -25,8 +25,7 @@ public class ApplicationDatabaseHelper extends SQLiteOpenHelper {
 		// TODO: Migrate the tables
 		db.execSQL("DROP TABLE IF EXISTS " + Preferences.TABLE_NAME + ";");
 		
-		Preferences preferences = new Preferences(db);
-		preferences.createTable();
+		this.onCreate(db);
 	}
 
 	@Override

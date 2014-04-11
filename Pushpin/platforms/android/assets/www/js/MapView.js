@@ -1,9 +1,10 @@
 (function(){
-	PushPin.MapView = function(map, auth, localStorage, positionHandler){
+	PushPin.MapView = function(map, auth, localStorage, positionHandler, fileSystem){
 		this.map = map;
 		this.auth = auth;
 		this.localStorage = localStorage;
 		this.positionHandler = positionHandler;
+		this.fileSystem = fileSystem;
 		
 		this.fetchPointsBtn = $('#fetchPointsBtn');
 		this.addPointViewBtn = $('#addPointViewBtn');
@@ -60,15 +61,46 @@
     	});
     };
     
-    prototype.fetchPoints = function(){
-    	//Remove Existing Vector Layer (Clear Previous Features)
+    prototype.getSavedFeaturesFileEntry = function(onSuccess, onFailure){
+    	
+    	var fail = function(e){
+    		if(PushPin.existsAndNotNull(onFailure)){
+    			onFailure(e);
+    		}
+    	};
+    	
+    	this.fileSystem.root.getDirectory("PushPin", {create: true, exclusive: false}, function(dir){
+    		
+    		dir.getFile("savedOSMFeatures.xml", {create: true, exclusive: false}, function(fileEntry){
+    			
+    			if(PushPin.existsAndNotNull(onSuccess)){
+    				onSuccess(fileEntry)
+    			}
+    		}, fail);
+    	}, fail);
+    };
+    
+    prototype.transformFeatures = function(features){
+    	
+    	var transform = ol.proj.getTransform(this.map.locationProj, this.map.mapProj);
+    	
+    	for(var i = 0; i < features.length; i++){
+    		
+    		features[i].getGeometry().transform(transform);
+    	}
+    	
+    	return features;
+    };
+    
+    prototype.addFeaturesToMap = function(features){
+		//Remove Existing Vector Layer (Clear Previous Features)
     	var layers = this.map.getLayers();
     	if(layers.getLength() > 2){
     		layers.removeAt(2);
     	}
     	
     	//BBOX
-    	var bbox = this.map.getBoundingBox();
+    	/*var bbox = this.map.getBoundingBox();
     	var poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox='+bbox;
 		console.log(poiURL);
 		
@@ -76,10 +108,11 @@
     	var vectorSource = new ol.source.OSMXML({
 		  projection: 'EPSG:3857',
 		  url: poiURL
-		});
+		});*/
 		
 		//POI Pin Style
 		var styleFunction = function(feature,resolution){
+			
 			var keys = ['aerialway','aeroway','amenity', 'barrier','boundary','craft','emergency',
 							'geological','highway','historic','landuse','leisure','man_made', 'military','natural',
 							'office','place','power','public_transport','railway','route','shop', 'sport', 'tourism','waterway'];
@@ -135,8 +168,16 @@
 						  	];	
 					return pinStyle;
 						
-				}
+			}
 		};
+		
+		var vectorSource = new ol.source.Vector({
+			parser: null
+		});
+		
+		features = this.transformFeatures(features);
+		
+		vectorSource.addFeatures(features);
 		
 		//SET VECTOR LAYER
 		var vector = new ol.layer.Vector({
@@ -145,6 +186,46 @@
 		});
     	
     	this.map.addLayer(vector);
+	};
+	
+    prototype.fetchPoints = function(){
+    	
+    	var context = this;
+    	
+    	var fail = function(e){
+    		console.log("error fetching points", e);
+    	};
+    	
+    	console.log("getting features");
+    	
+    	this.getSavedFeaturesFileEntry(function(fileEntry){
+    		
+    		console.log("successfully got saveFeaturesOSMxml file");
+    		
+    		var osmDownloader = new PushPin.Features.OSMDownloader(context.map.getBoundingBox(), function(data){
+        		
+        		var saver = new PushPin.Features.Save(fileEntry);
+        		
+        		console.log("successfully downloaded data");
+        		
+        		saver.save(data, function(){
+        			
+        			console.log("saved downloaded osm xml successully");
+        			
+        			var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new ol.format.OSMXML());
+        			
+        			loader.load(function(features){
+        				
+        				console.log("successfully loaded osm from saved xml", features);
+        				
+        				context.addFeaturesToMap(features);
+        			}, fail);
+        		}, fail);
+        	}, fail);
+    		
+    		osmDownloader.download();
+    		
+    	}, fail);
     };
     
     prototype.addPointView = function(){

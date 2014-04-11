@@ -47,29 +47,30 @@ var app = {
 	
     load: function(){
     	
-    	if(!PushPin.existsAndNotNull(app.osmAuth)){
-    		app.initAuth();
-    	}
-    	
-    	app.localStorage = new PushPin.LocalStorage();
-    	
-    	app.map = new PushPin.Map(app.localStorage);
-    	app.map.loadMap();
-    	app.map.setOnClickGrabFeature();
-    	
-    	app.test = new PushPin.Geolocation.Test();
-    	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
-    	
-    	app.positionHandler.watchPosition();
-    	
-    	app.form = new PushPin.Form();
-    	app.form.populateForm(app.localStorage.getFeature());
-    	app.form.loadForm("resources/form.json");
-    	
-    	app.setView(viewType);  	  	
-    	
-    	
-    	app.map.setVisibleLayerFromLocalStorage();
+    	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+    		
+    		if(!PushPin.existsAndNotNull(app.osmAuth)){
+        		app.initAuth();
+        	}
+        	
+        	app.localStorage = new PushPin.LocalStorage();
+        	
+        	app.map = new PushPin.Map(app.localStorage);
+        	app.map.loadMap();
+        	app.map.setOnClickGrabFeature();
+        	
+        	app.test = new PushPin.Geolocation.Test();
+        	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
+        	
+        	app.positionHandler.watchPosition();
+        	
+        	app.setView(viewType, fileSystem);  	  	
+        	
+        	
+        	app.map.setVisibleLayerFromLocalStorage();
+    	}, function(e){
+    		console.log("Could not get file system", e);
+    	});
     },
     
     initAuth: function(){
@@ -116,13 +117,31 @@ var app = {
         });
     },
     
-    setView: function(viewType) {
+    setView: function(viewType, fileSystem) {
     	switch(viewType){    		
     		case 'mapView':
     			app.view = new PushPin.MapView(app.map, app.osmAuth,
-    					app.localStorage, app.positionHandler);
+    					app.localStorage, app.positionHandler, fileSystem);
     			app.view.registerEvents(app.map);
-    			app.view.initializeLayerSelection();  			
+    			app.view.initializeLayerSelection(); 
+    			
+    			// TODO: getSavedFeaturesFileEntry and addFeaturesToMap should be moved out of MapView.js
+    			
+    			app.view.getSavedFeaturesFileEntry(function(fileEntry){
+    				var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new ol.format.OSMXML());
+        			
+        			loader.load(function(features){
+        				
+        				console.log("successfully loaded osm from saved xml", features);
+        				
+        				app.view.addFeaturesToMap(features);
+        			}, function(e){
+        				console.log("couldn't load saved features from file", e);
+        			});
+    			}, function(e){
+    				console.log("couldn't load saved features from file", e);
+    			});
+    			
 				break;
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
@@ -136,15 +155,20 @@ var app = {
 				break;
 			case 'formView':
 				app.view = new PushPin.FormView(app.form, app.localStorage);
-				app.view.registerEvents();				
+				app.view.registerEvents();	
+				
+				app.form = new PushPin.Form();
+		    	app.form.populateForm(app.localStorage.getFeature());
+		    	app.form.loadForm("resources/form.json");
+		    	
 				break;
 			default:
 				console.log("Error: Could not assign view");
     	}
     	
     	var savedMapCenter = app.localStorage.getMapCenter();
-    	console.log(savedMapCenter);
-    	if(!(isNaN(savedMapCenter[0]) && isNaN(savedMapCenter[1]))){
+    	
+    	if(PushPin.existsAndNotNull(savedMapCenter)){
     		app.map.setCenter(savedMapCenter,'EPSG:3857');
     	}
     }
