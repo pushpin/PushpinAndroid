@@ -1,6 +1,6 @@
 (function(){
 	
-	PushPin.Classification.Child = function(parent, classifications, classificationValues){
+	PushPin.Classification.Child = function(parent, classifications, classificationValues, onFinishSelecting){
 		
 		this.form = $('#classificationForm').clone();
 		
@@ -42,6 +42,8 @@
 		this.nameProperty = "label";
 		
 		this.classificationValues = classificationValues;
+		
+		this.onFinishSelecting = onFinishSelecting;
 	};
 	
 	PushPin.Classification.Child.prototype = new PushPin.Classification();

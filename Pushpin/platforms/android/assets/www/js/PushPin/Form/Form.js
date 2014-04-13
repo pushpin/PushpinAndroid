@@ -83,11 +83,27 @@
 			context.poiForm.append(items.join(""));
 			
 			context.poiForm.find('.pushpin-classification').click(function(){
-				var classification = $(this).attr('pushpin-classification');
+				var element = $(this);
 				
-				console.log("classification = " + classification);
+				var classification = element.attr('pushpin-classification');
 				
-				var classification = new PushPin.Classification.Main(classification);
+				var classification = new PushPin.Classification.Main(classification, function(classificationValues){
+					
+					var displayString = '';
+					
+					for(var i = 0; i < classificationValues.length; i++){
+						
+						if(i > 0){
+							displayString += ' &#x25b6; ';
+						}
+						
+						displayString += classificationValues[i].label;
+					}
+					
+					console.log("displayString: " + displayString);
+					
+					element.find('span').html(displayString);
+				});
 				
 				classification.load();
 			});
@@ -120,7 +136,8 @@
 				
 				// Set the label of the field, the current value of the input, and set the form's id to the name of the field
 				item = '<a id="name-link" class="list-group-item pushpin-classification" pushpin-classification="' + obj.classification_set_id + '">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
-				<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text"/></a>';
+				<span id="form-' + obj.data_name + '"></span></a>';
+				//<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text" readonly/></a>';
 			}
 			
 			return item;

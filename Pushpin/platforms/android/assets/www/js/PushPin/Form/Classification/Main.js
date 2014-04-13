@@ -1,6 +1,6 @@
 (function(){
 	
-	PushPin.Classification.Main = function(classificationId){
+	PushPin.Classification.Main = function(classificationId, onFinishSelecting){
 		this.classificationId = classificationId;
 		this.resourceUrl = 'resources/classifications.json';
 		this.classifications = null;
@@ -11,6 +11,7 @@
 		this.classificationName = this.classificationForm.find('h4');
 		this.nameProperty = "name";
 		this.classificationValues = [];
+		this.onFinishSelecting = onFinishSelecting;
 	};
 	
 	PushPin.Classification.Main.prototype = new PushPin.Classification();

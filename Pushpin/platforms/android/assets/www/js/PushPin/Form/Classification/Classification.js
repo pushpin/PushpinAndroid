@@ -71,13 +71,17 @@
 			var classification = context.classifications[context.childClassificationsName][index];
 			
 			if($.inArray(classification.value, context.classificationValues) === -1){
-				context.classificationValues.push(classification.value);
+				context.classificationValues.push({
+					label: classification.label,
+					value: classification.value
+				});
 			}
 			
 			var childClassifications = classification['child_classifications'];
 			
 			if(PushPin.existsAndNotNull(childClassifications) && childClassifications.length > 0){
-				var childClassification = new PushPin.Classification.Child(context, classification, context.classificationValues);
+				var childClassification = new PushPin.Classification.Child(context, classification, 
+						context.classificationValues, context.onFinishSelecting);
 				
 				childClassification.load();
 			}else{
@@ -104,12 +108,20 @@
 	
 	prototype.finish = function(){
 		
-		console.log("finish", this.classificationValues);
-		
-		this.form.addClass('hide');
+		if(!PushPin.existsAndNotNull(this.getForm)){
+			throw {
+				message: "Class must implement 'getForm'"
+			};
+		}else{
+			this.getForm().addClass('hide');
+		}
 		
 		this.removeAllChildClassificationForms();
 		
 		this.showMainForm();
+		
+		if(PushPin.existsAndNotNull(this.onFinishSelecting)){
+			this.onFinishSelecting(this.classificationValues);
+		}
 	};
 })();
