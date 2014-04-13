@@ -46,6 +46,9 @@
     
     prototype.saveForm = function(){
     	//TODO
+    	var feature = this.form.getFeatureWithUpdatedAttributes();
+    	
+    	console.log("saveForm", feature);
     };
     
     prototype.movePoint = function(){

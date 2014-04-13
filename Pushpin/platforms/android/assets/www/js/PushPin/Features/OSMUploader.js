@@ -1,7 +1,7 @@
 (function(){
 	
-	PushPin.Features.OSMUploader = function(changes, requestSignature, onSuccess, onFailure){
-		this.changes = changes;
+	PushPin.Features.OSMUploader = function(feature, requestSignature, onSuccess, onFailure){
+		this.feature = feature;
 		this.requestSignature = requestSignature;
 		this.onSuccess = onSuccess;
 		this.onFailure = onFailure;
@@ -70,23 +70,7 @@
 		});
 	};
 	
-	prototype.getNextChange = function(){
-		
-		return this.changes.shift();
-	};
-	
 	prototype.startUpload = function(){
-		
-		var change = this.getNextChange();
-		
-		// If there are no more changes, then the upload
-		// has completed successfully
-		if(!PushPin.existsAndNotNull(change)){
-			
-			this.onChangesetCompleted();
-			
-			return;
-		}
 		
 		var context = this;
 		

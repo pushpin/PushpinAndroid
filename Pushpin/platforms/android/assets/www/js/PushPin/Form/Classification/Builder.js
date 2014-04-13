@@ -122,6 +122,10 @@
 				item = this.mapping[classificationId][key];
 				value = feature.properties[key];
 				
+				if(PushPin.existsAndNotNull(value)){
+					value = value.value;
+				}
+				
 				if(PushPin.existsAndNotNull(item) && PushPin.existsAndNotNull(item[value])){
 					
 					return {

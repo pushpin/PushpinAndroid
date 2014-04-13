@@ -146,7 +146,10 @@
 		     	for(var key in properties){
 		     		
 		     		if(key !== "geometry"){
-		     			poi['properties'][key] = properties[key];
+		     			poi['properties'][key] = {
+		     				value: properties[key],
+		     				updated: false
+		     			};
 		     		}
 		     	}
 		     	

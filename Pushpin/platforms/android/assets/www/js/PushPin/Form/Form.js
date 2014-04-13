@@ -34,15 +34,18 @@
 			
 			if(!PushPin.existsAndNotNull(featureValue)){
 				featureValue = "";
+			}else{
+				featureValue = featureValue.value;
 			}
 			
 			if(obj.type === 'TextField'){
-				item = '<a id="name-link" class="list-group-item">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
-						<input value="'+ featureValue +'" id="form-'+obj.data_name+'" type="text" pushpin-original-value="'
-						+ featureValue + '"/></a>';	
+				item = '<a id="name-link" class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
+					+ obj.data_name+ '" pushpin-attribute-type="TextField" pushpin-original-value="'
+					+ featureValue + '">' +obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+						<input value="'+ featureValue +'" id="form-'+obj.data_name+'" type="text"/></a>';	
 			}
 			else if(obj.type === 'ChoiceField' && PushPin.existsAndNotNull(obj.choices)){
-				var choices = '<option value="" pushpin-original-value="' + featureValue + '"></option>';
+				var choices = '<option value=""></option>';
 				$.each(obj.choices, function(i, choice){
 					if(featureValue === choice.value.split('=')[1]){
 						choices = choices + '<option value="'+choice.value+'" selected>'+choice.label+'</option>';
@@ -52,7 +55,8 @@
 					}					
 				});
 				
-				item = '<a id="name-link" class="list-group-item">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+				item = '<a id="name-link" class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
+					+ obj.data_name+ '" pushpin-original-value="' + featureValue + '" pushpin-attribute-type="ChoiceField">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
 						<select>'+choices+'</select>';
 			}else if(obj.type === 'ClassificationField'){
 				
@@ -62,8 +66,9 @@
 				var originalValue = (tag !== false) ? tag.value : '';
 				
 				// Set the label of the field, the current value of the input, and set the form's id to the name of the field
-				item = '<a id="name-link" class="list-group-item pushpin-classification" pushpin-classification="' 
-					+ obj.classification_set_id + '" pushpin-original-value="' + originalValue + '">'
+				item = '<a id="name-link" class="list-group-item pushpin-classification pushpin-attribute" pushpin-attribute-name="' 
+					+ obj.data_name+ '" pushpin-attribute-type="ClassificationField" pushpin-classification="' 
+					+ obj.classification_set_id + '" pushpin-original-value="' + originalValue + '" pushpin-current-value="' + originalValue + '">'
 					+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
 				<span id="form-' + obj.data_name + '">' + displayString + '</span></a>';
 				//<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text" readonly/></a>';
@@ -106,6 +111,8 @@
 				}
 				
 				element.find('span').html(displayString);
+				
+				element.attr('pushpin-current-value', classificationValues[classificationValues.length - 1].value);
 			});
 			
 			mainClassification.load();
@@ -141,6 +148,88 @@
 				$('#mainForm h4').html('Add POI');
 			}
 		}
+	};
+	
+	prototype.getFeatureWithUpdatedAttributes = function(){
+		
+		var attributes = this.poiForm.find('.pushpin-attribute');
+		
+		var attribute = null;
+		
+		for(var i = 0; i < attributes.length; i++){
+			attribute = $(attributes[i]);
+			
+			this.checkAttributeForUpdates(attribute);
+		}
+		
+		return this.feature;
+	};
+	
+	prototype.checkAttributeForUpdates = function(attribute){
+		
+		var currentValue = this.getAttributeValue(attribute);
+		
+		var originalValue = attribute.attr('pushpin-original-value');
+		
+		var attributeName = attribute.attr('pushpin-attribute-name');
+		
+		if(originalValue !== currentValue){
+			
+			var newValue = currentValue.split('=');
+			
+			var newKey = newValue[0];
+			newValue = newValue[1];
+			
+			// Delete the old
+			var oldValue = originalValue.split('=');
+			var oldKey = oldValue[0];
+			oldValue = oldValue[1];
+			
+			if(PushPin.existsAndNotNull(this.feature.properties[oldKey]) 
+					&& (this.feature.properties[oldKey].value === oldValue)){
+				
+				delete this.feature.properties[oldKey];
+			}
+			
+			// Insert the new
+			if(!PushPin.existsAndNotNull(this.feature.properties[newKey])){
+				this.feature.properties[newKey] = {};
+			}
+			
+			var property = this.feature.properties[newKey];
+			
+			property.value = newValue;
+			property.updated = true;
+		}
+	};
+	
+	prototype.getAttributeValue = function(attribute){
+		var attributeType = attribute.attr('pushpin-attribute-type');
+		
+		var value = null;
+		
+		switch(attributeType){
+			case "TextField":
+			
+				value = attribute.find('input').val();
+				
+				break;
+				
+			case "ChoiceField":
+				
+				value = attribute.find('select').val();
+				break;
+				
+			case "ClassificationField":
+				
+				value = attribute.attr('pushpin-current-value');
+				
+				break;
+				
+			default:
+		}
+		
+		return value;
 	};
 	
 })();

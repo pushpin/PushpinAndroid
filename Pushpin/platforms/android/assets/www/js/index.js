@@ -152,9 +152,7 @@ var app = {
 				}			
 				break;
 			case 'formView':
-				app.view = new PushPin.FormView(app.form, app.localStorage);
-				app.view.registerEvents();	
-				
+					
 				$.getJSON('resources/form.json', function(formJSON, textStatus, jqXHR){
 					
 					$.getJSON('resources/classifications.json', function(classificationsJSON, textStatus, jqXHR){
@@ -162,6 +160,9 @@ var app = {
 						app.form = new PushPin.Form(formJSON, classificationsJSON);
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
+				    	
+				    	app.view = new PushPin.FormView(app.form, app.localStorage);
+						app.view.registerEvents();
 					}).fail(function(jqXHR, textStatus, err){
 						console.log("Couldn't load form view", err);
 					});
