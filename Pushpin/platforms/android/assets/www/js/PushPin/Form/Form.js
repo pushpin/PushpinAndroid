@@ -144,6 +144,12 @@
 		     			context[val] = poi[val]; 
 		     		}
 		    });
+			
+			if(PushPin.existsAndNotNull(poi['id'])){
+				$('#mainForm h4').html('Edit POI');
+			}else{
+				$('#mainForm h4').html('Add POI');
+			}
 		}
 	};
 	

@@ -137,6 +137,9 @@
 		     	
 		     	var properties = feature.getProperties();	     	
 		     	var poi = new Object();
+		     	
+		     	poi['id'] = feature.getId();
+		     	
 		     	var items = ['name','type','building','landuse','parking','surface','park_and_ride','bicycle_parking','shelter_type',
 						'building_height_in_meters','number_of_floors_levels','fee','network','prescription_drugs','food','capacity',
 						'brand','fuel_types','car_wash','internet_access','access','drive_through','delivery','covered','atm',
