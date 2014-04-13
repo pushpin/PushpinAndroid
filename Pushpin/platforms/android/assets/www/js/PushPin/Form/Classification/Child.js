@@ -1,6 +1,6 @@
 (function(){
 	
-	PushPin.Classification.Child = function(parent, classifications){
+	PushPin.Classification.Child = function(parent, classifications, classificationValues){
 		
 		this.form = $('#classificationForm').clone();
 		
@@ -29,6 +29,8 @@
 		
 		this.form.attr('id', 'child-classification-' + this.id);
 		
+		this.form.addClass('child-classification');
+		
 		this.classifications = classifications;
 		
 		this.childClassificationsName = "child_classifications";
@@ -38,6 +40,8 @@
 		this.classificationName = this.form.find('h4');
 		
 		this.nameProperty = "label";
+		
+		this.classificationValues = classificationValues;
 	};
 	
 	PushPin.Classification.Child.prototype = new PushPin.Classification();
@@ -88,5 +92,7 @@
 		this.hide();
 		
 		this.form.remove();
+		
+		this.classificationValues.splice(this.classificationValues.length - 1, 1);
 	};
 })();

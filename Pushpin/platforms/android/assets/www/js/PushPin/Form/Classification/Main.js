@@ -10,6 +10,7 @@
 		this.classificationList = this.classificationForm.find('.list-group');
 		this.classificationName = this.classificationForm.find('h4');
 		this.nameProperty = "name";
+		this.classificationValues = [];
 	};
 	
 	PushPin.Classification.Main.prototype = new PushPin.Classification();

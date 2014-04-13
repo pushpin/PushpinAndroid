@@ -33,16 +33,31 @@
 				message: "classificationList has not been set."
 			};
 		}
+		if(!PushPin.existsAndNotNull(this.classificationValues)){
+			throw{
+				message: "classificationValues has not been set."
+			};
+		}
 		
 		this.classificationName.html(this.classifications[this.nameProperty]);
 		
 		var html = '';
 		
-		for(var i = 0; i < this.classifications[this.childClassificationsName].length; i++){
+		var items = this.classifications[this.childClassificationsName];
+		
+		var grandchildren = null;
+		
+		for(var i = 0; i < items.length; i++){
 			
-			html += '<li class="list-group-item" pushpin-classification-index="' 
-				+ i +'"><span class="badge"><span class="glyphicon glyphicon-chevron-right"></span></span>'
-				+ this.classifications[this.childClassificationsName][i].label + '</li>';
+			grandchildren = items[i]['child_classifications'];
+			
+			html += '<li class="list-group-item" pushpin-classification-index="' + i +'">';
+			
+			if(PushPin.existsAndNotNull(grandchildren) && grandchildren.length > 0){
+				html += '<span class="badge"><span class="glyphicon glyphicon-chevron-right"></span></span>';
+			}
+				
+			html += this.classifications[this.childClassificationsName][i].label + '</li>';
 		}
 		
 		this.classificationList.html(html);
@@ -55,12 +70,18 @@
 			
 			var classification = context.classifications[context.childClassificationsName][index];
 			
+			if($.inArray(classification.value, context.classificationValues) === -1){
+				context.classificationValues.push(classification.value);
+			}
+			
 			var childClassifications = classification['child_classifications'];
 			
 			if(PushPin.existsAndNotNull(childClassifications) && childClassifications.length > 0){
-				var childClassification = new PushPin.Classification.Child(context, classification);
+				var childClassification = new PushPin.Classification.Child(context, classification, context.classificationValues);
 				
 				childClassification.load();
+			}else{
+				context.finish();
 			}
 		});
 		
@@ -71,5 +92,24 @@
 		}else{
 			this.show();
 		}
+	};
+	
+	prototype.showMainForm = function(){
+		$('#mainForm').removeClass('hide');
+	};
+	
+	prototype.removeAllChildClassificationForms = function(){
+		$('#classificationForm .child-classification').remove();
+	};
+	
+	prototype.finish = function(){
+		
+		console.log("finish", this.classificationValues);
+		
+		this.form.addClass('hide');
+		
+		this.removeAllChildClassificationForms();
+		
+		this.showMainForm();
 	};
 })();
