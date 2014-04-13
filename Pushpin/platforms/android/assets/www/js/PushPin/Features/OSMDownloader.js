@@ -3,7 +3,8 @@
 	PushPin.Features.OSMDownloader = function(bbox, onSuccess, onFailure){
 		
 		this.bbox = bbox;
-    	this.poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox=' + this.bbox;
+		
+    	this.poiURL =  PushPin.getOSMUrl() + '/api/0.6/map?bbox=' + this.bbox;
     	this.onSuccess = onSuccess;
     	this.onFailure = onFailure;
     	this.osmXMl = null;

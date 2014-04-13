@@ -2,8 +2,8 @@ PushPin.OSMAuth = function(consumerKey, consumerSecret, db){
 	this.consumerKey = consumerKey;
 	this.oauth_secret = consumerSecret;
 	this.db = db;
+	this.hostUrl = PushPin.getOSMUrl();
 	
-	this.host = 'http://www.openstreetmap.org';
 	this.token = null;
 	this.accessToken = null;
 	
@@ -48,7 +48,7 @@ PushPin.OSMAuth.prototype.getRequestToken = function(){
 	this.o.oauth_timestamp = ohauth.timestamp();
 	this.o.oauth_nonce = ohauth.nonce();
 	
-	var url = this.host + '/oauth/request_token';
+	var url = this.hostUrl + '/oauth/request_token';
 	
 	this.o.oauth_signature = ohauth.signature(this.oauth_secret,
 			'', ohauth.baseString('POST', url, this.o));
@@ -89,7 +89,7 @@ PushPin.OSMAuth.prototype.getUserAuthorization = function(){
 	
 	var context = this;
 	
-	var url = this.host + '/oauth/authorize?';
+	var url = this.hostUrl + '/oauth/authorize?';
 	
 	url += ohauth.qsString({
 		oauth_token: context.token.oauth_token,
@@ -119,7 +119,7 @@ PushPin.OSMAuth.prototype.getAccessToken = function(){
     this.o.oauth_nonce = ohauth.nonce();
     this.o.oauth_token = this.token.oauth_token;
      
-    var url = this.host + '/oauth/access_token';
+    var url = this.hostUrl + '/oauth/access_token';
      
     this.o.oauth_signature = ohauth.signature(
     	context.oauth_secret,

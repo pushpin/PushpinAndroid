@@ -57,6 +57,8 @@
 		this.tags = '';
 		this.object_type = '';
 		this.change_comment = '';
+		
+		this.poiForm = $('#poi-form');
 	};
 
 	var prototype = PushPin.Form.prototype;
@@ -78,8 +80,17 @@
 				});
 			});
 	
-			$('#poi-form').append(items.join(""));
-		
+			context.poiForm.append(items.join(""));
+			
+			context.poiForm.find('.pushpin-classification').click(function(){
+				var classification = $(this).attr('pushpin-classification');
+				
+				console.log("classification = " + classification);
+				
+				var classification = new PushPin.Classification.Main(classification);
+				
+				classification.load();
+			});
 		});
 	
 		var formTitle = function(obj){
@@ -105,6 +116,11 @@
 				
 				item = '<a id="name-link" class="list-group-item">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
 						<select>'+choices+'</select>';
+			}else if(obj.type === 'ClassificationField'){
+				
+				// Set the label of the field, the current value of the input, and set the form's id to the name of the field
+				item = '<a id="name-link" class="list-group-item pushpin-classification" pushpin-classification="' + obj.classification_set_id + '">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+				<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text"/></a>';
 			}
 			
 			return item;

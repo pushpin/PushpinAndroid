@@ -4,9 +4,15 @@
 		this.localStorage = localStorage;
 		this.feature = null;
 		
-		this.cancelFormBtn = $('#cancelFormBtn');
-		this.saveFormBtn = $('#saveFormBtn');
-		this.movePointBtn = $('#movePointBtn');
+		this.mainForm = $('#mainForm');
+		
+		this.cancelFormBtn = this.mainForm.find('#cancelFormBtn');
+		this.saveFormBtn = this.mainForm.find('#saveFormBtn');
+		this.movePointBtn = this.mainForm.find('#movePointBtn');
+		
+		this.classificationForm = $('#classificationForm');
+		
+		this.classificationCancelBtn = this.classificationForm.find('#cancelFormBtn');
 	};
 	
 	var prototype = PushPin.FormView.prototype;
@@ -18,6 +24,12 @@
     		return context.cancelForm();
     	});
     	
+		this.classificationCancelBtn.click(function(){
+			
+			context.classificationForm.addClass('hide');
+			context.mainForm.removeClass('hide');
+		});
+		
     	this.saveFormBtn.click(function(){
     		return context.saveForm();
     	});

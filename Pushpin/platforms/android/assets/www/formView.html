@@ -24,25 +24,37 @@
     <title>PushPin</title>
   </head>
   <body>
-  	<div class="toolbar-top">
-  		<span class="badge-left"><button id="cancelFormBtn" class="btn btn-primary">Cancel</button></span>
-  		<span class="badge-right"><button id="saveFormBtn" class="btn btn-primary">Save</button></span>
-  		<span style="vertical-align: middle;"><h4>Add POI</h4></span>
+  	<div id="mainForm">
+	  	<div class="toolbar-top">
+	  		<span class="badge-left"><button id="cancelFormBtn" class="btn btn-primary">Cancel</button></span>
+	  		<span class="badge-right"><button id="saveFormBtn" class="btn btn-primary">Save</button></span>
+	  		<span style="vertical-align: middle;"><h4>Add POI</h4></span>
+	  	</div>
+	  	<div class="panel-body">
+	  	
+	  	<button id="movePointBtn" class="btn btn-block btn-default" type="button" style="margin-top:50px;"><span style="font-style: italic;color: #555555;">tap to move point</span></button>
+		
+		<div id="poi-form" class="list-group"></div>
+		
+		<div class="list-group">
+			<li class="list-group-item"><span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>		
+		</div>
+		
+		<button class="btn btn-block btn-danger" type="button" style="margin-top:10px;" onclick="clearTesting()">Delete this POI</button>
+		<button class="btn btn-block btn-primary" type="button">View on Web</button>
+		
+		</div>
   	</div>
-  	<div class="panel-body">
+  	<div id="classificationForm" class="hide">
+  		<div class="toolbar-top">
+	  		<span class="badge-left"><button id="cancelFormBtn" class="btn btn-primary">Cancel</button></span>
+	  		<span style="vertical-align: middle;"><h4></h4></span>
+	  	</div>
+	  	<div class="list-group" style="margin-top:60px;padding:10px;">
+					
+		</div>
+  	</div>
   	
-  	<button id="movePointBtn" class="btn btn-block btn-default" type="button" style="margin-top:50px;"><span style="font-style: italic;color: #555555;">tap to move point</span></button>
-	
-	<div id="poi-form" class="list-group"></div>
-	
-	<div class="list-group">
-		<li class="list-group-item"><span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>		
-	</div>
-	
-	<button class="btn btn-block btn-danger" type="button" style="margin-top:10px;" onclick="clearTesting()">Delete this POI</button>
-	<button class="btn btn-block btn-primary" type="button">View on Web</button>
-	
-	</div>
 	
 	<!--<script src="http://192.168.56.1:8082/target/target-script-min.js#formView"></script>-->
 	<script src="js/lib/jquery-1.11.0.min.js"></script>
@@ -59,6 +71,9 @@
     <script src="js/PushPin/OSMAuth.js" type="text/javascript"></script>
     <script src="js/PushPin/Map/Map.js" type="text/javascript"></script>
     <script src="js/PushPin/Form/Form.js" type="text/javascript"></script>
+    <script src="js/PushPin/Form/Classification/Classification.js" type="text/javascript"></script>
+    <script src="js/PushPin/Form/Classification/Main.js" type="text/javascript"></script>
+    <script src="js/PushPin/Form/Classification/Child.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Geolocation.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Test.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Handler.js" type="text/javascript"></script>
