@@ -135,24 +135,20 @@
 				
 		     	map.addOverlay(popup);
 		     	
-		     	var properties = feature.getProperties();	     	
-		     	var poi = new Object();
+		     	var properties = feature.getProperties();
+		     	
+		     	var poi = {};
 		     	
 		     	poi['id'] = feature.getId();
 		     	
-		     	var items = ['name','type','building','landuse','parking','surface','park_and_ride','bicycle_parking','shelter_type',
-						'building_height_in_meters','number_of_floors_levels','fee','network','prescription_drugs','food','capacity',
-						'brand','fuel_types','car_wash','internet_access','access','drive_through','delivery','covered','atm',
-						'religion','religious_denomination','collection_time','vending','sport','cuisine','takeaway','outdoor_seating',
-						'smoking','addr:housenumber','addr:street','addr:city','addr:state','addr:postcode','addr:country','unit_suite',
-						'operator','wheelchair','opening_hours','contact:phone','contact:fax','contact:website','contact:email',
-						'description','attribution','source','fixme','notes','tags','object_type','change_comment'];
-		     	$.each(items, function(i,val){
-		     		var index = val.replace(':','_');
-		     		if(properties[val] !== undefined){
-		     			poi[index] = properties[val]; 
+		     	poi['properties'] = {};
+		     	
+		     	for(var key in properties){
+		     		
+		     		if(key !== "geometry"){
+		     			poi['properties'][key] = properties[key];
 		     		}
-		     	});
+		     	}
 		     	
 		     	localStorage.saveFeature(JSON.stringify(poi));
 		     	localStorage.setPinPosition(pos);

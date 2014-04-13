@@ -1,9 +1,7 @@
 (function(){
 	
-	PushPin.Classification.Main = function(classificationId, onFinishSelecting){
-		this.classificationId = classificationId;
-		this.resourceUrl = 'resources/classifications.json';
-		this.classifications = null;
+	PushPin.Classification.Main = function(classifications, onFinishSelecting){
+		this.classifications = classifications;
 		this.childClassificationsName = 'items';
 		this.mainForm = $('#mainForm');
 		this.classificationForm = $('#classificationForm');
@@ -21,44 +19,11 @@
 	var prototype = PushPin.Classification.Main.prototype;
 	
 	prototype.load = function(){
-		this.getClassification();
+		this.populateList();
 	};
 	
 	prototype.getForm = function(){
 		return this.classificationForm;
-	};
-	
-	prototype.getClassification = function(){
-		
-		var context = this;
-		
-		$.getJSON(this.resourceUrl, function(data, textStatus, jqXHR){
-			
-			context.getClassificationById(data['classification_sets']);
-		}).fail(function(jqXHR, textStatus, err){
-			console.log("Couldn't load classification - " + context.classificationId, err);
-		});
-	};
-	
-	prototype.getClassificationById = function(classificationSets){
-		
-		for(var i = 0; i < classificationSets.length; i++){
-			
-			if(classificationSets[i].id === this.classificationId){
-				
-				this.classifications = classificationSets[i];
-				
-				break;
-			}
-		}
-		
-		if(!PushPin.existsAndNotNull(this.classifications)){
-			throw {
-				message: "Could not find classification matching id = " + this.classificationId
-			};
-		}
-		
-		this.populateList();
 	};
 	
 	prototype.hide = function(){

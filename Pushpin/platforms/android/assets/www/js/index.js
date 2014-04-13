@@ -132,8 +132,6 @@ var app = {
         			
         			loader.load(function(features){
         				
-        				console.log("successfully loaded osm from saved xml", features);
-        				
         				app.view.addFeaturesToMap(features);
         			}, function(e){
         				console.log("couldn't load saved features from file", e);
@@ -157,9 +155,19 @@ var app = {
 				app.view = new PushPin.FormView(app.form, app.localStorage);
 				app.view.registerEvents();	
 				
-				app.form = new PushPin.Form();
-		    	app.form.populateForm(app.localStorage.getFeature());
-		    	app.form.loadForm("resources/form.json");
+				$.getJSON('resources/form.json', function(formJSON, textStatus, jqXHR){
+					
+					$.getJSON('resources/classifications.json', function(classificationsJSON, textStatus, jqXHR){
+						
+						app.form = new PushPin.Form(formJSON, classificationsJSON);
+				    	app.form.populateForm(app.localStorage.getFeature());
+				    	app.form.loadForm();
+					}).fail(function(jqXHR, textStatus, err){
+						console.log("Couldn't load form view", err);
+					});
+				}).fail(function(jqXHR, textStatus, err){
+					console.log("Couldn't load form view", err);
+				});
 		    	
 				break;
 			default:

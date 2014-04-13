@@ -1,128 +1,50 @@
 (function(){
 	
-	PushPin.Form = function(){
-		this.name = '';
-		this.type = '';
-		this.building = '';
-		this.landuse = '';
-		this.parking = '';
-		this.surface = '';
-		this.park_and_ride = '';
-		this.bicycle_parking = '';
-		this.shelter_type = '';
-		this.building_height_in_meters = '';
-		this.number_of_floors_levels = '';
-		this.fee = '';
-		this.network = '';
-		this.prescription_drugs = '';
-		this.food = '';
-		this.capacity = '';
-		this.brand = '';
-		this.fuel_types = '';
-		this.car_wash = '';
-		this.internet_access = '';
-		this.access = '';
-		this.drive_through = '';
-		this.delivery = '';
-		this.covered = '';
-		this.atm = '';
-		this.religion = '';
-		this.religious_denomination = '';
-		this.collection_time = '';
-		this.vending = '';
-		this.sport = '';
-		this.cuisine = '';
-		this.takeaway = '';
-		this.outdoor_seating = '';
-		this.smoking = '';
-		this.addr_housenumber = '';
-		this.addr_street = '';
-		this.addr_city = '';
-		this.addr_state = '';
-		this.addr_postcode = '';
-		this.addr_country = '';
-		this.unit_suite = '';
-		this.operator = '';
-		this.wheelchair = '';
-		this.opening_hours = '';
-		this.contact_phone = '';
-		this.contact_fax = '';
-		this.contact_website = '';
-		this.contact_email = '';
-		this.description = '';
-		this.attribution = '';
-		this.source = '';
-		this.fixme = '';
-		this.notes = '';
-		this.tags = '';
-		this.object_type = '';
-		this.change_comment = '';
+	PushPin.Form = function(formJSON, classificationsJSON){
+		
+		this.feature = null;
+		this.formJSON = formJSON;
+		this.classificationsJSON = classificationsJSON;
 		
 		this.poiForm = $('#poi-form');
+		
+		this.classificationsBuilder = new PushPin.Classification.Builder(this.classificationsJSON);
+		
+		this.classificationsBuilder.build();
 	};
 
 	var prototype = PushPin.Form.prototype;
 	
-	prototype.loadForm = function(sourceURL){
+	prototype.loadForm = function(){
 
 		var tmp = {name:this.name, brand:this.brand};
 		
 		var context = this;
-		$.getJSON(sourceURL, function(data){
 		
-			var form = data.forms[0].elements;		
-			var items = [];
-	
-			$.each(form,function(key, value){
-				items.push(formTitle(value));
-				$.each(value.elements, function(index, obj){
-					items.push(formElement(obj, context));						
-				});
-			});
-	
-			context.poiForm.append(items.join(""));
-			
-			context.poiForm.find('.pushpin-classification').click(function(){
-				var element = $(this);
-				
-				var classification = element.attr('pushpin-classification');
-				
-				var classification = new PushPin.Classification.Main(classification, function(classificationValues){
-					
-					var displayString = '';
-					
-					for(var i = 0; i < classificationValues.length; i++){
-						
-						if(i > 0){
-							displayString += ' &#x25b6; ';
-						}
-						
-						displayString += classificationValues[i].label;
-					}
-					
-					console.log("displayString: " + displayString);
-					
-					element.find('span').html(displayString);
-				});
-				
-				classification.load();
-			});
-		});
-	
+		var form = this.formJSON.forms[0].elements;		
+
 		var formTitle = function(obj){
-				return '<a class="list-group-item active">' + obj.label + '</a>';
-			};
-		
+			return '<a class="list-group-item active">' + obj.label + '</a>';
+		};
+	
 		var formElement = function(obj, context){
 			var item = null;
+			
+			var featureValue = context.feature.properties[obj.data_name];
+			
+			if(!PushPin.existsAndNotNull(featureValue)){
+				featureValue = "";
+			}
+			
 			if(obj.type === 'TextField'){
 				item = '<a id="name-link" class="list-group-item">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
-						<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text"/></a>';	
+						<input value="'+ featureValue +'" id="form-'+obj.data_name+'" type="text" pushpin-original-value="'
+						+ featureValue + '"/></a>';	
 			}
 			else if(obj.type === 'ChoiceField' && PushPin.existsAndNotNull(obj.choices)){
-				var choices = '<option value=""></option>';
+				var choices = '<option value="" pushpin-original-value="' + featureValue + '"></option>';
 				$.each(obj.choices, function(i, choice){
-					if(context[obj.data_name] === choice.value.split('=')[1]){
+					if(featureValue === choice.value.split('=')[1]){
 						choices = choices + '<option value="'+choice.value+'" selected>'+choice.label+'</option>';
 					}
 					else{
@@ -134,35 +56,86 @@
 						<select>'+choices+'</select>';
 			}else if(obj.type === 'ClassificationField'){
 				
+				var tag = context.classificationsBuilder.tagPresentForId(obj.classification_set_id, context.feature);
+				
+				var displayString = (tag !== false) ? tag.displayString : '';
+				var originalValue = (tag !== false) ? tag.value : '';
+				
 				// Set the label of the field, the current value of the input, and set the form's id to the name of the field
-				item = '<a id="name-link" class="list-group-item pushpin-classification" pushpin-classification="' + obj.classification_set_id + '">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
-				<span id="form-' + obj.data_name + '"></span></a>';
+				item = '<a id="name-link" class="list-group-item pushpin-classification" pushpin-classification="' 
+					+ obj.classification_set_id + '" pushpin-original-value="' + originalValue + '">'
+					+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+				<span id="form-' + obj.data_name + '">' + displayString + '</span></a>';
 				//<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text" readonly/></a>';
 			}
 			
 			return item;
-		};	
+		};
+	
+		var items = [];
+
+		$.each(form,function(key, value){
+			var title = formTitle(value);
+			
+			items.push(title);
+			$.each(value.elements, function(index, obj){
+				items.push(formElement(obj, context));						
+			});
+		});
+
+		context.poiForm.append(items.join(""));
+		
+		context.poiForm.find('.pushpin-classification').click(function(){
+			var element = $(this);
+			
+			var classificationId = element.attr('pushpin-classification');
+			
+			var classification = context.getClassificationById(classificationId);
+			
+			var mainClassification = new PushPin.Classification.Main(classification, function(classificationValues){
+				
+				var displayString = '';
+				
+				for(var i = 0; i < classificationValues.length; i++){
+					
+					if(i > 0){
+						displayString += ' &#x25b6; ';
+					}
+					
+					displayString += classificationValues[i].label;
+				}
+				
+				element.find('span').html(displayString);
+			});
+			
+			mainClassification.load();
+		});	
+	};
+	
+	prototype.getClassificationById = function(id){
+		var classifications = this.classificationsJSON.classification_sets;
+		
+		// Get the classification object corresponding to the classification_set_id
+		for(var i = 0; i < classifications.length; i++){
+			
+			if(id === classifications[i].id){
+				
+				return classifications[i];
+			}
+		}
+		
+		throw {
+			message: "Could not find classification matching id = " + id
+		};
 	};
 	
 	prototype.populateForm = function(feature){
 		if (feature !== 'null' ){
-			var poi = JSON.parse(feature);
-			console.log(feature);
-			var context = this;
-			var items = ['name','type','building','landuse','parking','surface','park_and_ride','bicycle_parking','shelter_type',
-						'building_height_in_meters','number_of_floors_levels','fee','network','prescription_drugs','food','capacity',
-						'brand','fuel_types','car_wash','internet_access','access','drive_through','delivery','covered','atm',
-						'religion','religious_denomination','collection_time','vending','sport','cuisine','takeaway','outdoor_seating',
-						'smoking','addr_housenumber','addr_street','addr_city','addr_state','addr_postcode','addr_country','unit_suite',
-						'operator','wheelchair','opening_hours','contact_phone','contact_fax','contact_website','contact_email',
-						'description','attribution','source','fixme','notes','tags','object_type','change_comment'];
-			$.each(items, function(i,val){
-		     		if(poi[val] !== undefined){
-		     			context[val] = poi[val]; 
-		     		}
-		    });
+			this.feature = JSON.parse(feature);
 			
-			if(PushPin.existsAndNotNull(poi['id'])){
+			console.log("feature", this.feature);
+			
+			if(PushPin.existsAndNotNull(this.feature['id'])){
 				$('#mainForm h4').html('Edit POI');
 			}else{
 				$('#mainForm h4').html('Add POI');
