@@ -53,6 +53,9 @@ var app = {
         		app.initAuth();
         	}
         	
+    		// Override ol.format.OSMXML.readNode_
+    		PushPin.addVersionToOSMXMLFormat();
+    		
         	app.localStorage = new PushPin.LocalStorage();
         	
         	app.map = new PushPin.Map(app.localStorage);

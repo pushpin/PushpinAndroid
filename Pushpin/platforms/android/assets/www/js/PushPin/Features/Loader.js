@@ -20,6 +20,7 @@
 		};
 		
 		this.fileReader.onload = function(evt){
+			PushPin.resetFeatureVersions();
 			context.features = context.format.readFeatures(evt.target.result);
 			
 			console.log("successfully loaded features");
