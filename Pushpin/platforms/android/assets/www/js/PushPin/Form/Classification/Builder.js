@@ -130,7 +130,8 @@
 					
 					return {
 						displayString: this.getDisplayString(item[value]),
-						value: key + '=' + value
+						value: key + '=' + value,
+						values: this.getValues(item[value])
 					};
 				}
 			}
@@ -161,5 +162,30 @@
 		}
 		
 		return displayString;
+	};
+	
+	prototype.getValues = function(item){
+	
+		var valueString = item['value'];
+		
+		var value = null;
+		
+		var parent = item.parent;
+		
+		while(PushPin.existsAndNotNull(parent)){
+			
+			if(PushPin.existsAndNotNull(parent['value'])){
+				value = parent['value'];
+			}else{
+				return valueString;
+			}
+			
+			valueString = value + ',' + valueString;
+			
+			parent = parent.parent;
+		}
+		
+		return valueString;
+		
 	};
 })();

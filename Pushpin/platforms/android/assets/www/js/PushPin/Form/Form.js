@@ -76,15 +76,30 @@
 			
 			return item;
 		};
-	
+		
+		var typeID = '50932f1fa93448390b0000ff';
+		var type = this.classificationsBuilder.tagPresentForId(typeID,this.feature);
+		
 		var items = [];
 
 		$.each(form,function(key, value){
-			var title = formTitle(value);
+			
+			var title = formTitle(value);			
 			
 			items.push(title);
+			
 			$.each(value.elements, function(index, obj){
-				items.push(formElement(obj, context));						
+				
+				if(obj.hasOwnProperty("visible_conditions")){
+
+					if(context.checkVisibilityConditions(obj.visible_conditions, type.values)){						
+						items.push(formElement(obj, context));
+					}
+					
+				} else{					
+					items.push(formElement(obj, context));	
+				}
+									
 			});
 		});
 
@@ -230,6 +245,38 @@
 		}
 		
 		return value;
+	};
+	
+	prototype.checkVisibilityConditions = function(visibleConditions, typePathValues){
+	
+		var vcItems = null;
+		
+		var visible = null;
+
+		var typeItems = typePathValues.split(',');
+		
+		$.each(visibleConditions, function(index, vc){	
+					
+			vcItems = vc.value.split(',');
+			
+			for(var i = 0; i < vcItems.length; i++){
+			
+				if(vcItems[i] === typeItems[i]){					
+					visible = true;
+				}
+				else {					
+					visible = false;
+					break;
+				}
+			}
+			
+			if (visible){
+				return false;
+			}
+			
+		});
+		
+		return visible;
 	};
 	
 })();
