@@ -84,6 +84,8 @@
 
 		$.each(form,function(key, value){
 			
+			var sectionItems = 0;
+			
 			var title = formTitle(value);			
 			
 			items.push(title);
@@ -94,13 +96,21 @@
 
 					if(context.checkVisibilityConditions(obj.visible_conditions, type.values)){						
 						items.push(formElement(obj, context));
+						sectionItems++;
 					}
 					
 				} else{					
-					items.push(formElement(obj, context));	
+					items.push(formElement(obj, context));
+					sectionItems++;
 				}
 									
 			});
+			
+			//If there are no items in the Section, remove Section Title
+			if(sectionItems === 0){
+				items.pop();
+			}			
+			
 		});
 
 		context.poiForm.append(items.join(""));
