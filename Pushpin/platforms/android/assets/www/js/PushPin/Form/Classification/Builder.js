@@ -112,7 +112,7 @@
 	
 	prototype.tagPresentForId = function(classificationId, feature){
 		
-		if(PushPin.existsAndNotNull(this.mapping[classificationId])){
+		if(PushPin.existsAndNotNull(this.mapping[classificationId]) && PushPin.existsAndNotNull(feature)){
 			
 			var item = null;
 			var value = null;

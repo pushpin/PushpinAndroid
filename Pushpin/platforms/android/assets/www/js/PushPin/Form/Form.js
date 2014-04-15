@@ -30,7 +30,11 @@
 		var formElement = function(obj, context){
 			var item = null;
 			
-			var featureValue = context.feature.properties[obj.data_name];
+			var featureValue = null;
+			
+			if (PushPin.existsAndNotNull(context.feature)){
+				featureValue = context.feature.properties[obj.data_name];
+			}
 			
 			if(!PushPin.existsAndNotNull(featureValue)){
 				featureValue = "";
@@ -60,11 +64,11 @@
 						<select>'+choices+'</select>';
 			}else if(obj.type === 'ClassificationField'){
 				
-				var tag = context.classificationsBuilder.tagPresentForId(obj.classification_set_id, context.feature);
+				var tag = context.classificationsBuilder.tagPresentForId(obj.classification_set_id, context.feature);					
 				
 				var displayString = (tag !== false) ? tag.displayString : '';
 				var originalValue = (tag !== false) ? tag.value : '';
-				
+			
 				// Set the label of the field, the current value of the input, and set the form's id to the name of the field
 				item = '<a id="name-link" class="list-group-item pushpin-classification pushpin-attribute" pushpin-attribute-name="' 
 					+ obj.data_name+ '" pushpin-attribute-type="ClassificationField" pushpin-classification="' 
@@ -77,8 +81,12 @@
 			return item;
 		};
 		
-		var typeID = '50932f1fa93448390b0000ff';
-		var type = this.classificationsBuilder.tagPresentForId(typeID,this.feature);
+		var type = null;
+		
+		if(PushPin.existsAndNotNull(this.feature)){
+			var typeID = form[0].elements[1].classification_set_id;
+			type = this.classificationsBuilder.tagPresentForId(typeID,this.feature);
+		}
 		
 		var items = [];
 
@@ -91,8 +99,13 @@
 			items.push(title);
 			
 			$.each(value.elements, function(index, obj){
-				
-				if(obj.hasOwnProperty("visible_conditions")){
+				if(!PushPin.existsAndNotNull(type)){
+					if(!obj.hasOwnProperty("visible_conditions")){
+						items.push(formElement(obj, context));
+						sectionItems++;
+					}
+				}				
+				else if(obj.hasOwnProperty("visible_conditions")){
 
 					if(context.checkVisibilityConditions(obj.visible_conditions, type.values)){						
 						items.push(formElement(obj, context));
