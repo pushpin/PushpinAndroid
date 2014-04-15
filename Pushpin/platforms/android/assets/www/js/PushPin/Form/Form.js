@@ -65,7 +65,6 @@
 			}else if(obj.type === 'ClassificationField'){
 				
 				var tag = context.classificationsBuilder.tagPresentForId(obj.classification_set_id, context.feature);					
-				
 				var displayString = (tag !== false) ? tag.displayString : '';
 				var originalValue = (tag !== false) ? tag.value : '';
 			
@@ -83,78 +82,124 @@
 		
 		var type = null;
 		
+		var typeDisplay = null;
+		
+		var typeCurrentValue = null;
+		
+		var formHTML = function(type, typeDisplay, typeCurrentValue){
+			
+			var items = [];
+	
+			$.each(form,function(key, value){
+				
+				var sectionItems = 0;
+				
+				var title = formTitle(value);			
+				
+				items.push(title);
+				
+				$.each(value.elements, function(index, obj){
+				
+					if(!PushPin.existsAndNotNull(type)){
+					
+						if(!obj.hasOwnProperty("visible_conditions")){
+					
+							items.push(formElement(obj, context));
+							sectionItems++;
+						}
+					}				
+					else if(obj.hasOwnProperty("visible_conditions")){
+	
+						if(context.checkVisibilityConditions(obj.visible_conditions, type)){						
+					
+							items.push(formElement(obj, context));
+							sectionItems++;
+						}
+						
+					} else{					
+					
+						items.push(formElement(obj, context));
+						sectionItems++;
+					}
+										
+				});
+				
+				//If there are no items in the Section, remove Section Title
+				if(sectionItems === 0){
+					items.pop();
+				}			
+				
+			});
+			
+			context.poiForm.empty();
+			
+			context.poiForm.append(items.join(""));
+			
+			//Update Type value
+			if (PushPin.existsAndNotNull(typeDisplay)){
+				var element = $('#form-type');
+				
+				var parent = element.parent();
+				
+				element.html(typeDisplay);
+
+				parent.attr('pushpin-current-value', typeCurrentValue);
+				
+			}
+		
+			context.poiForm.find('.pushpin-classification').click(function(){
+				var element = $(this);			
+				
+				var classificationId = element.attr('pushpin-classification');
+				
+				var classification = context.getClassificationById(classificationId);
+				
+				var mainClassification = new PushPin.Classification.Main(classification, function(classificationValues){
+					
+					var displayString = '';
+					
+					var valueString = '';
+					
+					for(var i = 0; i < classificationValues.length; i++){
+						
+						if(i > 0){
+							displayString += ' &#x25b6; ';
+							valueString += ',';
+						}
+						
+						displayString += classificationValues[i].label;
+						
+						valueString += classificationValues[i].value;
+					}
+										
+					var pushpinCurrentValue = classificationValues[classificationValues.length - 1].value;
+					
+					//If updating OSM Type, need to rebuild Form HTML. Else, only update classification display string
+					if(element.find('span').attr('id') === 'form-type'){
+					
+						formHTML(valueString, displayString, pushpinCurrentValue);
+					
+					}else{
+
+						element.find('span').html(displayString);
+
+						element.attr('pushpin-current-value', typeCurrentValue);
+					}
+				});
+				
+				mainClassification.load();		
+			});	
+		
+		};
+		
+		//Check if Feature exists
 		if(PushPin.existsAndNotNull(this.feature)){
 			var typeID = form[0].elements[1].classification_set_id;
-			type = this.classificationsBuilder.tagPresentForId(typeID,this.feature);
+			type = this.classificationsBuilder.tagPresentForId(typeID,this.feature).values;
 		}
 		
-		var items = [];
-
-		$.each(form,function(key, value){
-			
-			var sectionItems = 0;
-			
-			var title = formTitle(value);			
-			
-			items.push(title);
-			
-			$.each(value.elements, function(index, obj){
-				if(!PushPin.existsAndNotNull(type)){
-					if(!obj.hasOwnProperty("visible_conditions")){
-						items.push(formElement(obj, context));
-						sectionItems++;
-					}
-				}				
-				else if(obj.hasOwnProperty("visible_conditions")){
-
-					if(context.checkVisibilityConditions(obj.visible_conditions, type.values)){						
-						items.push(formElement(obj, context));
-						sectionItems++;
-					}
-					
-				} else{					
-					items.push(formElement(obj, context));
-					sectionItems++;
-				}
-									
-			});
-			
-			//If there are no items in the Section, remove Section Title
-			if(sectionItems === 0){
-				items.pop();
-			}			
-			
-		});
-
-		context.poiForm.append(items.join(""));
-		
-		context.poiForm.find('.pushpin-classification').click(function(){
-			var element = $(this);
-			
-			var classificationId = element.attr('pushpin-classification');
-			
-			var classification = context.getClassificationById(classificationId);
-			
-			var mainClassification = new PushPin.Classification.Main(classification, function(classificationValues){
-				
-				var displayString = '';
-				
-				for(var i = 0; i < classificationValues.length; i++){
-					
-					if(i > 0){
-						displayString += ' &#x25b6; ';
-					}
-					
-					displayString += classificationValues[i].label;
-				}
-				
-				element.find('span').html(displayString);
-				
-				element.attr('pushpin-current-value', classificationValues[classificationValues.length - 1].value);
-			});
-			
-			mainClassification.load();
-		});	
+		//Create Initial Form HTML
+		formHTML(type, typeDisplay, typeCurrentValue);
 	};
 	
 	prototype.getClassificationById = function(id){
