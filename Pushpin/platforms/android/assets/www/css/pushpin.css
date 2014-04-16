@@ -128,3 +128,8 @@ html,body {
 #crosshair{
 	position: fixed;
 }
+
+.pushpin-description{
+	float: right; 
+	margin: -10px -15px;
+}

@@ -43,9 +43,9 @@
 			}
 			
 			if(obj.type === 'TextField'){
-				item = '<a id="name-link" class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
+				item = '<a class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
 					+ obj.data_name+ '" pushpin-attribute-type="TextField" pushpin-original-value="'
-					+ featureValue + '">' +obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+					+ featureValue + '">' +obj.label+'<img class="pushpin-description" description="'+obj.description+'" src="resources/images/icon-info.png" class="img-circle"/><br>\
 						<input value="'+ featureValue +'" id="form-'+obj.data_name+'" type="text"/></a>';	
 			}
 			else if(obj.type === 'ChoiceField' && PushPin.existsAndNotNull(obj.choices)){
@@ -59,8 +59,9 @@
 					}					
 				});
 				
-				item = '<a id="name-link" class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
-					+ obj.data_name+ '" pushpin-original-value="' + featureValue + '" pushpin-attribute-type="ChoiceField">'+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+				item = '<a class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
+					+ obj.data_name+ '" pushpin-original-value="' + featureValue + '" pushpin-attribute-type="ChoiceField">' + obj.label
+					+ '<img class="pushpin-description" description="'+obj.description+'" src="resources/images/icon-info.png" class="img-circle"/><br>\
 						<select>'+choices+'</select>';
 			}else if(obj.type === 'ClassificationField'){
 				
@@ -69,10 +70,10 @@
 				var originalValue = (tag !== false) ? tag.value : '';
 			
 				// Set the label of the field, the current value of the input, and set the form's id to the name of the field
-				item = '<a id="name-link" class="list-group-item pushpin-classification pushpin-attribute" pushpin-attribute-name="' 
+				item = '<a class="list-group-item pushpin-classification pushpin-attribute" pushpin-attribute-name="' 
 					+ obj.data_name+ '" pushpin-attribute-type="ClassificationField" pushpin-classification="' 
 					+ obj.classification_set_id + '" pushpin-original-value="' + originalValue + '" pushpin-current-value="' + originalValue + '">'
-					+obj.label+'<img style="float: right; margin: -10px -15px;" src="resources/images/icon-info.png" class="img-circle"/><br>\
+					+obj.label+'<img class="pushpin-description" description="'+obj.description+'" src="resources/images/icon-info.png" class="img-circle"/><br>\
 				<span id="form-' + obj.data_name + '">' + displayString + '</span></a>';
 				//<input value="'+context[obj.data_name.replace(':','_')]+'" id="form-'+obj.data_name+'" type="text" readonly/></a>';
 			}
@@ -131,9 +132,7 @@
 				
 			});
 			
-			context.poiForm.empty();
-			
-			context.poiForm.append(items.join(""));
+			context.poiForm.html(items.join(""));
 			
 			//Update Type value
 			if (PushPin.existsAndNotNull(typeDisplay)){
@@ -146,7 +145,35 @@
 				parent.attr('pushpin-current-value', typeCurrentValue);
 				
 			}
+			
+			//Display Item Description
+			context.poiForm.find('.pushpin-description').click(function(e){
+				e.stopPropagation();
+			
+				var element = $(this);
+				
+				var descriptionURL = element.attr('description');
+				
+				var descriptionForm = $('#descriptionForm');
+				
+				var mainForm = $('#mainForm');
+				
+				mainForm.addClass('hide');
+				
+				descriptionForm.removeClass('hide');				
+				
+				var itemDescription = descriptionForm.find('p');
+				
+				$.get(descriptionURL, function(data){
+				
+					var info = $.parseHTML(data);
+				
+					itemDescription.html(info[7]);
+				});
+				
+			});
 		
+			//Display Classification
 			context.poiForm.find('.pushpin-classification').click(function(){
 				var element = $(this);			
 				

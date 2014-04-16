@@ -5,14 +5,14 @@
 		this.feature = null;
 		
 		this.mainForm = $('#mainForm');
+		this.classificationForm = $('#classificationForm');
+		this.descriptionForm = $('#descriptionForm');
 		
 		this.cancelFormBtn = this.mainForm.find('#cancelFormBtn');
 		this.saveFormBtn = this.mainForm.find('#saveFormBtn');
-		this.movePointBtn = this.mainForm.find('#movePointBtn');
-		
-		this.classificationForm = $('#classificationForm');
-		
+		this.movePointBtn = this.mainForm.find('#movePointBtn');		
 		this.classificationCancelBtn = this.classificationForm.find('#cancelFormBtn');
+		this.cancelDescriptionBtn = this.descriptionForm.find('#cancelDescriptionBtn');
 	};
 	
 	var prototype = PushPin.FormView.prototype;
@@ -36,6 +36,12 @@
     	
     	this.movePointBtn.click(function(){
     		return context.movePoint();
+    	});
+    	
+    	this.cancelDescriptionBtn.click(function(){
+    		
+    		context.descriptionForm.addClass('hide');
+    		context.mainForm.removeClass('hide');
     	});
 	};
 	
