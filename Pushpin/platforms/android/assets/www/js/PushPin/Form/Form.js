@@ -210,7 +210,7 @@
 
 						element.find('span').html(displayString);
 
-						element.attr('pushpin-current-value', typeCurrentValue);
+						element.attr('pushpin-current-value', pushpinCurrentValue);
 					}
 				});
 				
@@ -283,33 +283,42 @@
 		
 		var attributeName = attribute.attr('pushpin-attribute-name');
 		
+		var attributeType = attribute.attr('pushpin-attribute-type');
+		
 		if(originalValue !== currentValue){
+			if (attributeType === 'TextField'){
+				var property = this.feature.properties[attributeName];
+				property.value = currentValue;
+				property.updated = true;
 			
-			var newValue = currentValue.split('=');
-			
-			var newKey = newValue[0];
-			newValue = newValue[1];
-			
-			// Delete the old
-			var oldValue = originalValue.split('=');
-			var oldKey = oldValue[0];
-			oldValue = oldValue[1];
-			
-			if(PushPin.existsAndNotNull(this.feature.properties[oldKey]) 
-					&& (this.feature.properties[oldKey].value === oldValue)){
+			} else if (attributeType === 'ChoiceField' || attributeType === 'ClassificationField') {
+				var newValue = currentValue.split('=');
 				
-				delete this.feature.properties[oldKey];
+				var newKey = newValue[0];
+				newValue = newValue[1];
+				
+				// Delete the old
+				var oldValue = originalValue.split('=');
+				var oldKey = oldValue[0];
+				oldValue = oldValue[1];
+				
+				if(PushPin.existsAndNotNull(this.feature.properties[oldKey]) 
+						&& (this.feature.properties[oldKey].value === oldValue)){
+					
+					delete this.feature.properties[oldKey];
+				}
+				
+				// Insert the new
+				if(!PushPin.existsAndNotNull(this.feature.properties[newKey])){
+					this.feature.properties[newKey] = {};
+				}
+				
+				var property = this.feature.properties[newKey];
+				
+				property.value = newValue;
+				property.updated = true;
+			
 			}
-			
-			// Insert the new
-			if(!PushPin.existsAndNotNull(this.feature.properties[newKey])){
-				this.feature.properties[newKey] = {};
-			}
-			
-			var property = this.feature.properties[newKey];
-			
-			property.value = newValue;
-			property.updated = true;
 		}
 	};
 	
