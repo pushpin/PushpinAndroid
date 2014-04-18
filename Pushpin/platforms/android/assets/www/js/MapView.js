@@ -98,17 +98,6 @@
     	if(layers.getLength() > 2){
     		layers.removeAt(2);
     	}
-    	
-    	//BBOX
-    	/*var bbox = this.map.getBoundingBox();
-    	var poiURL = 'http://api.openstreetmap.org/api/0.6/map?bbox='+bbox;
-		console.log(poiURL);
-		
-		//GET OSMXML
-    	var vectorSource = new ol.source.OSMXML({
-		  projection: 'EPSG:3857',
-		  url: poiURL
-		});*/
 		
 		//POI Pin Style
 		var styleFunction = function(feature,resolution){

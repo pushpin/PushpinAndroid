@@ -128,10 +128,9 @@ var app = {
     			// TODO: getSavedFeaturesFileEntry and addFeaturesToMap should be moved out of MapView.js
     			
     			app.view.getSavedFeaturesFileEntry(function(fileEntry){
-    				var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new ol.format.OSMXML());
+    				var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
         			
         			loader.load(function(features){
-        				
         				app.view.addFeaturesToMap(features);
         			}, function(e){
         				console.log("couldn't load saved features from file", e);
