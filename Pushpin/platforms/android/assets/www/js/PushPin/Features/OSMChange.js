@@ -1,10 +1,12 @@
 (function(){
 	
-	PushPin.Features.OSMChange = function(type, tags, osmId, version){
-		this.type = type;
-		this.tags = tags;
-		this.osmId = osmId;
-		this.version = version;
+	PushPin.Features.OSMChange = function(feature, localStorage){
+		this.type = feature.element;
+		this.tags = feature.properties;
+		this.osmId = feature.id;
+		this.version = feature.version;
+		this.lon = ol.proj.transform(localStorage.getPinPosition(),'EPSG:3857','EPSG:4326')[0];
+		this.lat = ol.proj.transform(localStorage.getPinPosition(),'EPSG:3857','EPSG:4326')[1];
 	};
 	
 	var prototype = PushPin.Features.OSMChange.prototype;
@@ -13,7 +15,7 @@
 		
 		var xml = '';
 		
-		switch(type){
+		switch(this.type){
 			case "way": 
 			
 				xml = this.getWayXML(changesetId);
@@ -58,6 +60,8 @@
 	
 	prototype.getNodeXML = function(changesetId){
 		
+		var version = parseFloat(this.version) + 1;
+		
 		var xml = '<node';
 		
 		// If the element has an osmId, add it to the tag
@@ -65,12 +69,12 @@
 			xml += ' id="' + this.osmId + '"';
 		}
 		
-		xml += ' changeset="' + changesetId + '" lat="' + lat + '" lon="' + lon + '">';
+		xml += ' version="' + version + '" changeset="' + changesetId + '" lat="' + this.lat + '" lon="' + this.lon + '">';
 			
 		// If the change has tags, add them to the xml
 		if(PushPin.existsAndNotNull(this.tags)){
 			for(var key in this.tags){
-				xml += '<tag k="' + key + '" v="' + this.tags[key] + '" />';
+				xml += '<tag k="' + key + '" v="' + this.tags[key].value + '" />';
 			}
 		}
 		

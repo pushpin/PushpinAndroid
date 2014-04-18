@@ -140,12 +140,13 @@
 		     	var poi = {};
 		     	
 		     	poi['id'] = feature.getId();
-		     	
+		     	poi['element'] = 'node';
+		     	poi['version'] = feature.get('version');
 		     	poi['properties'] = {};
 		     	
 		     	for(var key in properties){
 		     		
-		     		if(key !== "geometry"){
+		     		if(key !== "geometry" && key !== 'version'){
 		     			poi['properties'][key] = {
 		     				value: properties[key],
 		     				updated: false
