@@ -1,12 +1,14 @@
 (function(){
 	
-	PushPin.Features.OSMUploader = function(feature, requestSignature, onSuccess, onFailure){
+	PushPin.Features.OSMUploader = function(feature, requestSignature, localStorage, onSuccess, onFailure){
 		this.feature = feature;
 		this.requestSignature = requestSignature;
 		this.onSuccess = onSuccess;
 		this.onFailure = onFailure;
-		this.hostUrl = PushPin.getOSMUrl();
+		//this.hostUrl = PushPin.getOSMUrl();
+		this.hostUrl = "http://api.openstreetmap.org";
 		this.changeset = null;
+		this.localStorage = localStorage;
 	};
 	
 	var prototype = PushPin.Features.OSMUploader.prototype;
@@ -21,7 +23,7 @@
 		
 		if(PushPin.existsAndNotNull(this.changeset)){
 			
-			var url = this.hostUrl + "/api/0.6/changset/" + changeset.id + "/close";
+			var url = this.hostUrl + "/api/0.6/changset/" + this.changeset.id + "/close";
 			
 			$.ajax({
 				url: url,
@@ -57,7 +59,9 @@
 		$.ajax({
 			url: url,
 			type: 'PUT',
-			data: requestSignature,
+			headers: {
+				"Authorization": this.requestSignature
+			},
 			success: function(data, textStatus, jqXHR){
 				console.log("successfully created changeset", data);
 				context.changeset = data;
@@ -65,7 +69,9 @@
 			},
 			error: function(jqXHR, textStatus, err){
 				console.log("couldn't create changeset");
-				context.onFailure(err);
+				if(PushPin.existsAndNotNull(context.onFailure)){
+					context.onFailure(err);	
+				}
 			}
 		});
 	};
@@ -75,6 +81,8 @@
 		var context = this;
 		
 		var url = this.hostUrl + "/api/0.6"
+		
+		var change = new PushPin.OSMChange(this.feature, this.localStorage);
 		
 		if(PushPin.existsAndNotNull(change.osmId)){
 			// If the id exists, then this is an update
@@ -92,7 +100,7 @@
 			url += "/node/create";
 		}
 		
-		var changeXML = change.getXML();
+		var changeXML = change.getXML(context.changeset.id);
 		
 		$.ajax({
 			url: url,

@@ -20,10 +20,10 @@ PushPin.OSMAuth = function(consumerKey, consumerSecret, db){
 	this.authenticatedFailureCallback = null;
 };
 
-PushPin.OSMAuth.prototype.onAuthenticated = function(){
+PushPin.OSMAuth.prototype.onAuthenticated = function(accessToken){
 	
 	if(PushPin.existsAndNotNull(this.authenticatedSuccessCallback)){
-		this.authenticatedSuccessCallback();
+		this.authenticatedSuccessCallback(accessToken);
 	}
 };
 
@@ -173,7 +173,7 @@ PushPin.OSMAuth.prototype.saveAccessToken = function(){
 		
 		// TODO: Saved access token successfully
 		
-		context.onAuthenticated();
+		context.onAuthenticated(context.accessToken);
 	}, function(e){
 		
 		// TODO: Failed to save access token

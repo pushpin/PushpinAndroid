@@ -1,8 +1,9 @@
 (function(){
-	PushPin.FormView = function(form, localStorage){
+	PushPin.FormView = function(form, localStorage, requestSignature){
 		this.form = form;
 		this.localStorage = localStorage;
 		this.feature = null;
+		this.requestSignature = requestSignature;
 		
 		this.mainForm = $('#mainForm');
 		this.classificationForm = $('#classificationForm');
@@ -54,6 +55,9 @@
     	//TODO
     	var feature = this.form.getFeatureWithUpdatedAttributes();
     	
+    	var uploader = new PushPin.Features.OSMUploader(feature, this.requestSignature, this.localStorage);
+    	uploader.upload();
+  	
     	console.log("saveForm", feature);
     };
     

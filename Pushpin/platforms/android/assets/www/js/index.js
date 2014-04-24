@@ -28,6 +28,8 @@ var app = {
 	
 	form: null,
 	
+	requestSignature: null,
+	
     // Application Constructor
     initialize: function(view) {
     	viewType = view;
@@ -82,11 +84,38 @@ var app = {
     	app.load();
     },
     
+    createSignatureHeader: function(accessToken){
+    	
+    	var access = JSON.parse(accessToken.value);
+    	console.log(accessToken);
+    	
+    	var host = "http://api.openstreetmap.org";
+    	
+    	var url = host + '/oauth/request_token';
+    	
+    	var o = {
+    		oauth_consumer_key: PushPin.Secrets.OAUTH.CONSUMER_KEY,
+    		oauth_signature_method: 'HMAC-SHA1'    		
+    	}; 
+    	
+    	var oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET , access.oauth_token_secret,
+                ohauth.baseString('PUT', url, o));
+    	console.log(oauth_signature);
+    	
+    	requestSignature = 'OAuth oauth_version="1.0",oauth_consumer_key="' + PushPin.Secrets.OAUTH.CONSUMER_KEY 
+					+ '",oauth_token="' + access.oauth_token + '",oauth_timestamp="' + ohauth.timestamp() 
+					+ '",oauth_nonce="' + ohauth.nonce()
+					+ '",oauth_signature_method="' + 'HMAC-SHA1' 
+					+ '",oauth_signature="' + oauth_signature + '"';
+    	
+    	console.log(requestSignature);
+    },
+    
     authenticate: function(){
     	app.initAuth();
         
-        app.osmAuth.authenticate(function(){
-        	
+        app.osmAuth.authenticate(function(accessToken){
+        	app.createSignatureHeader(accessToken);
         	app.onAuthenticated();
         	
         }, function(e){
@@ -107,6 +136,7 @@ var app = {
         	if(!PushPin.existsAndNotNull(accessToken)){
         		app.authenticate();
         	}else{
+        		app.createSignatureHeader(accessToken);
         		app.onAuthenticated();
         	}
         }, function(e){
@@ -160,7 +190,7 @@ var app = {
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
 				    	
-				    	app.view = new PushPin.FormView(app.form, app.localStorage);
+				    	app.view = new PushPin.FormView(app.form, app.localStorage, requestSignature);
 						app.view.registerEvents();
 					}).fail(function(jqXHR, textStatus, err){
 						console.log("Couldn't load form view", err);
