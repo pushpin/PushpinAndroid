@@ -20,7 +20,12 @@
 		};
 		
 		this.fileReader.onload = function(evt){
-			context.features = context.format.readFeatures(evt.target.result);
+			
+			console.log("file reader onload", evt);
+			
+			if(PushPin.existsAndNotNull(evt.target.result)){
+				context.features = context.format.readFeatures(evt.target.result);
+			}
 			
 			console.log("successfully loaded features");
 			if(PushPin.existsAndNotNull(onSuccess)){

@@ -71,10 +71,15 @@
 		this.map.setCenter(position,'EPSG:3857');
     };
     
-    prototype.addCrosshair = function(){    	
-	    var mapCenter = this.map.getCenter();
-	    mapCenterPixel = this.map.getPixelFromCoordinate(mapCenter);
-	    $('#crosshair').css('left',mapCenterPixel[0]-8);
-	    $('#crosshair').css('bottom',mapCenterPixel[1]-15);
+    prototype.addCrosshair = function(){
+      // Function being called before map is able to be rendered
+      var map = this.map;
+      setTimeout(function() {
+        var mapCenter = map.getCenter();
+        var mapCenterPixel = map.getPixelFromCoordinate(mapCenter);
+        console.log("mapCenterPixel = " + mapCenterPixel);
+        $('#crosshair').css('left', mapCenterPixel[0] - 8);
+        $('#crosshair').css('bottom', mapCenterPixel[1] - 15);
+      }, 500);
     };
 })();

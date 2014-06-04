@@ -5,8 +5,8 @@
 		this.requestSignature = requestSignature;
 		this.onSuccess = onSuccess;
 		this.onFailure = onFailure;
-		//this.hostUrl = PushPin.getOSMUrl();
-		this.hostUrl = "http://api.openstreetmap.org";
+		this.hostUrl = PushPin.getOSMUrl();
+		//this.hostUrl = "http://api.openstreetmap.org";
 		this.changeset = null;
 		this.localStorage = localStorage;
 	};
@@ -60,7 +60,7 @@
 			url: url,
 			type: 'PUT',
 			headers: {
-				"Authorization": this.requestSignature
+				authorization: this.requestSignature
 			},
 			success: function(data, textStatus, jqXHR){
 				console.log("successfully created changeset", data);

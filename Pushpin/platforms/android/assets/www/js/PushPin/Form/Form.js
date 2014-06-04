@@ -287,6 +287,7 @@
 		
 		if(originalValue !== currentValue){
 			if (attributeType === 'TextField'){
+			    console.log('feature = ', feature);
 				var property = this.feature.properties[attributeName];
 				property.value = currentValue;
 				property.updated = true;

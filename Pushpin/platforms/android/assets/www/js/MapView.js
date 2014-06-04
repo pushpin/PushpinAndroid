@@ -82,11 +82,9 @@
     
     prototype.transformFeatures = function(features){
     	
-    	var transform = ol.proj.getTransform(this.map.locationProj, this.map.mapProj);
-    	
     	for(var i = 0; i < features.length; i++){
     		
-    		features[i].getGeometry().transform(transform);
+    		features[i].getGeometry().transform(this.map.locationProj, this.map.mapProj);
     	}
     	
     	return features;

@@ -85,37 +85,41 @@ var app = {
     },
     
     createSignatureHeader: function(accessToken){
-    	
-    	var access = JSON.parse(accessToken.value);
-    	console.log(accessToken);
-    	
-    	var host = "http://api.openstreetmap.org";
-    	
-    	var url = host + '/oauth/request_token';
-    	
+
+        var access;
+        if(accessToken.value)
+            access = JSON.parse(accessToken.value);
+        else
+            access = accessToken;
+
+        console.log('access = ', access);
+        console.log("PushPin = ", PushPin);
+
+    	var url = PushPin.getOSMUrl() + "/oauth/request_token";
     	var o = {
     		oauth_consumer_key: PushPin.Secrets.OAUTH.CONSUMER_KEY,
-    		oauth_signature_method: 'HMAC-SHA1'    		
-    	}; 
-    	
-    	var oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET , access.oauth_token_secret,
-                ohauth.baseString('PUT', url, o));
-    	console.log(oauth_signature);
-    	
-    	requestSignature = 'OAuth oauth_version="1.0",oauth_consumer_key="' + PushPin.Secrets.OAUTH.CONSUMER_KEY 
-					+ '",oauth_token="' + access.oauth_token + '",oauth_timestamp="' + ohauth.timestamp() 
-					+ '",oauth_nonce="' + ohauth.nonce()
-					+ '",oauth_signature_method="' + 'HMAC-SHA1' 
-					+ '",oauth_signature="' + oauth_signature + '"';
-    	
-    	console.log(requestSignature);
+    		oauth_signature_method: 'HMAC-SHA1',
+    		oauth_timestamp: ohauth.timestamp(),
+    		oauth_nonce: ohauth.nonce()
+    	};
+
+    	var oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET, access.oauth_token_secret, ohauth.baseString('PUT', url, o));
+
+    	console.log('signature:', oauth_signature);
+
+    	this.requestSignature = 'OAuth oauth_version="1.0",oauth_consumer_key="' +  o.oauth_consumer_key
+					+ '",oauth_token="' + access.oauth_token + '",oauth_timestamp="' + ohauth.timestamp()
+					+ '",oauth_nonce="' + ohauth.nonce() + '",oauth_signature_method="' + o.oauth_signature_method
+					+ '",oauth_signature="' + encodeURIComponent(oauth_signature);
+
+    	console.log(this.requestSignature);
     },
     
     authenticate: function(){
     	app.initAuth();
         
         app.osmAuth.authenticate(function(accessToken){
-        	app.createSignatureHeader(accessToken);
+       	    app.createSignatureHeader(accessToken);
         	app.onAuthenticated();
         	
         }, function(e){
@@ -136,7 +140,7 @@ var app = {
         	if(!PushPin.existsAndNotNull(accessToken)){
         		app.authenticate();
         	}else{
-        		app.createSignatureHeader(accessToken);
+        		app.createSignatureHeader(accessToken, app.osmAuth);
         		app.onAuthenticated();
         	}
         }, function(e){
@@ -181,7 +185,7 @@ var app = {
 				}			
 				break;
 			case 'formView':
-					
+			    var context = this;
 				$.getJSON('resources/form.json', function(formJSON, textStatus, jqXHR){
 					
 					$.getJSON('resources/classifications.json', function(classificationsJSON, textStatus, jqXHR){
@@ -190,7 +194,7 @@ var app = {
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
 				    	
-				    	app.view = new PushPin.FormView(app.form, app.localStorage, requestSignature);
+				    	app.view = new PushPin.FormView(app.form, app.localStorage, context.requestSignature);
 						app.view.registerEvents();
 					}).fail(function(jqXHR, textStatus, err){
 						console.log("Couldn't load form view", err);
