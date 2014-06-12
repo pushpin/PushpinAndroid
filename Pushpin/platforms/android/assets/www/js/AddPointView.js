@@ -50,21 +50,27 @@
 		
 		pin = new ol.Overlay({
 			position: position,
-		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png')
+		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png'),
+		  	offsetY: -39,
+            offsetX: -8
 		});
 		
 		this.map.addOverlay(pin);
     };
     
     prototype.addPinForSelectedPoint = function(){
-    	var position,pin;
+    	var position, pin;
     	
     	position = this.localStorage.getPinPosition();
     	this.localStorage.saveMapCenter(position);
+
+    	console.log('pin position:', position);
     	
     	pin = new ol.Overlay({
 			position: position,
-		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png')
+		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png'),
+		  	offsetY: -39,
+		  	offsetX: -8
 		});
 		
 		this.map.addOverlay(pin);
@@ -78,7 +84,7 @@
         var mapCenter = map.getCenter();
         var mapCenterPixel = map.getPixelFromCoordinate(mapCenter);
         console.log("mapCenterPixel = " + mapCenterPixel);
-        $('#crosshair').css('left', mapCenterPixel[0] - 8);
+        $('#crosshair').css('left', mapCenterPixel[0] - 16);
         $('#crosshair').css('bottom', mapCenterPixel[1] - 15);
       }, 500);
     };

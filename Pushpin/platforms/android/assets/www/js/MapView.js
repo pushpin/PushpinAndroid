@@ -145,7 +145,7 @@
 					var pinStyle = [
 						  		new ol.style.Style({
 						    		image: new ol.style.Icon( {
-								    anchor: [0.5, 46],
+								    anchor: [0.25, 39],
 								    anchorXUnits: 'fraction',
 								    anchorYUnits: 'pixels',
 								    src: iconPath
