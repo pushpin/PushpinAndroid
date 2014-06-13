@@ -247,17 +247,18 @@
 	};
 	
 	prototype.populateForm = function(feature){
-		if (feature !== 'null' ){
-			this.feature = JSON.parse(feature);
-			
-			console.log("feature", this.feature);
-			
-			if(PushPin.existsAndNotNull(this.feature['id'])){
-				$('#mainForm h4').html('Edit POI');
-			}else{
-				$('#mainForm h4').html('Add POI');
-			}
+	    this.feature = feature;
+		if (this.feature !== 'null' ){
+			this.feature = JSON.parse(this.feature);
 		}
+
+		console.log("feature", this.feature);
+
+        if(PushPin.existsAndNotNull(this.feature['id'])){
+            $('#mainForm h4').html('Edit POI');
+        }else{
+            $('#mainForm h4').html('Add POI');
+        }
 	};
 	
 	prototype.getFeatureWithUpdatedAttributes = function(){
@@ -276,6 +277,12 @@
 	};
 	
 	prototype.checkAttributeForUpdates = function(attribute){
+
+	    if(!PushPin.existsAndNotNull(this.feature)) {
+	        return;
+	    }
+
+	    console.log('feature:', this.feature);
 		
 		var currentValue = this.getAttributeValue(attribute);
 		
@@ -303,7 +310,7 @@
 				var oldKey = oldValue[0];
 				oldValue = oldValue[1];
 				
-				if(PushPin.existsAndNotNull(this.feature.properties[oldKey]) 
+				if(PushPin.existsAndNotNull(this.feature.properties[oldKey])
 						&& (this.feature.properties[oldKey].value === oldValue)){
 					
 					delete this.feature.properties[oldKey];

@@ -28,7 +28,9 @@ var app = {
 	
 	form: null,
 	
-	requestSignature: null,
+	oauth: null,
+
+	accessToken: null,
 	
     // Application Constructor
     initialize: function(view) {
@@ -93,26 +95,25 @@ var app = {
             access = accessToken;
 
         console.log('access = ', access);
-        console.log("PushPin = ", PushPin);
 
-    	var url = PushPin.getOSMUrl() + "/oauth/request_token";
-    	var o = {
-    		oauth_consumer_key: PushPin.Secrets.OAUTH.CONSUMER_KEY,
-    		oauth_signature_method: 'HMAC-SHA1',
-    		oauth_timestamp: ohauth.timestamp(),
-    		oauth_nonce: ohauth.nonce()
-    	};
+//    	var url = PushPin.getOSMUrl() +  "/oauth/request_token";
+//    	var o = {
+//    	    version: '1.0',
+//    		consumer_key: PushPin.Secrets.OAUTH.CONSUMER_KEY,
+//    		consumer_secret: PushPin.Secrets.OAUTH.CONSUMER_SECRET,
+//    		token: access.oauth_token,
+//    		token_secret: access.oauth_token_secret,
+//    		signature_method: 'HMAC-SHA1'
+//    	};
+//
+//       	//o.oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET, access.oauth_token_secret, ohauth.baseString('PUT', url, o));
+//
+//        var getRequestSignature = ohauth.headerGenerator(o);
+//	    this.requestSignature = getRequestSignature('PUT', url);
+//
+//    	console.log('requestSignature:', this.requestSignature);
 
-    	var oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET, access.oauth_token_secret, ohauth.baseString('PUT', url, o));
-
-    	console.log('signature:', oauth_signature);
-
-    	this.requestSignature = 'OAuth oauth_version="1.0",oauth_consumer_key="' +  o.oauth_consumer_key
-					+ '",oauth_token="' + access.oauth_token + '",oauth_timestamp="' + ohauth.timestamp()
-					+ '",oauth_nonce="' + ohauth.nonce() + '",oauth_signature_method="' + o.oauth_signature_method
-					+ '",oauth_signature="' + encodeURIComponent(oauth_signature);
-
-    	console.log(this.requestSignature);
+    	this.accessToken = access;
     },
     
     authenticate: function(){
@@ -140,7 +141,7 @@ var app = {
         	if(!PushPin.existsAndNotNull(accessToken)){
         		app.authenticate();
         	}else{
-        		app.createSignatureHeader(accessToken, app.osmAuth);
+        		app.createSignatureHeader(accessToken);
         		app.onAuthenticated();
         	}
         }, function(e){
@@ -194,7 +195,7 @@ var app = {
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
 				    	
-				    	app.view = new PushPin.FormView(app.form, app.localStorage, context.requestSignature);
+				    	app.view = new PushPin.FormView(app.form, app.localStorage, context.accessToken);
 						app.view.registerEvents();
 					}).fail(function(jqXHR, textStatus, err){
 						console.log("Couldn't load form view", err);

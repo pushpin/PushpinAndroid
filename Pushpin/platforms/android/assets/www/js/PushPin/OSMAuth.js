@@ -28,7 +28,6 @@ PushPin.OSMAuth.prototype.onAuthenticated = function(accessToken){
 };
 
 PushPin.OSMAuth.prototype.onAuthenticationFailed = function(e){
-	
 	if(PushPin.existsAndNotNull(this.authenticatedFailureCallback)){
 		this.authenticatedFailureCallback(e);
 	}
@@ -170,13 +169,11 @@ PushPin.OSMAuth.prototype.saveAccessToken = function(){
 	console.log("Access token: " + JSON.stringify(this.accessToken));
 	
 	this.preferences.saveAccessToken(this.accessToken, function(){
-		
-		// TODO: Saved access token successfully
-		
+		// Saved access token successfully
 		context.onAuthenticated(context.accessToken);
 	}, function(e){
 		
-		// TODO: Failed to save access token
+		// Failed to save access token
 		context.onAuthenticationFailed(e);
 	});
 };
