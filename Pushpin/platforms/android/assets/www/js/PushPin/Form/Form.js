@@ -220,7 +220,7 @@
 		};
 		
 		//Check if Feature exists
-		if(PushPin.existsAndNotNull(this.feature)){
+		if(PushPin.existsAndNotNull(this.feature.id)){
 			var typeID = form[0].elements[1].classification_set_id;
 			type = this.classificationsBuilder.tagPresentForId(typeID,this.feature).values;
 		}
@@ -251,38 +251,39 @@
 		if (this.feature !== 'null' ){
 			this.feature = JSON.parse(this.feature);
 		}
-
-		console.log("feature", this.feature);
+		else {
+            this.feature = {
+                element: "node",
+                properties: {}
+            };
+		}
 
         if(PushPin.existsAndNotNull(this.feature['id'])){
             $('#mainForm h4').html('Edit POI');
+            this.newFeature = false;
         }else{
             $('#mainForm h4').html('Add POI');
+            this.newFeature = true;
         }
+
 	};
 	
 	prototype.getFeatureWithUpdatedAttributes = function(){
-		
-		var attributes = this.poiForm.find('.pushpin-attribute');
-		
-		var attribute = null;
-		
-		for(var i = 0; i < attributes.length; i++){
-			attribute = $(attributes[i]);
-			
-			this.checkAttributeForUpdates(attribute);
-		}
-		
+
+        var attributes = this.poiForm.find('.pushpin-attribute');
+
+        var attribute = null;
+
+        for(var i = 0; i < attributes.length; i++){
+            attribute = $(attributes[i]);
+            this.checkAttributeForUpdates(attribute);
+        }
+
+		console.log('feature:', this.feature);
 		return this.feature;
 	};
 	
 	prototype.checkAttributeForUpdates = function(attribute){
-
-	    if(!PushPin.existsAndNotNull(this.feature)) {
-	        return;
-	    }
-
-	    console.log('feature:', this.feature);
 		
 		var currentValue = this.getAttributeValue(attribute);
 		
@@ -293,13 +294,13 @@
 		var attributeType = attribute.attr('pushpin-attribute-type');
 		
 		if(originalValue !== currentValue){
-			if (attributeType === 'TextField'){
-			    console.log('feature = ', feature);
-				var property = this.feature.properties[attributeName];
+			if (attributeType == 'TextField'){
+				var property = { };
 				property.value = currentValue;
 				property.updated = true;
+				this.feature.properties[attributeName] = property;
 			
-			} else if (attributeType === 'ChoiceField' || attributeType === 'ClassificationField') {
+			} else if (attributeType == 'ChoiceField' || attributeType == 'ClassificationField') {
 				var newValue = currentValue.split('=');
 				
 				var newKey = newValue[0];
@@ -339,7 +340,6 @@
 			case "TextField":
 			
 				value = attribute.find('input').val();
-				
 				break;
 				
 			case "ChoiceField":
@@ -350,7 +350,6 @@
 			case "ClassificationField":
 				
 				value = attribute.attr('pushpin-current-value');
-				
 				break;
 				
 			default:

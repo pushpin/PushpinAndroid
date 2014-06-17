@@ -39,8 +39,8 @@
 		<div class="list-group">
 			<li class="list-group-item"><span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>		
 		</div>
-		
-		<button class="btn btn-block btn-danger" type="button" style="margin-top:10px;" onclick="clearTesting()">Delete this POI</button>
+            <!--type="button" style="margin-top:10px;"-->
+		<button class="btn btn-block btn-danger" id="deletePOI">Delete this POI</button>
 		<button class="btn btn-block btn-primary" type="button">View on Web</button>
 		
 		</div>
@@ -64,7 +64,7 @@
   	</div>
   	
 	
-	<!--<script src="http://192.168.56.1:8082/target/target-script-min.js#formView"></script>-->
+	<script src="http://192.168.56.1:8082/target/target-script-min.js#formView"></script>
 	<script src="js/lib/jquery-1.11.0.min.js"></script>
 	<script src="bootstrap/js/bootstrap.js"></script>
 	<script src="js/lib/ol/ol-whitespace.js"></script>
@@ -78,10 +78,13 @@
     <script src="js/PushPin/Secrets.js" type="text/javascript"></script>
     <script src="js/PushPin/OSMAuth.js" type="text/javascript"></script>
     <script src="js/PushPin/Map/Map.js" type="text/javascript"></script>
+    <script src="js/lib/underscore-min.js" type="text/javascript"></script>
     <script src="js/PushPin/Features/Features.js" type="text/javascript"></script>
     <script src="js/PushPin/Features/OSMDownloader.js" type="text/javascript"></script>
     <script src="js/PushPin/Features/OSMUploader.js" type="text/javascript"></script>
-    <script src="js/PushPin/Features/OSMChange.js" type="text/javascript"></script>
+    <script src="js/PushPin/Features/OSMDelete.js" type="text/javascript"></script>
+    <script src="js/PushPin/Features/OSMChangeset.js" type="text/javascript"></script>
+    <script src="js/PushPin/Features/OSMXML.js" type="text/javascript"></script>
     <script src="js/PushPin/Features/Save.js" type="text/javascript"></script>
     <script src="js/PushPin/Features/Loader.js" type="text/javascript"></script>
     <script src="js/PushPin/Form/Form.js" type="text/javascript"></script>

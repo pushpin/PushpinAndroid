@@ -7,6 +7,7 @@
 		this.pinPositionX = 'pinPositionX';
 		this.pinPositionY = 'pinPositionY';
 		this.feature = 'feature';
+		this.changeset = 'changeset';
 	};
 	
 	var prototype = PushPin.LocalStorage.prototype;
@@ -77,5 +78,13 @@
 	
 	prototype.clearFeature = function(){
 		localStorage.setItem(this.feature, null);
+	};
+
+	prototype.saveChangeset = function(changeset) {
+	    localStorage.setItem(this.changeset, changeset);
+	};
+
+	prototype.getChangeset = function() {
+	    return localStorage.getItem(this.changeset);
 	};
 })();

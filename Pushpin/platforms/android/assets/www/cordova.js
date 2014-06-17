@@ -1031,9 +1031,9 @@ function processMessage(message) {
             console.log("processMessage failed: invalid message:" + message);
         }
     } catch (e) {
-        console.log("processMessage failed: Message: " + message);
-        console.log("processMessage failed: Error: " + e);
-        console.log("processMessage failed: Stack: " + e.stack);
+        console.log("processMessage failed: Message: ")// + message);
+        console.log("processMessage failed: Error: ")// + e);
+        console.log("processMessage failed: Stack: ")// + e.stack);
     }
 }
 

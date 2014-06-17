@@ -28,10 +28,6 @@ var app = {
 	
 	form: null,
 	
-	oauth: null,
-
-	accessToken: null,
-	
     // Application Constructor
     initialize: function(view) {
     	viewType = view;
@@ -86,54 +82,20 @@ var app = {
     	app.load();
     },
     
-    createSignatureHeader: function(accessToken){
-
-        var access;
-        if(accessToken.value)
-            access = JSON.parse(accessToken.value);
-        else
-            access = accessToken;
-
-        console.log('access = ', access);
-
-//    	var url = PushPin.getOSMUrl() +  "/oauth/request_token";
-//    	var o = {
-//    	    version: '1.0',
-//    		consumer_key: PushPin.Secrets.OAUTH.CONSUMER_KEY,
-//    		consumer_secret: PushPin.Secrets.OAUTH.CONSUMER_SECRET,
-//    		token: access.oauth_token,
-//    		token_secret: access.oauth_token_secret,
-//    		signature_method: 'HMAC-SHA1'
-//    	};
-//
-//       	//o.oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET, access.oauth_token_secret, ohauth.baseString('PUT', url, o));
-//
-//        var getRequestSignature = ohauth.headerGenerator(o);
-//	    this.requestSignature = getRequestSignature('PUT', url);
-//
-//    	console.log('requestSignature:', this.requestSignature);
-
-    	this.accessToken = access;
-    },
-    
     authenticate: function(){
     	app.initAuth();
         
         app.osmAuth.authenticate(function(accessToken){
-       	    app.createSignatureHeader(accessToken);
         	app.onAuthenticated();
-        	
         }, function(e){
-        	
         	console.log("Authentication Failed!: ", e);
-        	
         	PushPin.reportException(e);
         });
     },
     
     onDeviceReady: function() {
         app.db = PushPin.Database.getDb();
-        
+
         var preferences = new PushPin.Preferences(app.db);
         
         preferences.getAccessToken(function(accessToken){
@@ -141,9 +103,9 @@ var app = {
         	if(!PushPin.existsAndNotNull(accessToken)){
         		app.authenticate();
         	}else{
-        		app.createSignatureHeader(accessToken);
         		app.onAuthenticated();
         	}
+
         }, function(e){
         	
         	console.log("Error: Could not authenticate", e);
@@ -151,7 +113,6 @@ var app = {
         	PushPin.reportException(e);
         });
     },
-    
     setView: function(viewType, fileSystem) {
     	switch(viewType){    		
     		case 'mapView':
@@ -194,9 +155,9 @@ var app = {
 						app.form = new PushPin.Form(formJSON, classificationsJSON);
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
-				    	
-				    	app.view = new PushPin.FormView(app.form, app.localStorage, context.accessToken);
-						app.view.registerEvents();
+                        app.view = new PushPin.FormView(app.form, app.localStorage);
+                        app.view.registerEvents();
+
 					}).fail(function(jqXHR, textStatus, err){
 						console.log("Couldn't load form view", err);
 					});

@@ -36,8 +36,7 @@
     prototype.donePoint = function(){
     	var mapViewCenter = this.map.getCenter();		
 		this.localStorage.saveMapCenter(mapViewCenter);
-
-    	window.location.href = 'formView.html';
+        window.location.href = 'formView.html';
     };
     
     prototype.addPin = function(){
@@ -52,7 +51,7 @@
 			position: position,
 		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png'),
 		  	offsetY: -39,
-            offsetX: -8
+            offsetX: -11
 		});
 		
 		this.map.addOverlay(pin);
@@ -63,14 +62,12 @@
     	
     	position = this.localStorage.getPinPosition();
     	this.localStorage.saveMapCenter(position);
-
-    	console.log('pin position:', position);
     	
     	pin = new ol.Overlay({
 			position: position,
 		  	element: $('<img id="poi-pin">').attr('src','resources/images/icon-pin.png'),
 		  	offsetY: -39,
-		  	offsetX: -8
+		  	offsetX: -11
 		});
 		
 		this.map.addOverlay(pin);
@@ -84,7 +81,7 @@
         var mapCenter = map.getCenter();
         var mapCenterPixel = map.getPixelFromCoordinate(mapCenter);
         console.log("mapCenterPixel = " + mapCenterPixel);
-        $('#crosshair').css('left', mapCenterPixel[0] - 16);
+        $('#crosshair').css('left', mapCenterPixel[0] - 18);
         $('#crosshair').css('bottom', mapCenterPixel[1] - 15);
       }, 500);
     };
