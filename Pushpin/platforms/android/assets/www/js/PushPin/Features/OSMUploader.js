@@ -1,80 +1,31 @@
 (function(){
 	
-	PushPin.Features.OSMUploader = function(feature, requestSignature, localStorage, onSuccess, onFailure){
+	PushPin.Features.OSMUploader = function(feature, localStorage, onSuccess, onFailure){
 		this.feature = feature;
-		this.requestSignature = requestSignature;
 		this.onSuccess = onSuccess;
 		this.onFailure = onFailure;
 		this.hostUrl = PushPin.getOSMUrl();
-		//this.hostUrl = "http://api.openstreetmap.org";
-		this.changeset = null;
 		this.localStorage = localStorage;
+		this.changeset = null;
 	};
 	
 	var prototype = PushPin.Features.OSMUploader.prototype;
 	
 	prototype.onChangesetCompleted = function(){
 		console.log("on changeset completed");
-		
 		this.closeChangeset(this.onSuccess);
 	};
-	
-	prototype.closeChangeset = function(onSuccess, onFailure){
-		
-		if(PushPin.existsAndNotNull(this.changeset)){
-			
-			var url = this.hostUrl + "/api/0.6/changset/" + this.changeset.id + "/close";
-			
-			$.ajax({
-				url: url,
-				type: 'PUT',
-				success: function(data, textStatus, jqXHR){
-					console.log("Successfully closed changeset", data);
-					
-					if(PushPin.existsAndNotNull(onSuccess)){
-						onSuccess();
-					}
-				},
-				error: function(jqXHR, textStatus, err){
-					console.log("Failed to close changeset", err);
-					
-					if(PushPin.existsAndNotNull(onFailure)){
-						onFailure(err);
-					}
-				}
-			});
-		}
-	};
-	
+
 	prototype.upload = function(){
-		this.createChangeset();
+		var osmChangeset = new PushPin.Features.OSMChangeset(this.localStorage, this.feature, this, this.onCreateChangeset, this.onFailure);
+		osmChangeset.openChangeset();
 	};
-	
-	prototype.createChangeset = function(){
-		
-		var context = this;
-		
-		var url = this.hostUrl + "/api/0.6/changeset/create";
-		
-		$.ajax({
-			url: url,
-			type: 'PUT',
-			headers: {
-				authorization: this.requestSignature
-			},
-			success: function(data, textStatus, jqXHR){
-				console.log("successfully created changeset", data);
-				context.changeset = data;
-				context.startUpload.call(context);
-			},
-			error: function(jqXHR, textStatus, err){
-				console.log("couldn't create changeset");
-				if(PushPin.existsAndNotNull(context.onFailure)){
-					context.onFailure(err);	
-				}
-			}
-		});
-	};
+
+	prototype.onCreateChangeset = function(changeset) {
+	    console.log('starting upload');
+	    this.changeset = changeset;
+	    this.startUpload();
+	}
 	
 	prototype.startUpload = function(){
 		
@@ -82,39 +33,51 @@
 		
 		var url = this.hostUrl + "/api/0.6"
 		
-		var change = new PushPin.OSMChange(this.feature, this.localStorage);
+		var xml = new PushPin.Features.OSMXML(this.feature, this.localStorage);
+
+        if(xml.type === "way"){
+            url += "/way";
+        }else if(xml.type === "relation"){
+            url += "/relation";
+        }else{
+            url += "/node";
+        }
 		
-		if(PushPin.existsAndNotNull(change.osmId)){
+		if(PushPin.existsAndNotNull(xml.osmId)){
 			// If the id exists, then this is an update
-			if(change.type === "way"){
-				url += "/way";
-			}else if(change.type === "relation"){
-				url += "/relation";
-			}else{
-				url += "/node";
-			}
-			
-			url += "/" + change.osmId;
+			url += "/" + xml.osmId;
 		}else{
 			// No id, so this is a create
-			url += "/node/create";
+			url += "/create";
 		}
-		
-		var changeXML = change.getXML(context.changeset.id);
-		
-		$.ajax({
-			url: url,
-			type: "PUT",
-			data: changeXML,
-			contentType: 'text/xml',
-			success: function(data, textStatus, jqXHR){
-				console.log("Successfully uploaded change", change, data);
-				context.startUpload.call(context);
-			},
-			error: function(jqXHR, textStatus, err){
-				console.log("Couldn't upload change", change, jqXHR, textStatus, err);
-				context.onFailure(err);
-			}
+        var preferences = new PushPin.Preferences(PushPin.Database.getDb());
+        preferences.getAccessToken(function(accessToken) {
+            var requestSignature = PushPin.createRequestSignature('PUT', url, accessToken);
+            var xml = new PushPin.Features.OSMXML(context.feature, context.localStorage);
+
+            $.ajax({
+             headers: {
+                 'Content-Type': 'text/plain',
+                 'User-Agent': 'PushPin 1.1 rv:25',
+                 'Accept-Encoding' : 'gzip',
+                 'Connection' : 'close',
+                 'Authorization': requestSignature
+             },
+             url: url,
+             type: 'PUT',
+             data: xml.getUploadXML(context.changeset),
+             success: function(data, textStatus, jqXHR) {
+                 console.log('successfully uploaded feature', data);
+                 context.localStorage.saveFeature(data);
+                 var osmChangeset = new PushPin.Features.OSMChangeset(context.localStorage, context.feature, context, context.onSuccess, context.onSuccess);
+                 osmChangeset.closeChangeset(context.changeset);
+             },
+             error: function(jqXHR, textStatus, err) {
+                 console.log('error uploading feature', err);
+                 var osmChangeset = new PushPin.Features.OSMChangeset(context.localStorage, context.feature, context, context.onFailure, context.onFailure);
+                 osmChangeset.closeChangeset(context.changeset);
+             }
+            });
 		});
 	};
 })();

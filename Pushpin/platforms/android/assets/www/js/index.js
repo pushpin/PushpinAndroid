@@ -28,8 +28,6 @@ var app = {
 	
 	form: null,
 	
-	requestSignature: null,
-	
     // Application Constructor
     initialize: function(view) {
     	viewType = view;
@@ -84,55 +82,20 @@ var app = {
     	app.load();
     },
     
-    createSignatureHeader: function(accessToken){
-
-        var access;
-        if(accessToken.value)
-            access = JSON.parse(accessToken.value);
-        else
-            access = accessToken;
-
-        console.log('access = ', access);
-        console.log("PushPin = ", PushPin);
-
-    	var url = PushPin.getOSMUrl() + "/oauth/request_token";
-    	var o = {
-    		oauth_consumer_key: PushPin.Secrets.OAUTH.CONSUMER_KEY,
-    		oauth_signature_method: 'HMAC-SHA1',
-    		oauth_timestamp: ohauth.timestamp(),
-    		oauth_nonce: ohauth.nonce()
-    	};
-
-    	var oauth_signature = ohauth.signature(PushPin.Secrets.OAUTH.CONSUMER_SECRET, access.oauth_token_secret, ohauth.baseString('PUT', url, o));
-
-    	console.log('signature:', oauth_signature);
-
-    	this.requestSignature = 'OAuth oauth_version="1.0",oauth_consumer_key="' +  o.oauth_consumer_key
-					+ '",oauth_token="' + access.oauth_token + '",oauth_timestamp="' + ohauth.timestamp()
-					+ '",oauth_nonce="' + ohauth.nonce() + '",oauth_signature_method="' + o.oauth_signature_method
-					+ '",oauth_signature="' + encodeURIComponent(oauth_signature);
-
-    	console.log(this.requestSignature);
-    },
-    
     authenticate: function(){
     	app.initAuth();
         
         app.osmAuth.authenticate(function(accessToken){
-       	    app.createSignatureHeader(accessToken);
         	app.onAuthenticated();
-        	
         }, function(e){
-        	
         	console.log("Authentication Failed!: ", e);
-        	
         	PushPin.reportException(e);
         });
     },
     
     onDeviceReady: function() {
         app.db = PushPin.Database.getDb();
-        
+
         var preferences = new PushPin.Preferences(app.db);
         
         preferences.getAccessToken(function(accessToken){
@@ -140,9 +103,9 @@ var app = {
         	if(!PushPin.existsAndNotNull(accessToken)){
         		app.authenticate();
         	}else{
-        		app.createSignatureHeader(accessToken, app.osmAuth);
         		app.onAuthenticated();
         	}
+
         }, function(e){
         	
         	console.log("Error: Could not authenticate", e);
@@ -150,7 +113,6 @@ var app = {
         	PushPin.reportException(e);
         });
     },
-    
     setView: function(viewType, fileSystem) {
     	switch(viewType){    		
     		case 'mapView':
@@ -193,9 +155,9 @@ var app = {
 						app.form = new PushPin.Form(formJSON, classificationsJSON);
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
-				    	
-				    	app.view = new PushPin.FormView(app.form, app.localStorage, context.requestSignature);
-						app.view.registerEvents();
+                        app.view = new PushPin.FormView(app.form, app.localStorage);
+                        app.view.registerEvents();
+
 					}).fail(function(jqXHR, textStatus, err){
 						console.log("Couldn't load form view", err);
 					});
