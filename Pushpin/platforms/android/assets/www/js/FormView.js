@@ -80,6 +80,7 @@
 
     	var savedFeature = function() {
     	    console.log('Feature Saved');
+
             window.location.href ='mapView.html';
     	}
 
