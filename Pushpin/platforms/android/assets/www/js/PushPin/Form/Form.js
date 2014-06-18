@@ -258,6 +258,8 @@
             };
 		}
 
+		console.log('feature:', this.feature);
+
         if(PushPin.existsAndNotNull(this.feature['id'])){
             $('#mainForm h4').html('Edit POI');
             this.newFeature = false;

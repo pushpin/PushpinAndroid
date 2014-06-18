@@ -92,7 +92,7 @@
 
 	    var version;
 	    if(this.version)
-	        version = parseInt(this.version) + 1;
+	        version = parseInt(this.version);
 		
 		var xml = '<node';
 		

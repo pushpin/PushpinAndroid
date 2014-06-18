@@ -91,6 +91,7 @@
     };
     
     prototype.addFeaturesToMap = function(features){
+
 		//Remove Existing Vector Layer (Clear Previous Features)
     	var layers = this.map.getLayers();
     	if(layers.getLength() > 2){
@@ -98,7 +99,7 @@
     	}
 		
 		//POI Pin Style
-		var styleFunction = function(feature,resolution){
+		var styleFunction = function(feature, resolution){
 			
 			var keys = ['aerialway','aeroway','amenity', 'barrier','boundary','craft','emergency',
 							'geological','highway','historic','landuse','leisure','man_made', 'military','natural',
@@ -140,7 +141,14 @@
 			}
 			
 			if($.inArray(value,values) > -1){
-					var iconPath = 'resources/icons/'+ value +'-icon.png';
+					var iconPath;
+
+					if(PushPin.existsAndNotNull(value)) {
+					    iconPath = 'resources/icons/'+ value +'-icon.png';
+					}
+					else {
+					    iconPath = 'resources/images/icon-pin.png';
+					}
 
 					var pinStyle = [
 						  		new ol.style.Style({
@@ -152,7 +160,8 @@
 								  })
 						    	})
 						  	
-						  	];	
+						  	];
+
 					return pinStyle;
 						
 			}
@@ -165,6 +174,8 @@
 		features = this.transformFeatures(features);
 		
 		vectorSource.addFeatures(features);
+
+		console.log('vectorSource:', vectorSource);
 		
 		//SET VECTOR LAYER
 		var vector = new ol.layer.Vector({
@@ -189,7 +200,7 @@
     		
     		console.log("successfully got saveFeaturesOSMxml file");
     		
-    		var osmDownloader = new PushPin.Features.OSMDownloader(context.map.getBoundingBox(), function(data){
+    		var osmDownloader = new PushPin.Features.OSMDownloader(context.map.getBoundingBox(), function(data) {
         		
         		var saver = new PushPin.Features.Save(fileEntry);
         		
@@ -198,21 +209,28 @@
         		saver.save(data, function(){
         			
         			console.log("saved downloaded osm xml successully");
-        			
-        			var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new ol.format.OSMXML());
-        			
-        			loader.load(function(features){
-        				
-        				console.log("successfully loaded osm from saved xml", features);
-        				
-        				context.addFeaturesToMap(features);
-        			}, fail);
+        			context.loadPoints();
+
         		}, fail);
         	}, fail);
     		
     		osmDownloader.download();
     		
     	}, fail);
+    };
+
+    prototype.loadPoints = function() {
+       app.view.getSavedFeaturesFileEntry(function(fileEntry){
+            var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
+            loader.load(function(features) {
+                app.view.addFeaturesToMap(features);
+            }, function(e) {
+
+                console.log("couldn't load saved features from file", e);
+            });
+        }, function(e) {
+            console.log("couldn't load saved features from file", e);
+        });
     };
     
     prototype.addPointView = function(){
@@ -222,7 +240,7 @@
 		this.localStorage.clearPinPosition();
 		this.localStorage.clearFeature();
 		
-		window.location.href ='addPoint.html';
+		window.location.href = 'addPoint.html';
     };
     
     prototype.selectBingMap = function(){

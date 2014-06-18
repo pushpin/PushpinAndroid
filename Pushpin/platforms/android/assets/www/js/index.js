@@ -114,28 +114,30 @@ var app = {
         });
     },
     setView: function(viewType, fileSystem) {
+
     	switch(viewType){    		
     		case 'mapView':
     			app.view = new PushPin.MapView(app.map, app.osmAuth,
     					app.localStorage, app.positionHandler, fileSystem);
     			app.view.registerEvents(app.map);
-    			app.view.initializeLayerSelection(); 
+    			app.view.initializeLayerSelection();
+
+    			app.view.loadPoints();
     			
-    			// TODO: getSavedFeaturesFileEntry and addFeaturesToMap should be moved out of MapView.js
-    			
-    			app.view.getSavedFeaturesFileEntry(function(fileEntry){
-    				var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
-        			
-        			loader.load(function(features){
-        				app.view.addFeaturesToMap(features);
-        			}, function(e){
-        				console.log("couldn't load saved features from file", e);
-        			});
-    			}, function(e){
-    				console.log("couldn't load saved features from file", e);
-    			});
+//    			app.view.getSavedFeaturesFileEntry(function(fileEntry){
+//    				var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
+//
+//        			loader.load(function(features){
+//        				app.view.addFeaturesToMap(features);
+//        			}, function(e){
+//        				console.log("couldn't load saved features from file", e);
+//        			});
+//    			}, function(e){
+//    				console.log("couldn't load saved features from file", e);
+//    			});
     			
 				break;
+
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
 				app.view.addCrosshair();
@@ -146,6 +148,7 @@ var app = {
 					app.view.addPinForSelectedPoint();
 				}			
 				break;
+
 			case 'formView':
 			    var context = this;
 				$.getJSON('resources/form.json', function(formJSON, textStatus, jqXHR){
@@ -166,14 +169,15 @@ var app = {
 				});
 		    	
 				break;
+
 			default:
 				console.log("Error: Could not assign view");
     	}
-    	
-    	var savedMapCenter = app.localStorage.getMapCenter();
-    	
-    	if(PushPin.existsAndNotNull(savedMapCenter)){
-    		app.map.setCenter(savedMapCenter,'EPSG:3857');
-    	}
+
+        var savedMapCenter = app.localStorage.getMapCenter();
+
+        if(PushPin.existsAndNotNull(savedMapCenter)){
+            app.map.setCenter(savedMapCenter,'EPSG:3857');
+        }
     }
 };

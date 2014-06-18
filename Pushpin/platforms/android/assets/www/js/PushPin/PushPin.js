@@ -3,7 +3,7 @@ PushPin = (function(){
 	var osmUrl = null;
 	
 	return{
-		DEV_MODE: true,
+		DEV_MODE: false,
 		
 		existsAndNotNull: function(value){
 			if(value !== null && value !== undefined){
