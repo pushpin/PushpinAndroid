@@ -1,10 +1,11 @@
 (function(){
 	
-	PushPin.Form = function(formJSON, classificationsJSON){
+	PushPin.Form = function(formJSON, localStorage, classificationsJSON){
 		
 		this.feature = null;
 		this.formJSON = formJSON;
 		this.classificationsJSON = classificationsJSON;
+		this.localStorage = localStorage;
 		
 		this.poiForm = $('#poi-form');
 		
@@ -174,7 +175,11 @@
 			});
 		
 			//Display Classification
-			context.poiForm.find('.pushpin-classification').click(function(){
+			context.poiForm.find('.pushpin-classification').click(function() {
+
+			    var updatedFeature = context.getFeatureWithUpdatedAttributes();
+			    context.localStorage.saveFeature(updatedFeature);
+
 				var element = $(this);			
 				
 				var classificationId = element.attr('pushpin-classification');
@@ -281,7 +286,6 @@
             this.checkAttributeForUpdates(attribute);
         }
 
-		console.log('feature:', this.feature);
 		return this.feature;
 	};
 	
