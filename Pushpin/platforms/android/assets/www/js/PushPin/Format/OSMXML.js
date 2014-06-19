@@ -48,7 +48,13 @@
                         feature = new ol.Feature();
 
                         if(PushPin.existsAndNotNull(node.tag)) {
-                            $.each(node.tag, function(i, obj){
+
+                            var tag = node.tag;
+                            if(tag.length == undefined) {
+                                tag = [tag];
+                            }
+
+                            $.each(tag, function(i, obj){
                                 if(PushPin.existsAndNotNull(obj._k) && PushPin.existsAndNotNull(obj._v)) {
                                     feature.set(obj._k, obj._v);
                                 }
