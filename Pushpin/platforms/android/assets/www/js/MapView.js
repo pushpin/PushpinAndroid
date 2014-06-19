@@ -99,11 +99,9 @@
     	}
 		
 		//POI Pin Style
-		var styleFunction = function(feature, resolution){
+		var styleFunction = function(feature, resolution) {
 			
-			var keys = ['aerialway','aeroway','amenity', 'barrier','boundary','craft','emergency',
-							'geological','highway','historic','landuse','leisure','man_made', 'military','natural',
-							'office','place','power','public_transport','railway','route','shop', 'sport', 'tourism','waterway'];
+			var keys = PushPin.typeKeys;
 			
 			var values = ['aboveground-rail','airfield','airport','archery','art-gallery','attraction','bar','barber','base',
 						'baseball','basketball','battery','beach','beer','belowground-rail','bench','bicycle','binoculars','boat','bread',
@@ -134,37 +132,34 @@
 								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'shop','hotel':'lodging','electronics':'battery',
 								'mobile_phone':'cellphone','company':'office','art':'art-gallery','dry_cleaning':'clothes','bank':'money',
 								'confectionery':'restaurant','running':'runner','beauty':'shop','barber':'shop', 'doityourself':'wrench',
-								'car_repair':'car','department_store':'shop'};
+								'car_repair':'car','department_store':'shop', 'bus_stop':'bus', 'town':'town-hall'};
 				
 			if(iconReassignment[value]){
 				value = iconReassignment[value];
 			}
-			
-			if($.inArray(value,values) > -1){
-					var iconPath;
 
-					if(PushPin.existsAndNotNull(value)) {
-					    iconPath = 'resources/icons/'+ value +'-icon.png';
-					}
-					else {
-					    iconPath = 'resources/images/icon-pin.png';
-					}
+            var iconPath;
 
-					var pinStyle = [
-						  		new ol.style.Style({
-						    		image: new ol.style.Icon( {
-								    anchor: [0.32, 35],
-								    anchorXUnits: 'fraction',
-								    anchorYUnits: 'pixels',
-								    src: iconPath
-								  })
-						    	})
-						  	
-						  	];
+            if(PushPin.existsAndNotNull(value)) {
+                iconPath = 'resources/icons/'+ value +'-icon.png';
+            }
+            else {
+                iconPath = 'resources/images/icon-pin.png';
+            }
 
-					return pinStyle;
-						
-			}
+            var pinStyle = [
+                        new ol.style.Style({
+                            image: new ol.style.Icon( {
+                            anchor: [0.32, 35],
+                            anchorXUnits: 'fraction',
+                            anchorYUnits: 'pixels',
+                            src: iconPath
+                          })
+                        })
+
+                    ];
+
+            return pinStyle;
 		};
 		
 		var vectorSource = new ol.source.Vector({
