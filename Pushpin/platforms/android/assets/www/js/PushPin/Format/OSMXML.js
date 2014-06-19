@@ -35,14 +35,26 @@
 
 			var feature = null;
 			var coord = null;
+			console.log('nodes:', nodes);
 			if(PushPin.existsAndNotNull(nodes)) {
+
+			    if(nodes.length == undefined) {
+			        nodes = [nodes];
+			    }
+
                 $.each(nodes, function(index, node) {
                     if(nodesInWays.indexOf(node._id) == -1) {
 
                         feature = new ol.Feature();
 
                         if(PushPin.existsAndNotNull(node.tag)) {
-                            $.each(node.tag, function(i, obj){
+
+                            var tag = node.tag;
+                            if(tag.length == undefined) {
+                                tag = [tag];
+                            }
+
+                            $.each(tag, function(i, obj){
                                 if(PushPin.existsAndNotNull(obj._k) && PushPin.existsAndNotNull(obj._v)) {
                                     feature.set(obj._k, obj._v);
                                 }

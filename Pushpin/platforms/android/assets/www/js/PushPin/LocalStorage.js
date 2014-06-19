@@ -8,6 +8,7 @@
 		this.pinPositionY = 'pinPositionY';
 		this.feature = 'feature';
 		this.changeset = 'changeset';
+		this.mapZoomLevel = 'mapZoomLevel';
 	};
 	
 	var prototype = PushPin.LocalStorage.prototype;
@@ -23,6 +24,14 @@
 	
 	prototype.getMapLayer = function(){
 		return localStorage.getItem(this.mapLayer);
+	};
+
+	prototype.saveMapZoom = function(mapZoom) {
+	    localStorage.setItem(this.mapZoomLevel, mapZoom);
+	};
+
+	prototype.getMapZoom = function() {
+	    return localStorage.getItem(this.mapZoomLevel);
 	};
 	
 	prototype.saveMapCenter = function(mapViewCenter){

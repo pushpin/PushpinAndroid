@@ -33,7 +33,7 @@
 	      layers: this.layers,
 	      view: new ol.View2D({
 	        center: ol.proj.transform([-77.360415, 38.95947], this.locationProj, this.mapProj),
-	        zoom: 17,
+	        zoom: 16,
 	        maxZoom: 18
 	      })
 	    });
@@ -53,10 +53,11 @@
 		}
 	};
 	
-	prototype.setCenter = function(center, projection){
+	prototype.setCenter = function(center, zoom, projection){
 		this.map.setView(new ol.View2D({
 		    center: ol.proj.transform(center, projection, this.mapProj),
-		    zoom: 17
+		    zoom: zoom,
+            maxZoom: 18
 		}));
 	};
 	
@@ -75,6 +76,10 @@
 	
 	prototype.getCenter = function(){
 		return this.map.getView().getCenter();
+	};
+
+	prototype.getZoom = function() {
+	    return this.map.getView().getZoom();
 	};
 	
 	prototype.addOverlay = function(overlay){
@@ -111,7 +116,7 @@
 	prototype.setOnClickGrabFeature = function(){
 	
 	    var map = this.map;
-	    var localStorage = this.localStorage;
+	    var context = this;
 	    this.map.on('singleclick', function(evt) {	    	
 	    	//Clean Popup Overlay
 			var overlays = map.getOverlays();
@@ -151,10 +156,18 @@
                    // _.mixin(_.str.exports());
                     name = _.str.humanize(name);
 			  	}
+
+			  	var mapCenter = context.getCenter();
+			  	var mapZoom = context.getZoom();
+
+			  	context.localStorage.saveMapCenter(mapCenter);
+			  	context.localStorage.saveMapZoom(mapZoom);
 			  	
 			  	var popup = new ol.Overlay({
 				  	position: pos,
-				  	element: $('<div class="popup">').html(name + '<a href="formView.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				  	element: $('<div class="popup">').html('<a href="formView.html" >'
+				  	     + '<font color="FFFFFF">' + name
+				  	     + '</font><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
 				});
 				
 		     	map.addOverlay(popup);
@@ -178,8 +191,8 @@
 		     		}
 		     	}
 		     	
-		     	localStorage.saveFeature(JSON.stringify(poi));
-		     	localStorage.setPinPosition(pos);
+		     	context.localStorage.saveFeature(JSON.stringify(poi));
+		     	context.localStorage.setPinPosition(pos);
 		     			    
 		  	});
 		});
