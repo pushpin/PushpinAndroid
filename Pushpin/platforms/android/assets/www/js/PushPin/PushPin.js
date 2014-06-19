@@ -4,6 +4,12 @@ PushPin = (function(){
 	
 	return{
 		DEV_MODE: false,
+
+		typeKeys: [
+		    'aerialway','aeroway','amenity', 'barrier','boundary','craft','emergency', 'geological',
+            'highway','historic','landuse','leisure','man_made', 'military','natural', 'office','place',
+            'power','public_transport','railway','route','shop', 'sport', 'tourism','waterway'
+        ],
 		
 		existsAndNotNull: function(value){
 			if(value !== null && value !== undefined){

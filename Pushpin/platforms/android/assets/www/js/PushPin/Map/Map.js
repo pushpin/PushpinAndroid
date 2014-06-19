@@ -33,7 +33,8 @@
 	      layers: this.layers,
 	      view: new ol.View2D({
 	        center: ol.proj.transform([-77.360415, 38.95947], this.locationProj, this.mapProj),
-	        zoom: 17
+	        zoom: 17,
+	        maxZoom: 18
 	      })
 	    });
 	    
@@ -119,6 +120,11 @@
 			}
 			
 		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+
+                var overlays = map.getOverlays();
+                if(overlays.getLength() > 1){
+                    overlays.removeAt(1);
+                }
 	  	
 			  	var pos = null;
 			  	if(feature.getGeometry().getType() == 'Point'){
@@ -127,10 +133,28 @@
 			  	else {
 			  		pos = feature.getGeometry().getInteriorPoint().getCoordinates();
 			  	}
+
+			  	var name = feature.get('name');
+
+			  	if(!PushPin.existsAndNotNull(name)) {
+			  	    var keys = PushPin.typeKeys;
+
+			  	    var tmpName = null, key = null;
+                    for (var i in keys){
+                        key = keys[i];
+                        tmpName = feature.get(key);
+                        if (tmpName != undefined && tmpName != null){
+                            name = tmpName;
+                            break;
+                        }
+                    }
+                   // _.mixin(_.str.exports());
+                    name = _.str.humanize(name);
+			  	}
 			  	
 			  	var popup = new ol.Overlay({
 				  	position: pos,
-				  	element: $('<div class="popup">').html(feature.get('name') + '<a href="formView.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				  	element: $('<div class="popup">').html(name + '<a href="formView.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
 				});
 				
 		     	map.addOverlay(popup);
