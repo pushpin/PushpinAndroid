@@ -35,7 +35,13 @@
 
 			var feature = null;
 			var coord = null;
+			console.log('nodes:', nodes);
 			if(PushPin.existsAndNotNull(nodes)) {
+
+			    if(nodes.length == undefined) {
+			        nodes = [nodes];
+			    }
+
                 $.each(nodes, function(index, node) {
                     if(nodesInWays.indexOf(node._id) == -1) {
 

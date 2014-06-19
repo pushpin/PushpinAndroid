@@ -33,7 +33,7 @@
 	      layers: this.layers,
 	      view: new ol.View2D({
 	        center: ol.proj.transform([-77.360415, 38.95947], this.locationProj, this.mapProj),
-	        zoom: 17,
+	        zoom: 16,
 	        maxZoom: 18
 	      })
 	    });
@@ -53,10 +53,11 @@
 		}
 	};
 	
-	prototype.setCenter = function(center, projection){
+	prototype.setCenter = function(center, zoom, projection){
 		this.map.setView(new ol.View2D({
 		    center: ol.proj.transform(center, projection, this.mapProj),
-		    zoom: 17
+		    zoom: zoom,
+            maxZoom: 18
 		}));
 	};
 	
@@ -75,6 +76,10 @@
 	
 	prototype.getCenter = function(){
 		return this.map.getView().getCenter();
+	};
+
+	prototype.getZoom = function() {
+	    return this.map.getView().getZoom();
 	};
 	
 	prototype.addOverlay = function(overlay){

@@ -68,7 +68,6 @@
              data: xml.getUploadXML(context.changeset),
              success: function(data, textStatus, jqXHR) {
                  console.log('successfully uploaded feature', data);
-                 context.localStorage.saveFeature(data);
                  var osmChangeset = new PushPin.Features.OSMChangeset(context.localStorage, context.feature, context, context.onSuccess, context.onSuccess);
                  osmChangeset.closeChangeset(context.changeset);
              },

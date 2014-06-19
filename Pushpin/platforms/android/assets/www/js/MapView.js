@@ -132,7 +132,9 @@
 								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'shop','hotel':'lodging','electronics':'battery',
 								'mobile_phone':'cellphone','company':'office','art':'art-gallery','dry_cleaning':'clothes','bank':'money',
 								'confectionery':'restaurant','running':'runner','beauty':'shop','barber':'shop', 'doityourself':'wrench',
-								'car_repair':'car','department_store':'shop', 'bus_stop':'bus', 'town':'town-hall'};
+								'car_repair':'car','department_store':'shop', 'bus_stop':'bus', 'town':'town-hall', 'post_office':'post',
+								'station':'fire-station', 'helipad':'heliport', 'nursing_home': 'pin', 'public_building':'commerical-building',
+								'hifi':'shop', 'government':'office'};
 				
 			if(iconReassignment[value]){
 				value = iconReassignment[value];
@@ -169,8 +171,6 @@
 		features = this.transformFeatures(features);
 		
 		vectorSource.addFeatures(features);
-
-		console.log('vectorSource:', vectorSource);
 		
 		//SET VECTOR LAYER
 		var vector = new ol.layer.Vector({
@@ -199,7 +199,7 @@
         		
         		var saver = new PushPin.Features.Save(fileEntry);
         		
-        		console.log("successfully downloaded data");
+        		console.log("successfully downloaded data:");
         		
         		saver.save(data, function(){
         			
@@ -229,8 +229,14 @@
     };
     
     prototype.addPointView = function(){
+
     	//Store most recent Map View Center		
 		var mapViewCenter = this.map.getCenter();
+		var mapZoomLevel = this.map.getZoom();
+
+		console.log('mapZoomLevel:', mapZoomLevel);
+
+		this.localStorage.saveMapZoom(mapZoomLevel);
 		this.localStorage.saveMapCenter(mapViewCenter);
 		this.localStorage.clearPinPosition();
 		this.localStorage.clearFeature();

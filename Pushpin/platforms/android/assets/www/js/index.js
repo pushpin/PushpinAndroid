@@ -119,22 +119,11 @@ var app = {
     		case 'mapView':
     			app.view = new PushPin.MapView(app.map, app.osmAuth,
     					app.localStorage, app.positionHandler, fileSystem);
+
     			app.view.registerEvents(app.map);
     			app.view.initializeLayerSelection();
 
     			app.view.loadPoints();
-    			
-//    			app.view.getSavedFeaturesFileEntry(function(fileEntry){
-//    				var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
-//
-//        			loader.load(function(features){
-//        				app.view.addFeaturesToMap(features);
-//        			}, function(e){
-//        				console.log("couldn't load saved features from file", e);
-//        			});
-//    			}, function(e){
-//    				console.log("couldn't load saved features from file", e);
-//    			});
     			
 				break;
 
@@ -175,9 +164,13 @@ var app = {
     	}
 
         var savedMapCenter = app.localStorage.getMapCenter();
+        var savedMapZoom = app.localStorage.getMapZoom();
+
+        if(!PushPin.existsAndNotNull(savedMapZoom))
+            savedMapZoom = 16;
 
         if(PushPin.existsAndNotNull(savedMapCenter)){
-            app.map.setCenter(savedMapCenter,'EPSG:3857');
+            app.map.setCenter(savedMapCenter, savedMapZoom, 'EPSG:3857');
         }
     }
 };

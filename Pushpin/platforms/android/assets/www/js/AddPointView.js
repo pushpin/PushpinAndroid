@@ -10,7 +10,7 @@
 	
 	var prototype = PushPin.AddPointView.prototype;
 	
-	prototype.registerEvents = function(){
+	prototype.registerEvents = function() {
 		var context = this;
 		
 		this.cancelPointBtn.click(function(){
@@ -27,15 +27,18 @@
 	};
 	
 	prototype.cancelPoint = function(){
-		var mapViewCenter = this.map.getCenter();		
+		var mapViewCenter = this.map.getCenter();
+		var mapZoom = this.map.getZoom();
 		this.localStorage.saveMapCenter(mapViewCenter);
-		
+		this.localStorage.saveMapZoom(mapZoom);
     	window.location.href ='mapView.html';
     };
     
     prototype.donePoint = function(){
-    	var mapViewCenter = this.map.getCenter();		
+		var mapViewCenter = this.map.getCenter();
+		var mapZoom = this.map.getZoom();
 		this.localStorage.saveMapCenter(mapViewCenter);
+		this.localStorage.saveMapZoom(mapZoom);
         window.location.href = 'formView.html';
     };
     
@@ -58,10 +61,11 @@
     };
     
     prototype.addPinForSelectedPoint = function(){
-    	var position, pin;
+    	var position, zoom, pin;
     	
     	position = this.localStorage.getPinPosition();
     	this.localStorage.saveMapCenter(position);
+    	zoom = this.localStorage.getMapZoom();
     	
     	pin = new ol.Overlay({
 			position: position,
@@ -71,7 +75,7 @@
 		});
 		
 		this.map.addOverlay(pin);
-		this.map.setCenter(position,'EPSG:3857');
+		this.map.setCenter(position, zoom, 'EPSG:3857');
     };
     
     prototype.addCrosshair = function(){
