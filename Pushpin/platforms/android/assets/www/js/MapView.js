@@ -134,7 +134,7 @@
 								'confectionery':'restaurant','running':'runner','beauty':'shop','barber':'shop', 'doityourself':'wrench',
 								'car_repair':'car','department_store':'shop', 'bus_stop':'bus', 'town':'town-hall', 'post_office':'post',
 								'station':'fire-station', 'helipad':'heliport', 'nursing_home': 'pin', 'public_building':'commerical-building',
-								'hifi':'shop', 'government':'office'};
+								'hifi':'shop', 'government':'office', 'hairdresser': 'barber', 'video':'dvd', 'sports_centre':'runner'};
 				
 			if(iconReassignment[value]){
 				value = iconReassignment[value];

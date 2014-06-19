@@ -34,7 +34,8 @@
 	      view: new ol.View2D({
 	        center: ol.proj.transform([-77.360415, 38.95947], this.locationProj, this.mapProj),
 	        zoom: 16,
-	        maxZoom: 18
+	        maxZoom: 18,
+            enableRotation: false
 	      })
 	    });
 	    
@@ -57,7 +58,8 @@
 		this.map.setView(new ol.View2D({
 		    center: ol.proj.transform(center, projection, this.mapProj),
 		    zoom: zoom,
-            maxZoom: 18
+            maxZoom: 18,
+            enableRotation: false
 		}));
 	};
 	

@@ -35,7 +35,6 @@
 
 			var feature = null;
 			var coord = null;
-			console.log('nodes:', nodes);
 			if(PushPin.existsAndNotNull(nodes)) {
 
 			    if(nodes.length == undefined) {
