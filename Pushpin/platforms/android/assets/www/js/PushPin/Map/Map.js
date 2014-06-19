@@ -116,7 +116,7 @@
 	prototype.setOnClickGrabFeature = function(){
 	
 	    var map = this.map;
-	    var localStorage = this.localStorage;
+	    var context = this;
 	    this.map.on('singleclick', function(evt) {	    	
 	    	//Clean Popup Overlay
 			var overlays = map.getOverlays();
@@ -156,10 +156,18 @@
                    // _.mixin(_.str.exports());
                     name = _.str.humanize(name);
 			  	}
+
+			  	var mapCenter = context.getCenter();
+			  	var mapZoom = context.getZoom();
+
+			  	context.localStorage.saveMapCenter(mapCenter);
+			  	context.localStorage.saveMapZoom(mapZoom);
 			  	
 			  	var popup = new ol.Overlay({
 				  	position: pos,
-				  	element: $('<div class="popup">').html(name + '<a href="formView.html"><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				  	element: $('<div class="popup">').html('<a href="formView.html" >'
+				  	     + '<font color="FFFFFF">' + name
+				  	     + '</font><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
 				});
 				
 		     	map.addOverlay(popup);
@@ -183,8 +191,8 @@
 		     		}
 		     	}
 		     	
-		     	localStorage.saveFeature(JSON.stringify(poi));
-		     	localStorage.setPinPosition(pos);
+		     	context.localStorage.saveFeature(JSON.stringify(poi));
+		     	context.localStorage.setPinPosition(pos);
 		     			    
 		  	});
 		});
