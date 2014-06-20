@@ -59,6 +59,26 @@
     	this.showCreditsBtn.click(function(){
     		context.showCredits();
     	});
+
+    	var url = PushPin.getOSMUrl() + '/api/0.6/user/details';
+    	var preferences = new PushPin.Preferences(PushPin.Database.getDb());
+        preferences.getAccessToken(function(accessToken) {
+            var requestSig = PushPin.createRequestSignature('GET', url, accessToken);
+
+            $.ajax({
+                headers: {
+                    'Authorization': requestSig
+                },
+                url: url,
+                type: 'GET',
+                success: function(data, textStatus, jqXHR) {
+                    var user = data.documentElement.children[0].attributes[1].nodeValue;
+
+                    var html = $('#username');
+                    html.html('<text id="username">' + user + '</text>');
+                }
+            });
+        });
     };
     
     prototype.getSavedFeaturesFileEntry = function(onSuccess, onFailure){

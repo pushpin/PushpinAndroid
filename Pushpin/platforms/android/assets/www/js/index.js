@@ -144,7 +144,7 @@ var app = {
 					
 					$.getJSON('resources/classifications.json', function(classificationsJSON, textStatus, jqXHR){
 						
-						app.form = new PushPin.Form(formJSON, classificationsJSON);
+						app.form = new PushPin.Form(formJSON, context.localStorage, classificationsJSON);
 				    	app.form.populateForm(app.localStorage.getFeature());
 				    	app.form.loadForm();
                         app.view = new PushPin.FormView(app.form, app.localStorage);
