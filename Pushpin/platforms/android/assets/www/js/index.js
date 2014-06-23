@@ -117,6 +117,7 @@ var app = {
 
     	switch(viewType){    		
     		case 'mapView':
+
     			app.view = new PushPin.MapView(app.map, app.osmAuth,
     					app.localStorage, app.positionHandler, fileSystem);
 
@@ -130,12 +131,12 @@ var app = {
 			case 'addPointView':
 				app.view = new PushPin.AddPointView(app.map, app.localStorage);
 				app.view.addCrosshair();
-				app.view.registerEvents();	
+				app.view.registerEvents();
 				var pinPosition = app.localStorage.getPinPosition();
 
 				if(!(isNaN(pinPosition[0]) && isNaN(pinPosition[1]))){
 					app.view.addPinForSelectedPoint();
-				}			
+				}
 				break;
 
 			case 'formView':
@@ -158,6 +159,13 @@ var app = {
 				});
 		    	
 				break;
+
+			case 'nominatimView':
+
+			    app.view = new PushPin.nominatimView(app.positionHandler, app.localStorage);
+			    app.view.registerEvents();
+
+			    break;
 
 			default:
 				console.log("Error: Could not assign view");

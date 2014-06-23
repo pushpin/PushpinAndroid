@@ -16,7 +16,6 @@ function buildPanel(res, parentLabel){
 	var panels = $('.list-group').html();
 	$('.list-group').html(res.join(""));			
 	panelsStack.push(panels);
-	
 }
 
 var typePath = [];

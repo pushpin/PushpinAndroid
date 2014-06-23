@@ -31,11 +31,11 @@
 	prototype.getCurrentPosition = function(onSuccess, onError, options){
 		var context = this;
 		
-		window.setTimeout(function(){
+		//window.setTimeout(function(){
 			
 			if(PushPin.existsAndNotNull(onSuccess)){
 				onSuccess(context.position);
 			}
-		}, 5000);
+		//}, 5000);
 	};
 })();

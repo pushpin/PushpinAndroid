@@ -56,6 +56,27 @@ PushPin = (function(){
             //console.log('requestSignature:', requestSignature);
 
             return requestSignature;
+        },
+
+        getDistance: function(lat1, lon1, lat2, lon2) {
+
+            var toRadians = function(num) {
+                return num * Math.PI / 180;
+            }
+
+            var R = 6371;
+            var rLat1 = toRadians(lat1);
+            var rLat2 = toRadians(lat2);
+            var deltaLat = toRadians(lat2-lat1);
+            var deltaLon = toRadians(lon2-lon1);
+
+            var a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
+                    Math.cos(rLat1) * Math.cos(rLat2) *
+                    Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
+
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            return parseInt(R * c);
         }
 	};
 })();

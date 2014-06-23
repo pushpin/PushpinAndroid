@@ -17,6 +17,7 @@
 		this.showCreditsBtn = $('#showCreditsBtn');
 		this.bingMapOption = $('#bing-map-option');
 		this.osmMapOption = $('#osm-map-option');
+		this.nominatim = $('#nominatim');
 	};
 	
 	var prototype = PushPin.MapView.prototype;
@@ -33,6 +34,8 @@
     	});
     	
     	this.goToPositionBtn.click(function(){
+    	    var center = ol.proj.transform([context.positionHandler.geoX, context.positionHandler.geoY], 'EPSG:4326', 'EPSG:3857');
+    	    context.localStorage.saveMapCenter(center);
     		context.positionHandler.goToPosition();
     	});
     	
@@ -58,6 +61,19 @@
     	
     	this.showCreditsBtn.click(function(){
     		context.showCredits();
+    	});
+
+    	this.nominatim.click(function() {
+            //Store most recent Map View Center
+            var mapViewCenter = context.map.getCenter();
+            var mapZoomLevel = context.map.getZoom();
+
+            context.localStorage.saveMapZoom(mapZoomLevel);
+            context.localStorage.saveMapCenter(mapViewCenter);
+            context.localStorage.clearPinPosition();
+            context.localStorage.clearFeature();
+
+            window.location.href = 'nominatim.html';
     	});
 
     	var url = PushPin.getOSMUrl() + '/api/0.6/user/details';
@@ -253,8 +269,6 @@
     	//Store most recent Map View Center		
 		var mapViewCenter = this.map.getCenter();
 		var mapZoomLevel = this.map.getZoom();
-
-		console.log('mapZoomLevel:', mapZoomLevel);
 
 		this.localStorage.saveMapZoom(mapZoomLevel);
 		this.localStorage.saveMapCenter(mapViewCenter);
