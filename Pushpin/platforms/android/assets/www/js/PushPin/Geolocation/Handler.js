@@ -32,6 +32,8 @@
 	};
 	
 	prototype.getCurrentPosition = function(){
+
+	    var context = this;
 		
 		if(this.test){
 			this.test.getCurrentPosition(function(pos){
@@ -78,6 +80,6 @@
 	};
 	
 	prototype.goToPosition = function(){
-		this.map.setCenter([this.geoX, this.geoY], this.locationProj);
+		this.map.setCenter([this.geoX, this.geoY], 16, this.locationProj);
 	};
 })();
