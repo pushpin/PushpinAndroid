@@ -7,6 +7,7 @@
 		this.mapProj = 'EPSG:3857';
 		this.locationProj = 'EPSG:4326';
 		this.locationMarker = null;
+		this.geomLayer = null;
 	};
 
 	var prototype = PushPin.Map.prototype;
@@ -125,6 +126,20 @@
 			if(overlays.getLength() > 1){
 				overlays.removeAt(1);
 			}
+
+            if(PushPin.existsAndNotNull(context.geomLayer)) {
+
+                var layer = context.getLayers();
+                var index = layer.array_.indexOf(context.geomLayer);
+
+                layer.array_[index].set('visible', false);
+
+                if(index != -1) {
+                    layer.array_.splice(index, 1);
+                }
+
+                context.geomLayer = null;
+            }
 			
 		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
 
@@ -164,6 +179,24 @@
 
 			  	context.localStorage.saveMapCenter(mapCenter);
 			  	context.localStorage.saveMapZoom(mapZoom);
+
+			  	var isNode = true;
+                var polygon = feature.get('polygon');
+			  	if(PushPin.existsAndNotNull(polygon)) {
+			  	    isNode = false;
+
+                    // Checking to see if its a building and if it is specified or not.
+                    var building = feature.get('building');
+			  	    if(!name && building) {
+                        if(building == 'yes')
+                            name = 'Building';
+                        else
+                            name = building;
+			  	    }
+
+			  	    // Display polygon somehow -_-
+			  	    context.displayPolygon(polygon);
+			  	}
 			  	
 			  	var popup = new ol.Overlay({
 				  	position: pos,
@@ -179,13 +212,13 @@
 		     	var poi = {};
 		     	
 		     	poi['id'] = feature.getId();
-		     	poi['element'] = 'node';
+		     	poi['element'] = isNode ? 'node' : 'way';
 		     	poi['version'] = feature.get('version');
 		     	poi['properties'] = {};
 		     	
 		     	for(var key in properties){
 		     		
-		     		if(key !== "geometry" && key !== 'version'){
+		     		if(key !== "geometry" && key !== 'version' && key !== 'polygon') {
 		     			poi['properties'][key] = {
 		     				value: properties[key],
 		     				updated: false
@@ -199,4 +232,64 @@
 		  	});
 		});
 	};
+
+	/*
+        styles['Polygon'] = [
+            new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: change.fill
+                })
+            }),
+            new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                color: change.stroke
+            })
+        })];
+	*/
+
+	prototype.displayPolygon = function(polygon) {
+
+        var styleFunction = function(feature, resolution) {
+            var fill = new ol.style.Fill({
+                color: 'red'
+            });
+
+            var stroke = new ol.style.Stroke({
+                color: 'orange',
+                width: 2
+            });
+
+            // cause reasons
+            var style = new ol.style.Style({
+                fill: fill,
+                stroke: stroke
+            });
+
+            return [ style ] ;
+        }
+
+        var feature = new ol.Feature(polygon);
+        feature.setId(1);
+
+        var vectorSource = new ol.source.Vector({
+            parser: null
+        });
+
+        vectorSource.addFeatures([feature]);
+
+        this.geomLayer = new ol.layer.Vector({
+          source: vectorSource,
+          style: styleFunction,
+          opacity: 0.3
+        });
+
+        this.addLayer(this.geomLayer);
+
+        // Reordering the layers so that the pins are on top.
+        var layer = this.getLayers();
+        var temp = layer.array_[3];
+        layer.array_[3] = layer.array_[2];
+        layer.array_[2] = temp;
+	};
+
 })();

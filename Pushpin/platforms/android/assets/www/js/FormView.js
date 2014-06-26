@@ -69,8 +69,6 @@
             context.cancelForm;
         }
 
-        console.log('feature:', feature);
-
         var uploader = new PushPin.Features.OSMDelete(feature, this.localStorage, deletedFeature, failedDelete);
         uploader.deleteFeature();
     };
@@ -92,8 +90,6 @@
         console.log('Uploading data');
         var uploader = new PushPin.Features.OSMUploader(feature, this.localStorage, savedFeature, failedSave);
         uploader.upload();
-  	
-    	console.log("saveForm", feature);
     };
     
     prototype.movePoint = function(){
