@@ -76,25 +76,8 @@
             window.location.href = 'nominatim.html';
     	});
 
-    	var url = PushPin.getOSMUrl() + '/api/0.6/user/details';
-    	var preferences = new PushPin.Preferences(PushPin.Database.getDb());
-        preferences.getAccessToken(function(accessToken) {
-            var requestSig = PushPin.createRequestSignature('GET', url, accessToken);
+        this.findUser();
 
-            $.ajax({
-                headers: {
-                    'Authorization': requestSig
-                },
-                url: url,
-                type: 'GET',
-                success: function(data, textStatus, jqXHR) {
-                    var user = data.documentElement.children[0].attributes[1].nodeValue;
-
-                    var html = $('#username');
-                    html.html('<text id="username">' + user + '</text>');
-                }
-            });
-        });
     };
     
     prototype.getSavedFeaturesFileEntry = function(onSuccess, onFailure){
@@ -163,39 +146,68 @@
 					break;
 				}
 			}
-			
+
+			if(!value && feature.get('building')) {
+			    if(!values[value])
+			        value = 'commerical-building-sm';
+			}
+
+			//console.log('key:', key);
+
+			var keyAssignment = { 'office':'office', 'aeroway':'airport', 'public_transport':'bus', 'railway':'aboveground-rail' }
+
 			var iconReassignment = {'household':'shop','copyshop':'shop','boutique':'shop','wine':'bar','fast_food':'fast-food','toilets':'toilet',
-								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'shop','hotel':'lodging','electronics':'battery',
+								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'office','hotel':'lodging','electronics':'battery',
 								'mobile_phone':'cellphone','company':'office','art':'art-gallery','dry_cleaning':'clothes','bank':'money',
 								'confectionery':'restaurant','running':'runner','beauty':'shop','barber':'shop', 'doityourself':'wrench',
 								'car_repair':'car','department_store':'shop', 'bus_stop':'bus', 'town':'town-hall', 'post_office':'post',
-								'station':'fire-station', 'helipad':'heliport', 'nursing_home': 'pin', 'public_building':'commerical-building',
-								'hifi':'shop', 'government':'office', 'hairdresser': 'barber', 'video':'dvd', 'sports_centre':'runner'};
-				
-			if(iconReassignment[value]){
-				value = iconReassignment[value];
-			}
+								'helipad':'heliport', 'nursing_home': 'pin', 'public_building':'commerical-building',
+								'hifi':'shop', 'government':'office', 'hairdresser': 'barber', 'video':'dvd', 'sports_centre':'runner',
+								'bicycle_parking':'bicycle', 'bicycle_rental':'bicycle', 'hunting_stand':'shooting', 'telephone':'phone',
+								'post_box':'post', 'recycling':'recycle', 'waste_basket':'trash', 'waste_disposal':'trash', 'drinking_water':'drinking_fountain',
+								'arts_centre':'art-gallery', 'atm':'credit-card', 'bank':'money', 'bureau_de_change':'money', 'biergarten':'beer',
+								'nightclub':'bar', 'pub':'bar', 'kindergarten':'school', 'university':'college', 'cable_distribution_cabinet':'power',
+								'pole':'power', 'sub_station':'power', 'water_tower':'tower', 'slipway':'boat', 'boat_storage':'boat', 'common':'pitch',
+								'dance':'pitch', 'dog_park':'dog', 'fishing':'fish', 'golf_course':'golf', 'ice_rink':'pitch', 'marina':'boat',
+								'miniature_golf':'golf', 'nature_reserve':'leaf', 'stadium':'pitch', 'swimming_pool':'swimming', 'track':'runner',
+								'video_arcade':'pitch', 'water_park':'pitch', 'clinic':'hospital', 'dentist':'tooth', 'doctors':'hospital',
+								'social_facility':'social', 'tree':'tree-sm', 'community_centre':'social', 'courthouse':'court', 'driving_school':'car',
+								'fire_station':'fire-station', 'grave_yard':'cemetery', 'marketplace':'market', 'townhall':'town-hall', 'bbq':'park',
+								'food_court':'fast-food', 'alcohol':'bar', 'bakery':'cupcake', 'books':'library', 'butcher':'chef', 'computers':'computer',
+								'confectionery':'cupcake', 'scuba_diving':'scuba', 'fishmonger':'fish', 'florist':'garden', 'furniture':'sofa',
+								'hardware':'wrench', 'chemist':'pharmacy', 'musical_instrument':'music', 'pet':'veterinary', 'seafood':'fish',
+								 'tyres':'car', 'artwork':'art-gallery', 'guest_house':'lodging', 'hostel':'lodging', 'hotel':'lodging',
+								 'motel':'lodging', 'picnic_site':'park', 'viewpoint':'binoculars', 'zoo':'giraffe', 'aerodrome':'airport',
+								 'car_wash':'car', 'car_sharing':'car', 'car_rental':'car', 'convenience':'shop', 'wood':'polygon'};
 
-            var iconPath;
+            var iconPath = '';
+
+            if(keyAssignment[key]) {
+                value = keyAssignment[key];
+            }
+
+            if(iconReassignment[value]){
+                value = iconReassignment[value];
+            }
 
             if(PushPin.existsAndNotNull(value)) {
                 iconPath = 'resources/icons/'+ value +'-icon.png';
             }
-            else {
-                iconPath = 'resources/images/icon-pin.png';
+
+            if( PushPin.existsAndNotNull(values[value]) ) {
+                iconPath = 'resources/images/icon-pin.png'
             }
 
-            var pinStyle = [
-                        new ol.style.Style({
-                            image: new ol.style.Icon( {
-                            anchor: [0.32, 35],
-                            anchorXUnits: 'fraction',
-                            anchorYUnits: 'pixels',
-                            src: iconPath
-                          })
-                        })
+            var style = new ol.style.Style({
+                image: new ol.style.Icon( {
+                anchor: [0.32, 35],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                src: iconPath
+              })
+            })
 
-                    ];
+            var pinStyle = [ style ];
 
             return pinStyle;
 		};
@@ -211,7 +223,8 @@
 		//SET VECTOR LAYER
 		var vector = new ol.layer.Vector({
 		  source: vectorSource,
-		  style: styleFunction
+		  style: styleFunction,
+		  renderOrder: null
 		});
     	
     	this.map.addLayer(vector);
@@ -251,10 +264,11 @@
     };
 
     prototype.loadPoints = function() {
-       app.view.getSavedFeaturesFileEntry(function(fileEntry){
+       var context = this;
+       this.getSavedFeaturesFileEntry(function(fileEntry){
             var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
             loader.load(function(features) {
-                app.view.addFeaturesToMap(features);
+                context.addFeaturesToMap(features);
             }, function(e) {
 
                 console.log("couldn't load saved features from file", e);
@@ -330,5 +344,31 @@
     	}, function(e){
     		console.log("Error logging out", e);
     	});
+    };
+
+    prototype.findUser = function() {
+        var url = PushPin.getOSMUrl() + '/api/0.6/user/details';
+        var preferences = new PushPin.Preferences(PushPin.Database.getDb());
+        preferences.getAccessToken(function(accessToken) {
+            var requestSig = PushPin.createRequestSignature('GET', url, accessToken);
+
+            $.ajax({
+                headers: {
+                    'Authorization': requestSig
+                },
+                url: url,
+                type: 'GET',
+                success: function(data, textStatus, jqXHR) {
+
+                    var x2js = new X2JS();
+                    var xml = x2js.xml_str2json(jqXHR.responseText);
+
+                    var user = xml.osm.user._display_name;
+
+                    var html = $('#username');
+                    html.html('<text id="username">' + user + '</text>');
+                }
+            });
+        });
     };
 })();
