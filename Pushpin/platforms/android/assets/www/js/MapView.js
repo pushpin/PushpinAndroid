@@ -194,7 +194,7 @@
                 iconPath = 'resources/icons/'+ value +'-icon.png';
             }
 
-            if( PushPin.existsAndNotNull(values[value]) ) {
+            if( values.indexOf(value) == -1 ) {
                 iconPath = 'resources/images/icon-pin.png'
             }
 
