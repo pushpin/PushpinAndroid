@@ -8,6 +8,7 @@
 		this.locationProj = 'EPSG:4326';
 		this.locationMarker = null;
 		this.geomLayer = null;
+		this.overlay = null;
 	};
 
 	var prototype = PushPin.Map.prototype;
@@ -122,9 +123,14 @@
 	    var context = this;
 	    this.map.on('singleclick', function(evt) {	    	
 	    	//Clean Popup Overlay
-			var overlays = map.getOverlays();
-			if(overlays.getLength() > 1){
-				overlays.removeAt(1);
+			if(PushPin.existsAndNotNull(context.overlay)){
+			    var overlays = map.getOverlays();
+			    var index = overlays.array_.indexOf(context.overlay);
+
+			    if(index != -1) {
+			        overlays.removeAt(index);
+			        context.overlay = null;
+			    }
 			}
 
             if(PushPin.existsAndNotNull(context.geomLayer)) {
@@ -132,20 +138,19 @@
                 var layer = context.getLayers();
                 var index = layer.array_.indexOf(context.geomLayer);
 
-                layer.array_[index].set('visible', false);
-
-                if(index != -1) {
-                    layer.array_.splice(index, 1);
+                if(layer.array_[index]) {
+                    layer.array_[index].set('visible', false)
+                    if(index != -1) {
+                        layer.array_.splice(index, 1);
+                    }
+                    context.geomLayer = null;
                 }
-
-                context.geomLayer = null;
             }
 			
 		  	map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
 
-                var overlays = map.getOverlays();
-                if(overlays.getLength() > 1){
-                    overlays.removeAt(1);
+                if(PushPin.existsAndNotNull(context.overlay)) {
+                    return;
                 }
 	  	
 			  	var pos = null;
@@ -170,7 +175,6 @@
                             break;
                         }
                     }
-                   // _.mixin(_.str.exports());
                     name = _.str.humanize(name);
 			  	}
 
@@ -198,14 +202,14 @@
 			  	    context.displayPolygon(polygon);
 			  	}
 			  	
-			  	var popup = new ol.Overlay({
+			  	context.overlay = new ol.Overlay({
 				  	position: pos,
 				  	element: $('<div class="popup">').html('<a href="formView.html" >'
 				  	     + '<font color="FFFFFF">' + name
 				  	     + '</font><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
 				});
 				
-		     	map.addOverlay(popup);
+		     	map.addOverlay(context.overlay);
 		     	
 		     	var properties = feature.getProperties();
 		     	
@@ -232,20 +236,6 @@
 		  	});
 		});
 	};
-
-	/*
-        styles['Polygon'] = [
-            new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: change.fill
-                })
-            }),
-            new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                color: change.stroke
-            })
-        })];
-	*/
 
 	prototype.displayPolygon = function(polygon) {
 

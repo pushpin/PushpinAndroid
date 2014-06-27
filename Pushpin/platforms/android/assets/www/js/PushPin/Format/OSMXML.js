@@ -35,10 +35,12 @@
                     feature = new ol.Feature();
 
                     var points = [];
+                    var nodeRefs = [];
 
                     if(PushPin.existsAndNotNull(way.nd)) {
                         $.each(way.nd, function(i, node) {
                             nodesInWays.push(node._ref);
+                            nodeRefs.push(node._ref);
 
                             var index = nodeIds.indexOf(node._ref);
                             var foundNode = nodes[index];
@@ -88,6 +90,7 @@
 
                         feature.setGeometry(new ol.geom.Point(centroid));
                         feature.set('version', way._version);
+                        feature.set('nodeRefs', nodeRefs);
                         feature.setId(way._id);
 
 //                        console.log('name: ', feature.values_.name);
