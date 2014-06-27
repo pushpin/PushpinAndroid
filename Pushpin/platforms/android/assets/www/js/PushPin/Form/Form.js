@@ -46,8 +46,9 @@
 			if(obj.type === 'TextField'){
 				item = '<a class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
 					+ obj.data_name+ '" pushpin-attribute-type="TextField" pushpin-original-value="'
-					+ featureValue + '">' +obj.label+'<img class="pushpin-description" description="'+obj.description+'" src="resources/images/icon-info.png" class="img-circle"/><br>\
-						<input value="'+ featureValue +'" id="form-'+obj.data_name+'" type="text"/></a>';	
+					+ featureValue + '">' +obj.label+'<img class="pushpin-description" description="'+obj.description
+					+'" src="resources/images/icon-info.png" class="img-circle"/><br><input value="'
+					+ featureValue +'" id="form-'+obj.data_name+'" type="text"/></a>';
 			}
 			else if(obj.type === 'ChoiceField' && PushPin.existsAndNotNull(obj.choices)){
 				var choices = '<option value=""></option>';
@@ -187,30 +188,30 @@
 				var classification = context.getClassificationById(classificationId);
 				
 				var mainClassification = new PushPin.Classification.Main(classification, function(classificationValues){
-					
+
 					var displayString = '';
-					
+
 					var valueString = '';
-					
+
 					for(var i = 0; i < classificationValues.length; i++){
-						
+
 						if(i > 0){
 							displayString += ' &#x25b6; ';
 							valueString += ',';
 						}
-						
+
 						displayString += classificationValues[i].label;
-						
+
 						valueString += classificationValues[i].value;
 					}
-										
+
 					var pushpinCurrentValue = classificationValues[classificationValues.length - 1].value;
-					
+
 					//If updating OSM Type, need to rebuild Form HTML. Else, only update classification display string
 					if(element.find('span').attr('id') === 'form-type'){
-					
+
 						formHTML(valueString, displayString, pushpinCurrentValue);
-					
+
 					}else{
 
 						element.find('span').html(displayString);
@@ -229,6 +230,10 @@
 			var typeID = form[0].elements[1].classification_set_id;
 			type = this.classificationsBuilder.tagPresentForId(typeID,this.feature).values;
 		}
+
+		if(this.feature.element == 'way') {
+    	    $('#deletePOI').addClass('hide');
+    	}
 		
 		//Create Initial Form HTML
 		formHTML(type, typeDisplay, typeCurrentValue);
@@ -262,8 +267,6 @@
                 properties: {}
             };
 		}
-
-		console.log('feature:', this.feature);
 
         if(PushPin.existsAndNotNull(this.feature['id'])){
             $('#mainForm h4').html('Edit POI');

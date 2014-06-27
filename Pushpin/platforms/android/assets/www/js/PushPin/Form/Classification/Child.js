@@ -30,12 +30,19 @@
 		this.form.attr('id', 'child-classification-' + this.id);
 		
 		this.form.addClass('child-classification');
+
+		this.form.find('#clearVal').addClass('hide');
+
+		this.form.find('#searchInput').addClass('hide');
+
+		this.form.find('#typeList').css('margin-top', '60px');
+		this.form.find('#typeList').css('padding', '10px');
 		
 		this.classifications = classifications;
 		
 		this.childClassificationsName = "child_classifications";
 		
-		this.classificationList = this.form.find('.list-group');
+		this.classificationList = this.form.find('#typeList');
 		
 		this.classificationName = this.form.find('h4');
 		

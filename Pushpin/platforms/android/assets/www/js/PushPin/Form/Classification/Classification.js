@@ -62,32 +62,7 @@
 		
 		this.classificationList.html(html);
 		
-		var context = this;
-		
-		this.classificationList.find('.list-group-item').click(function(){
-			
-			var index = $(this).attr('pushpin-classification-index');
-			
-			var classification = context.classifications[context.childClassificationsName][index];
-			
-			if($.inArray(classification.value, context.classificationValues) === -1){
-				context.classificationValues.push({
-					label: classification.label,
-					value: classification.value
-				});
-			}
-			
-			var childClassifications = classification['child_classifications'];
-			
-			if(PushPin.existsAndNotNull(childClassifications) && childClassifications.length > 0){
-				var childClassification = new PushPin.Classification.Child(context, classification, 
-						context.classificationValues, context.onFinishSelecting);
-				
-				childClassification.load();
-			}else{
-				context.finish();
-			}
-		});
+        this.addClick();
 		
 		if(!PushPin.existsAndNotNull(this.show)){
 			throw {
@@ -124,4 +99,33 @@
 			this.onFinishSelecting(this.classificationValues);
 		}
 	};
+
+	prototype.addClick = function() {
+        var context = this;
+
+        this.classificationList.find('.list-group-item').click(function(){
+
+            var index = $(this).attr('pushpin-classification-index');
+
+            var classification = context.classifications[context.childClassificationsName][index];
+
+            if($.inArray(classification.value, context.classificationValues) === -1){
+                context.classificationValues.push({
+                    label: classification.label,
+                    value: classification.value
+                });
+            }
+
+            var childClassifications = classification['child_classifications'];
+
+            if(PushPin.existsAndNotNull(childClassifications) && childClassifications.length > 0){
+                var childClassification = new PushPin.Classification.Child(context, classification,
+                        context.classificationValues, context.onFinishSelecting);
+
+                childClassification.load();
+            }else{
+                context.finish();
+            }
+        });
+	}
 })();
