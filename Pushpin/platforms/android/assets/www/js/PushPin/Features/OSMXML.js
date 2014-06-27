@@ -3,6 +3,7 @@
 	PushPin.Features.OSMXML = function(feature, localStorage, changesetId){
         this.type = feature.element;
         this.tags = feature.properties;
+        this.nodeRefs = feature.properties.nodeRefs ? feature.properties.nodeRefs.value : null;
         this.osmId = feature.id;
         this.version = feature.version;
         this.name = feature.properties.name ? feature.properties.name.value : null;
@@ -73,10 +74,39 @@
 	};
 	
 	prototype.getWayXML = function(changesetId){
-		
-		// TODO: Don't support ways yet.
-		console.log("Way's are not supported yet.");
-		return "";
+
+		var version;
+		if(this.version)
+		    version = parseInt(this.version);
+
+		var xml = '<way';
+		// If the element has an osmId, add it to the tag
+        if(PushPin.existsAndNotNull(this.osmId)){
+            xml += ' id="' + this.osmId + '"';
+        }
+
+        if(PushPin.existsAndNotNull(version)) {
+            xml += ' version="' + version + '"';
+        }
+
+        xml += ' changeset="' + changesetId + '">';
+
+        if(PushPin.existsAndNotNull(this.nodeRefs)) {
+            this.nodeRefs.forEach(function(ref) {
+                xml += '<nd ref="' + ref + '"/>';
+            });
+        }
+
+        if(PushPin.existsAndNotNull(this.tags)){
+            for(var key in this.tags){
+                if(key != 'nodeRefs')
+                    xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
+            }
+        }
+
+        xml += '</way>';
+
+		return xml;
 	};
 	
 	prototype.getRelationXML = function(changesetId){
