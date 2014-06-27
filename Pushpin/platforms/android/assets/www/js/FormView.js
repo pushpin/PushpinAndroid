@@ -2,7 +2,7 @@
 	PushPin.FormView = function(form, localStorage){
 		this.form = form;
 		this.localStorage = localStorage;
-		this.feature = null;
+		this.feature = this.localStorage.getFeature();
 		
 		this.mainForm = $('#mainForm');
 		this.classificationForm = $('#classificationForm');
@@ -14,6 +14,11 @@
 		this.classificationCancelBtn = this.classificationForm.find('#cancelFormBtn');
 		this.cancelDescriptionBtn = this.descriptionForm.find('#cancelDescriptionBtn');
 		this.deletePOI = this.mainForm.find('#deletePOI');
+		this.clearVal = this.classificationForm.find('#clearVal');
+		this.searchInput = this.classificationForm.find('#searchInput');
+
+		this.isSearching = false;
+		this.search = new PushPin.Classification.Search(this.form, this.localStorage);
 	};
 	
 	var prototype = PushPin.FormView.prototype;
@@ -44,10 +49,37 @@
     		context.mainForm.removeClass('hide');
     	});
 
+    	this.clearVal.click(function() {
+            context.clearValue();
+            this.isSearching = true;
+            context.classificationForm.addClass('hide');
+            context.mainForm.removeClass('hide');
+    	});
+
     	this.deletePOI.click(function() {
     	    console.log('delete');
             return context.deleteForm();
     	});
+
+    	this.searchInput.keyup(function(e) {
+
+    	    if(!context.isSearching) {
+    	        $('#typeList').addClass('hide');
+    	        $('#searchResults').removeClass('hide');
+    	        context.isSearching = true;
+    	    }
+    	    else if(context.searchInput[0].value == '') {
+    	        $('#searchResults').addClass('hide');
+                $('#typeList').removeClass('hide');
+                context.isSearching = false;
+    	    }
+
+    	    if(context.isSearching) {
+    	        var items = context.form.classificationsJSON.classification_sets[4].items;
+                context.search.queryData(items, context.searchInput[0].value);
+    	    }
+
+        });
 	};
 	
 	prototype.cancelForm = function(){
@@ -94,6 +126,20 @@
     
     prototype.movePoint = function(){
     	window.location.href = 'addPoint.html';
+    };
+
+    prototype.clearValue = function() {
+        var feature = this.form.getFeatureWithUpdatedAttributes();
+
+        var type = $('.pushpin-classification').attr('pushpin-current-value');
+
+        type = type.split('=');
+        var keyToRemove = type[0];
+
+        delete feature.properties[keyToRemove];
+
+        this.localStorage.saveFeature(feature);
+        this.form.loadForm(feature);
     };
 
 })();

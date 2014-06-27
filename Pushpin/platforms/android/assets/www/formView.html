@@ -37,7 +37,7 @@
 		<div id="poi-form" class="list-group"></div>
 		
 		<div class="list-group">
-			<li class="list-group-item"><span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>		
+			<li class="list-group-item"><span class="badge"><input type="checkbox" class="checkbox"/></span> Share on Twitter</li>
 		</div>
             <!--type="button" style="margin-top:10px;"-->
 		<button class="btn btn-block btn-danger" id="deletePOI">Delete this POI</button>
@@ -49,10 +49,21 @@
   		<div class="toolbar-top">
 	  		<span class="badge-left"><button id="cancelFormBtn" class="btn btn-primary">Cancel</button></span>
 	  		<span style="vertical-align: middle;"><h4></h4></span>
+
+            <input type="text" name="search" placeholder="Search for a type" id="searchInput"/>
 	  	</div>
-	  	<div class="list-group" style="margin-top:60px;padding:10px;">
-					
-		</div>
+
+        <div class="panel-body">
+            <div id="typeList" class="list-group" style="margin-top:90px;padding:10px;">
+
+            </div>
+
+            <div id="searchResults" class="list-group hide" style="margin-top:90px;padding:10px;">
+
+            </div>
+
+            <button class="btn btn-block btn-clear" id="clearVal">Clear Value</button>
+        </div>
   	</div>
   	<div id="descriptionForm" class="hide">
   		<div class="toolbar-top">
@@ -92,6 +103,7 @@
     <script src="js/PushPin/Form/Classification/Main.js" type="text/javascript"></script>
     <script src="js/PushPin/Form/Classification/Child.js" type="text/javascript"></script>
     <script src="js/PushPin/Form/Classification/Builder.js" type="text/javascript"></script>
+    <script src="js/PushPin/Form/Classification/Search.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Geolocation.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Test.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Handler.js" type="text/javascript"></script>

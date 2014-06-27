@@ -50,8 +50,6 @@
 			
 			this.buildItems(item['items'], item);
 		}
-		
-		console.log("mapping", this.mapping);
 	};
 	
 	prototype.buildItems = function(items, classificationSet){

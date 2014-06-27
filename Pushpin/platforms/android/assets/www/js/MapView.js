@@ -194,7 +194,7 @@
                 iconPath = 'resources/icons/'+ value +'-icon.png';
             }
 
-            if( PushPin.existsAndNotNull(values[value]) ) {
+            if( values.indexOf(value) == -1 ) {
                 iconPath = 'resources/images/icon-pin.png'
             }
 
@@ -211,6 +211,13 @@
 
             return pinStyle;
 		};
+
+		var renderOrder = function(firstFeature, secondFeature) {
+            var firstCoord = firstFeature.values_.geometry.flatCoordinates;
+		    var secondCoord = secondFeature.values_.geometry.flatCoordinates;
+
+		    return (firstCoord[0] > secondCoord[0]) || (firstCoord[1] > secondCoord[1]);
+		}
 		
 		var vectorSource = new ol.source.Vector({
 			parser: null
@@ -224,7 +231,7 @@
 		var vector = new ol.layer.Vector({
 		  source: vectorSource,
 		  style: styleFunction,
-		  renderOrder: null
+		  renderOrder: renderOrder
 		});
     	
     	this.map.addLayer(vector);
