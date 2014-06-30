@@ -20,9 +20,18 @@
 			
 			var nodes = osm.node;
 
-		    var nodeIds = nodes.map(function(node) {
-		        return node._id;
-		    });
+            if(nodes.length == undefined) {
+                nodes = [nodes];
+            }
+
+            var nodeIds;
+            if(PushPin.existsAndNotNull(nodes)) {
+                nodeIds = nodes.map(function(node) {
+                    return node._id;
+                });
+		    }
+		    else
+		        nodeIds = [];
 
 			var ways = osm.way;
 
@@ -100,10 +109,6 @@
 
 			var coord = null;
 			if(PushPin.existsAndNotNull(nodes)) {
-
-			    if(nodes.length == undefined) {
-			        nodes = [nodes];
-			    }
 
                 $.each(nodes, function(index, node) {
                     if(nodesInWays.indexOf(node._id) == -1) {

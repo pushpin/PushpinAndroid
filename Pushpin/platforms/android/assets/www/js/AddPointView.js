@@ -84,7 +84,6 @@
       setTimeout(function() {
         var mapCenter = map.getCenter();
         var mapCenterPixel = map.getPixelFromCoordinate(mapCenter);
-        console.log("mapCenterPixel = " + mapCenterPixel);
         $('#crosshair').css('left', mapCenterPixel[0] - 18);
         $('#crosshair').css('bottom', mapCenterPixel[1] - 15);
       }, 500);

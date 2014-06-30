@@ -18,7 +18,6 @@
 	var prototype = PushPin.Geolocation.Handler.prototype;
 	
 	prototype.updatePosition = function(pos){
-	    console.log("pos:", pos);
 		this.geoX = pos.coords.longitude;
 		this.geoY = pos.coords.latitude;
 		

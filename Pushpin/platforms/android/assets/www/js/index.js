@@ -60,7 +60,7 @@ var app = {
         	app.map.setOnClickGrabFeature();
         	
         	app.test = new PushPin.Geolocation.Test();
-        	app.positionHandler = new PushPin.Geolocation.Handler(app.map, (PushPin.DEV_MODE) ? app.test : null);
+        	app.positionHandler = new PushPin.Geolocation.Handler(app.map/*, app.test*/);
         	
         	app.positionHandler.watchPosition(function(pos) {}, function(err) {});
         	
@@ -124,7 +124,7 @@ var app = {
     			app.view.registerEvents(app.map);
     			app.view.initializeLayerSelection();
 
-    			app.view.loadPoints();
+    			app.view.fetchPoints();
     			
 				break;
 
