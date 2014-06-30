@@ -246,16 +246,20 @@
     	};
     	
     	console.log("getting features");
+    	$('#tap-instr').removeClass('hide');
+		$('#tap-instr').html('Fetching Points');
     	
     	this.getSavedFeaturesFileEntry(function(fileEntry){
     		
     		console.log("successfully got saveFeaturesOSMxml file");
+    		$('#tap-instr').html('Downloading Points');
     		
     		var osmDownloader = new PushPin.Features.OSMDownloader(context.map.getBoundingBox(), function(data) {
         		
         		var saver = new PushPin.Features.Save(fileEntry);
         		
         		console.log("successfully downloaded data:");
+        		$('#tap-instr').html('Saving Points');
         		
         		saver.save(data, function(){
         			
@@ -264,6 +268,8 @@
 
         		}, fail);
         	}, fail);
+
+        	osmDownloader
     		
     		osmDownloader.download();
     		
@@ -273,8 +279,10 @@
     prototype.loadPoints = function() {
        var context = this;
        this.getSavedFeaturesFileEntry(function(fileEntry){
+            $('#tap-instr').html('Loading Points');
             var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
             loader.load(function(features) {
+        		$('#tap-instr').addClass('hide');
                 context.addFeaturesToMap(features);
             }, function(e) {
 
