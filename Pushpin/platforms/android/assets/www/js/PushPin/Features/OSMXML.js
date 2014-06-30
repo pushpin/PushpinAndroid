@@ -99,7 +99,7 @@
 
         if(PushPin.existsAndNotNull(this.tags)){
             for(var key in this.tags){
-                if(key != 'nodeRefs')
+                if(key != 'nodeRefs' && key != 'user')
                     xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
             }
         }
@@ -140,7 +140,9 @@
 		// If the change has tags, add them to the xml
 		if(PushPin.existsAndNotNull(this.tags)){
 			for(var key in this.tags){
-				xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
+			    // Probably is a better way to do this but it's fine for now.
+			    if(key != 'user')
+				    xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
 			}
 		}
 		
