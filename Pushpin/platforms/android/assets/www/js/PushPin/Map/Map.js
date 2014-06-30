@@ -198,15 +198,20 @@
                             name = building;
 			  	    }
 
-			  	    // Display polygon somehow -_-
 			  	    context.displayPolygon(polygon);
 			  	}
+
+			  	var user = feature.get('user');
+
+                // If for some reason a ghost added a point and no username is available.
+			  	var htmlUserString = (PushPin.existsAndNotNull(user)) ? '<p style="font-size:small; color:white;">\n' + user + '</p></a>' : '</a>';
 			  	
 			  	context.overlay = new ol.Overlay({
 				  	position: pos,
 				  	element: $('<div class="popup">').html('<a href="formView.html" >'
 				  	     + '<font color="FFFFFF">' + name
-				  	     + '</font><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/></a>')
+				  	     + '</font><img style="height:1em; margin-left: 5px;" src="resources/images/disclosure.png"/>'
+				  	     + htmlUserString)
 				});
 				
 		     	map.addOverlay(context.overlay);

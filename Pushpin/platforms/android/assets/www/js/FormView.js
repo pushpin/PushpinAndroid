@@ -2,7 +2,7 @@
 	PushPin.FormView = function(form, localStorage){
 		this.form = form;
 		this.localStorage = localStorage;
-		this.feature = this.localStorage.getFeature();
+		this.feature = JSON.parse(this.localStorage.getFeature());
 		
 		this.mainForm = $('#mainForm');
 		this.classificationForm = $('#classificationForm');
@@ -16,6 +16,7 @@
 		this.deletePOI = this.mainForm.find('#deletePOI');
 		this.clearVal = this.classificationForm.find('#clearVal');
 		this.searchInput = this.classificationForm.find('#searchInput');
+		this.webView = this.mainForm.find('#webView');
 
 		this.isSearching = false;
 		this.search = new PushPin.Classification.Search(this.form, this.localStorage);
@@ -59,6 +60,11 @@
     	this.deletePOI.click(function() {
     	    console.log('delete');
             return context.deleteForm();
+    	});
+
+    	this.webView.click(function() {
+    	    var url = PushPin.getOSMUrl() + '/' + context.feature.element + '/' + context.feature.id;
+    	    window.location.href = url;
     	});
 
     	this.searchInput.keyup(function(e) {

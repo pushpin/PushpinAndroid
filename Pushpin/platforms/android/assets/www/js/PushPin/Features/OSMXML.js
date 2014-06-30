@@ -1,11 +1,13 @@
 (function(){
 	
 	PushPin.Features.OSMXML = function(feature, localStorage, changesetId){
+	    console.log('feature', feature);
         this.type = feature.element;
         this.tags = feature.properties;
         this.nodeRefs = feature.properties.nodeRefs ? feature.properties.nodeRefs.value : null;
         this.osmId = feature.id;
         this.version = feature.version;
+        this.user = feature.properties.user ? feature.properties.user.value : null;
         this.name = feature.properties.name ? feature.properties.name.value : null;
         this.changesetId = changesetId;
 		this.lon = ol.proj.transform(localStorage.getPinPosition(),'EPSG:3857','EPSG:4326')[0];
@@ -89,7 +91,7 @@
             xml += ' version="' + version + '"';
         }
 
-        xml += ' changeset="' + changesetId + '">';
+        xml += ' changeset="' + changesetId + '" user="' + this.user + '">';
 
         if(PushPin.existsAndNotNull(this.nodeRefs)) {
             this.nodeRefs.forEach(function(ref) {
@@ -99,7 +101,7 @@
 
         if(PushPin.existsAndNotNull(this.tags)){
             for(var key in this.tags){
-                if(key != 'nodeRefs')
+                if(key != 'nodeRefs' && key != 'user')
                     xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
             }
         }
@@ -135,12 +137,14 @@
 		    xml += ' version="' + version + '"';
 		}
 		
-		xml += ' changeset="' + changesetId + '" lat="' + this.lat + '" lon="' + this.lon + '">';
+		xml += ' changeset="' + changesetId + '" user="' + this.user + '" lat="' + this.lat + '" lon="' + this.lon + '">';
 
 		// If the change has tags, add them to the xml
 		if(PushPin.existsAndNotNull(this.tags)){
 			for(var key in this.tags){
-				xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
+			    // Probably is a better way to do this but it's fine for now.
+			    if(key != 'user')
+				    xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
 			}
 		}
 		

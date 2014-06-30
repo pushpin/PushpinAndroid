@@ -10,7 +10,8 @@
 		this.locationProj = 'EPSG:4326';
 		this.watchId = null;
 		this.options = {
-			enableHighAccuracy: true	
+			enableHighAccuracy: true,
+			timeout: 30000
 		};
 	};
 	

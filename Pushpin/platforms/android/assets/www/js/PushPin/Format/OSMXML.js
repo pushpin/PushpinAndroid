@@ -20,9 +20,18 @@
 			
 			var nodes = osm.node;
 
-		    var nodeIds = nodes.map(function(node) {
-		        return node._id;
-		    });
+            if(nodes.length == undefined) {
+                nodes = [nodes];
+            }
+
+            var nodeIds;
+            if(PushPin.existsAndNotNull(nodes)) {
+                nodeIds = nodes.map(function(node) {
+                    return node._id;
+                });
+		    }
+		    else
+		        nodeIds = [];
 
 			var ways = osm.way;
 
@@ -59,7 +68,7 @@
                             if(PushPin.existsAndNotNull(obj._k) && PushPin.existsAndNotNull(obj._v)) {
                                 feature.set(obj._k, obj._v);
 
-                                // natural - all | building - yes | amenity - parking
+                                // only shows certain types of ways need to figure out if there are more.
                                 if(obj._k == 'natural' || (obj._k == 'building') ||
                                     (obj._k == 'amenity' && obj._v == 'parking') || obj._k == 'leisure')
                                     showGeom = true;
@@ -93,8 +102,6 @@
                         feature.set('nodeRefs', nodeRefs);
                         feature.setId(way._id);
 
-//                        console.log('name: ', feature.values_.name);
-//                        console.log('feature:', feature);
                         context.features.push(feature);
                     }
                 });
@@ -102,10 +109,6 @@
 
 			var coord = null;
 			if(PushPin.existsAndNotNull(nodes)) {
-
-			    if(nodes.length == undefined) {
-			        nodes = [nodes];
-			    }
 
                 $.each(nodes, function(index, node) {
                     if(nodesInWays.indexOf(node._id) == -1) {
@@ -127,6 +130,7 @@
                         }
 
                         feature.set('version', node._version);
+                        feature.set('user', node._user);
                         feature.setId(node._id);
                         coord = [parseFloat(node._lon), parseFloat(node._lat)];
                         feature.setGeometry(new ol.geom.Point(coord));
