@@ -10,13 +10,15 @@
 		this.locationProj = 'EPSG:4326';
 		this.watchId = null;
 		this.options = {
-			enableHighAccuracy: true	
+			enableHighAccuracy: true,
+			timeout: 30000
 		};
 	};
 	
 	var prototype = PushPin.Geolocation.Handler.prototype;
 	
 	prototype.updatePosition = function(pos){
+	    console.log("pos:", pos);
 		this.geoX = pos.coords.longitude;
 		this.geoY = pos.coords.latitude;
 		

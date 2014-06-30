@@ -60,11 +60,11 @@ var app = {
         	app.map.setOnClickGrabFeature();
         	
         	app.test = new PushPin.Geolocation.Test();
-        	app.positionHandler = new PushPin.Geolocation.Handler(app.map, app.test);
+        	app.positionHandler = new PushPin.Geolocation.Handler(app.map, (PushPin.DEV_MODE) ? app.test : null);
         	
-        	app.positionHandler.watchPosition();
+        	app.positionHandler.watchPosition(function(pos) {}, function(err) {});
         	
-        	app.setView(viewType, fileSystem);  	  	
+        	app.setView(viewType, fileSystem);
         	
         	
         	app.map.setVisibleLayerFromLocalStorage();
