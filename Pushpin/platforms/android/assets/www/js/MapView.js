@@ -238,6 +238,10 @@
 	};
 	
     prototype.fetchPoints = function(){
+
+        if(this.map.getZoom() < 16) {
+            return;
+        }
     	
     	var context = this;
     	

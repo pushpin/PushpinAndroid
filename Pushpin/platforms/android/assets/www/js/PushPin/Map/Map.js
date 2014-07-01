@@ -9,6 +9,7 @@
 		this.locationMarker = null;
 		this.geomLayer = null;
 		this.overlay = null;
+		this.zoomInDisplayed = false;
 	};
 
 	var prototype = PushPin.Map.prototype;
@@ -35,7 +36,7 @@
 	      layers: this.layers,
 	      view: new ol.View2D({
 	        center: ol.proj.transform([-77.360415, 38.95947], this.locationProj, this.mapProj),
-	        zoom: 16,
+	        zoom: 17,
 	        maxZoom: 18,
             enableRotation: false
 	      })
@@ -121,6 +122,24 @@
 	
 	    var map = this.map;
 	    var context = this;
+
+	    this.map.on('moveend', function(evt) {
+	        var str = $('#tap-instr');
+	        if(context.getZoom() < 16) {
+	            context.zoomInDisplayed = true;
+                str.removeClass('hide');
+                str.html('Zoom in to fetch points');
+                str.css('margin-left', '-95px');
+	        }
+	        else {
+	            if(context.zoomInDisplayed) {
+                    str.html('Tap download to fetch points');
+                    str.css('margin-left', '-130px');
+                    context.zoomInDisplayed = false;
+                }
+	        }
+	    });
+
 	    this.map.on('singleclick', function(evt) {	    	
 	    	//Clean Popup Overlay
 			if(PushPin.existsAndNotNull(context.overlay)){
