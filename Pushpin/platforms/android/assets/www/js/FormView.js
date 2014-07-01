@@ -86,6 +86,8 @@
     	    }
 
         });
+
+        this.findNearby();
 	};
 	
 	prototype.cancelForm = function(){
@@ -146,6 +148,87 @@
 
         this.localStorage.saveFeature(feature);
         this.form.loadForm(feature);
+    };
+
+    //
+
+    prototype.findNearby = function() {
+        var context = this;
+        var feature = this.form.getFeatureWithUpdatedAttributes();
+        var bbox = this.localStorage.getBoundingBox();
+        var baseUrl = 'http://overpass.osm.rambler.ru/cgi/xapi?';
+
+        var url = baseUrl + 'way[bbox=' + bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + '][highway=*][name=*]';
+
+        $.ajax({
+            url: encodeURI(url),
+            type: 'GET',
+            success: function(data, textStatus, jqXHR) {
+                context.initNearby(data, 'street', 'name', 'way');
+            },
+            error: function(jqXHR, textStatus, err) {
+                console.log('error getting nearby:', err);
+            }
+        });
+
+        var url = baseUrl + 'node[bbox=' + bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + '][addr:postcode=*]';
+
+        $.ajax({
+            url: encodeURI(url),
+            type: 'GET',
+            success: function(data, textStatus, jqXHR) {
+                context.initNearby(data, 'postcode', 'addr:postcode', 'node');
+            },
+            error: function(jqXHR, textStatus, err) {
+                console.log('error getting nearby:', err);
+            }
+        });
+
+        var url = baseUrl + 'node[bbox=' + bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + '][addr:city=*]';
+
+        $.ajax({
+            url: encodeURI(url),
+            type: 'GET',
+            success: function(data, textStatus, jqXHR) {
+                context.initNearby(data, 'city', 'addr:city', 'node');
+            },
+            error: function(jqXHR, textStatus, err) {
+                console.log('error getting nearby:', err);
+            }
+        });
+    };
+
+    prototype.initNearby = function(data, type, keySearch, elementType) {
+        var nearbyData = [];
+        var x2js = new X2JS();
+        var source = x2js.xml2json(data);
+        var elements = source.osm[elementType];
+
+        if(!PushPin.existsAndNotNull(elements)) {
+            var nearby = new PushPin.Classification.Nearby([], type, this.form, this.localStorage);
+            nearby.fillOutList();
+        }
+
+        if(!PushPin.existsAndNotNull(elements.length)) {
+            elements = [elements];
+        }
+
+        $.each(elements, function(index, element) {
+            var tags = element.tag;
+            if(!PushPin.existsAndNotNull(tags.length)) {
+                tags = [tags];
+            }
+
+            $.each(tags, function(index, tag) {
+                if(tag._k == keySearch && nearbyData.indexOf(tag._v) == -1) {
+                    nearbyData.push(tag._v);
+                    return false;
+                }
+            });
+        });
+
+        var nearby = new PushPin.Classification.Nearby(nearbyData, type, this.form, this.localStorage);
+        nearby.fillOutList();
     };
 
 })();

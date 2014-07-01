@@ -41,7 +41,7 @@ a.list-group-item.active:focus {
   border-color: #000000;
 }
 
-input#searchInput {
+input.pushpin-search {
     width:100%;
     background-color: #FFFFFF;
     color: #000000;

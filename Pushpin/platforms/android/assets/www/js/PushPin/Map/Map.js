@@ -183,10 +183,11 @@
 
 			  	context.localStorage.saveMapCenter(mapCenter);
 			  	context.localStorage.saveMapZoom(mapZoom);
+			  	context.localStorage.setBoundingBox(context.getBoundingBox());
 
 			  	var isNode = true;
                 var polygon = feature.get('polygon');
-			  	if(PushPin.existsAndNotNull(polygon)) {
+			  	if(PushPin.existsAndNotNull(polygon) || PushPin.existsAndNotNull(feature.values_.power)) {
 			  	    isNode = false;
 
                     // Checking to see if its a building and if it is specified or not.

@@ -32,6 +32,7 @@
 			var item = null;
 			
 			var featureValue = null;
+			var featureKey = null;
 			
 			if (PushPin.existsAndNotNull(context.feature)){
 				featureValue = context.feature.properties[obj.data_name];
@@ -44,10 +45,17 @@
 			}
 			
 			if(obj.type === 'TextField'){
+
+                var link = '<img class="pushpin-description" description="'+obj.description
+                            +'" src="resources/images/icon-info.png" class="img-circle"/>';
+
+                if(obj.data_name == 'addr:street' || obj.data_name == 'addr:city' || obj.data_name == 'addr:postcode') {
+                    link = '<button style="float:right" class="nearby-btn" id="' + obj.data_name + '">Nearby</button>';
+                }
+
 				item = '<a class="list-group-item pushpin-attribute" pushpin-attribute-name="' 
 					+ obj.data_name+ '" pushpin-attribute-type="TextField" pushpin-original-value="'
-					+ featureValue + '">' +obj.label+'<img class="pushpin-description" description="'+obj.description
-					+'" src="resources/images/icon-info.png" class="img-circle"/><br><input value="'
+					+ featureValue + '">' + obj.label + link + '<br><input value="'
 					+ featureValue +'" id="form-'+obj.data_name+'" type="text"/></a>';
 			}
 			else if(obj.type === 'ChoiceField' && PushPin.existsAndNotNull(obj.choices)){
@@ -237,6 +245,15 @@
 		
 		//Create Initial Form HTML
 		formHTML(type, typeDisplay, typeCurrentValue);
+
+		$('.nearby-btn').click(function() {
+		    var split = this.id.split(':');
+		    var nearbyList = $('#'+split[1]+'List');
+		    nearbyList.removeClass('hide');
+		    $('#').scrollTop(0);
+		    $('#nearbyForm').removeClass('hide');
+		    $('#mainForm').addClass('hide');
+		});
 	};
 	
 	prototype.getClassificationById = function(id){

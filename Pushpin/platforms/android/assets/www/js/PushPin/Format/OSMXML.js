@@ -48,12 +48,20 @@
 
                     if(PushPin.existsAndNotNull(way.nd)) {
                         $.each(way.nd, function(i, node) {
-                            nodesInWays.push(node._ref);
                             nodeRefs.push(node._ref);
 
                             var index = nodeIds.indexOf(node._ref);
                             var foundNode = nodes[index];
                             points.push([parseFloat(foundNode._lon), parseFloat(foundNode._lat)]);
+
+                            if(PushPin.existsAndNotNull(foundNode.tag)) {
+                                if(foundNode.tag._k != 'power') {
+                                    nodesInWays.push(node._ref);
+                                }
+                            }
+                            else {
+                                nodesInWays.push(node._ref);
+                            }
                         });
                     }
 
