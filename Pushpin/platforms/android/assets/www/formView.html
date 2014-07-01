@@ -45,12 +45,30 @@
 		
 		</div>
   	</div>
+    <div id="nearbyForm" class="hide">
+        <div class="toolbar-top">
+            <span class="badge-left"><button id="cancelNearby-btn" class="btn btn-primary">Cancel</button></span>
+            <span style="vertical-align: middle;"><h4>Nearby</h4></span>
+
+            <input type="text" name="search" placeholder="Search" class="pushpin-search" id="nearbySearch"/>
+        </div>
+
+        <div id="streetList" class="hide" style="margin-top:100px; padding:10px;" >
+
+        </div>
+        <div id="cityList" class="hide" style="margin-top:100px; padding:10px;" >
+
+        </div>
+        <div id="postcodeList" class="hide" style="margin-top:100px; padding:10px;" >
+
+        </div>
+    </div>
   	<div id="classificationForm" class="hide">
   		<div class="toolbar-top">
 	  		<span class="badge-left"><button id="cancelFormBtn" class="btn btn-primary">Cancel</button></span>
 	  		<span style="vertical-align: middle;"><h4></h4></span>
 
-            <input type="text" name="search" placeholder="Search for a type" id="searchInput"/>
+            <input type="text" name="search" placeholder="Search for a type" class="pushpin-search" id="searchInput"/>
 	  	</div>
 
         <div class="panel-body">
@@ -104,6 +122,7 @@
     <script src="js/PushPin/Form/Classification/Child.js" type="text/javascript"></script>
     <script src="js/PushPin/Form/Classification/Builder.js" type="text/javascript"></script>
     <script src="js/PushPin/Form/Classification/Search.js" type="text/javascript"></script>
+    <script src="js/PushPin/Form/Classification/Nearby.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Geolocation.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Test.js" type="text/javascript"></script>
     <script src="js/PushPin/Geolocation/Handler.js" type="text/javascript"></script>

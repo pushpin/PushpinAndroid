@@ -9,6 +9,10 @@
 		this.feature = 'feature';
 		this.changeset = 'changeset';
 		this.mapZoomLevel = 'mapZoomLevel';
+		this.boundingN = 'boundingN';
+		this.boundingE = 'boundingE';
+		this.boundingS = 'boundingS';
+		this.boundingW = 'boundingW';
 	};
 	
 	var prototype = PushPin.LocalStorage.prototype;
@@ -52,6 +56,22 @@
 		
 		return center;
 	};
+
+	prototype.setBoundingBox = function(boundingBox) {
+	    localStorage.setItem(this.boundingN, boundingBox[0]);
+	    localStorage.setItem(this.boundingE, boundingBox[1]);
+	    localStorage.setItem(this.boundingS, boundingBox[2]);
+	    localStorage.setItem(this.boundingW, boundingBox[3]);
+	};
+
+	prototype.getBoundingBox = function() {
+	    var boundingBox = [];
+        boundingBox.push(localStorage.getItem(this.boundingN));
+        boundingBox.push(localStorage.getItem(this.boundingE));
+        boundingBox.push(localStorage.getItem(this.boundingS));
+        boundingBox.push(localStorage.getItem(this.boundingW));
+        return boundingBox;
+    };
 	
 	prototype.setPinPosition = function(pinPosition){
 		localStorage.setItem(this.pinPositionX,pinPosition[0]);

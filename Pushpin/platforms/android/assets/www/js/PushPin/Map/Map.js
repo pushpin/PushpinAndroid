@@ -183,6 +183,7 @@
 
 			  	context.localStorage.saveMapCenter(mapCenter);
 			  	context.localStorage.saveMapZoom(mapZoom);
+			  	context.localStorage.setBoundingBox(context.getBoundingBox());
 
 			  	var isNode = true;
                 var polygon = feature.get('polygon');
