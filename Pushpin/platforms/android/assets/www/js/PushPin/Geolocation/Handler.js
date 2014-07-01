@@ -30,6 +30,7 @@
 	prototype.updateError = function(e){
 		console.log("Error getting location", e);
 		$('#tap-instr').html(e.message);
+		$('#tap-instr').removeClass('hide');
 	};
 	
 	prototype.getCurrentPosition = function(){

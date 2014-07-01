@@ -248,6 +248,7 @@
     	console.log("getting features");
     	$('#tap-instr').removeClass('hide');
 		$('#tap-instr').html('Fetching Points');
+		$('#tap-instr').css('margin-left', '-90px');
     	
     	this.getSavedFeaturesFileEntry(function(fileEntry){
     		
@@ -260,6 +261,7 @@
         		
         		console.log("successfully downloaded data:");
         		$('#tap-instr').html('Saving Points');
+                $('#tap-instr').css('margin-left', '-65px');
         		
         		saver.save(data, function(){
         			
@@ -280,6 +282,7 @@
        var context = this;
        this.getSavedFeaturesFileEntry(function(fileEntry){
             $('#tap-instr').html('Loading Points');
+		    $('#tap-instr').css('margin-left', '-70px');
             var loader = new PushPin.Features.Loader(fileEntry, new FileReader(), new PushPin.Format.OSMXML());
             loader.load(function(features) {
         		$('#tap-instr').addClass('hide');
