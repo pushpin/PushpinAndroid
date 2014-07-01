@@ -186,7 +186,7 @@
 
 			  	var isNode = true;
                 var polygon = feature.get('polygon');
-			  	if(PushPin.existsAndNotNull(polygon)) {
+			  	if(PushPin.existsAndNotNull(polygon) || PushPin.existsAndNotNull(feature.values_.power)) {
 			  	    isNode = false;
 
                     // Checking to see if its a building and if it is specified or not.

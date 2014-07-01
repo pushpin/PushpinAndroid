@@ -60,6 +60,7 @@ var app = {
         	app.map.setOnClickGrabFeature();
         	
         	app.test = new PushPin.Geolocation.Test();
+        	// Enable app.test if you need to mock gps
         	app.positionHandler = new PushPin.Geolocation.Handler(app.map/*, app.test*/);
         	
         	app.positionHandler.watchPosition(function(pos) {}, function(err) {});
