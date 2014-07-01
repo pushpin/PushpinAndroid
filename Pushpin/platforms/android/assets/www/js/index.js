@@ -124,7 +124,7 @@ var app = {
     			app.view.registerEvents(app.map);
     			app.view.initializeLayerSelection();
 
-    			app.view.fetchPoints();
+                app.view.fetchPoints();
     			
 				break;
 
