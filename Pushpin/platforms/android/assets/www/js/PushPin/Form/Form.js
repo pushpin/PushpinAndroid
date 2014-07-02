@@ -241,7 +241,11 @@
 			type = this.classificationsBuilder.tagPresentForId(typeID,this.feature).values;
 		}
 
-		if(this.feature.element == 'way') {
+		if(!PushPin.existsAndNotNull(this.feature.id)) {
+		    $('#deletePOI').addClass('hide');
+		    $('#webView').addClass('hide');
+		}
+		else if(this.feature.element == 'way') {
     	    $('#deletePOI').addClass('hide');
     	}
 		

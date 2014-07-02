@@ -308,6 +308,7 @@
 		var mapViewCenter = this.map.getCenter();
 		var mapZoomLevel = this.map.getZoom();
 
+        this.localStorage.setBoundingBox(this.map.getBoundingBox());
 		this.localStorage.saveMapZoom(mapZoomLevel);
 		this.localStorage.saveMapCenter(mapViewCenter);
 		this.localStorage.clearPinPosition();
