@@ -186,6 +186,7 @@
 			//Display Classification
 			context.poiForm.find('.pushpin-classification').click(function() {
 
+                d$("#formBody").scrollTop(0);
 			    var updatedFeature = context.getFeatureWithUpdatedAttributes();
 			    context.localStorage.saveFeature(updatedFeature);
 
@@ -219,8 +220,6 @@
 					if(element.find('span').attr('id') === 'form-type'){
 
 						formHTML(valueString, displayString, pushpinCurrentValue);
-
-
                         context.addNearbyClick();
 
 					}else{
@@ -414,6 +413,7 @@
 
 	prototype.addNearbyClick = function() {
         $('.nearby-btn').click(function() {
+            $("#formBody").scrollTop(0);
             var split = this.id.split(':');
             var nearbyList = $('#'+split[1]+'List');
             nearbyList.removeClass('hide');
