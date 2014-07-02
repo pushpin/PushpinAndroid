@@ -150,8 +150,6 @@
         this.form.loadForm(feature);
     };
 
-    //
-
     prototype.findNearby = function() {
         var context = this;
         var feature = this.form.getFeatureWithUpdatedAttributes();

@@ -220,6 +220,9 @@
 
 						formHTML(valueString, displayString, pushpinCurrentValue);
 
+
+                        context.addNearbyClick();
+
 					}else{
 
 						element.find('span').html(displayString);
@@ -246,14 +249,7 @@
 		//Create Initial Form HTML
 		formHTML(type, typeDisplay, typeCurrentValue);
 
-		$('.nearby-btn').click(function() {
-		    var split = this.id.split(':');
-		    var nearbyList = $('#'+split[1]+'List');
-		    nearbyList.removeClass('hide');
-		    $('#').scrollTop(0);
-		    $('#nearbyForm').removeClass('hide');
-		    $('#mainForm').addClass('hide');
-		});
+		this.addNearbyClick();
 	};
 	
 	prototype.getClassificationById = function(id){
@@ -414,6 +410,16 @@
 		});
 		
 		return visible;
+	};
+
+	prototype.addNearbyClick = function() {
+        $('.nearby-btn').click(function() {
+            var split = this.id.split(':');
+            var nearbyList = $('#'+split[1]+'List');
+            nearbyList.removeClass('hide');
+            $('#nearbyForm').removeClass('hide');
+            $('#mainForm').addClass('hide');
+        });
 	};
 	
 })();
