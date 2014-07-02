@@ -56,19 +56,39 @@ var app = {
         	app.localStorage = new PushPin.LocalStorage();
         	
         	app.map = new PushPin.Map(app.localStorage);
-        	app.map.loadMap();
-        	app.map.setOnClickGrabFeature();
         	
-        	app.test = new PushPin.Geolocation.Test();
+        	//app.test = new PushPin.Geolocation.Test();
         	// Enable app.test if you need to mock gps
         	app.positionHandler = new PushPin.Geolocation.Handler(app.map/*, app.test*/);
-        	
-        	app.positionHandler.watchPosition(function(pos) {}, function(err) {});
-        	
-        	app.setView(viewType, fileSystem);
-        	
-        	
-        	app.map.setVisibleLayerFromLocalStorage();
+
+        	var savedMapCenter = app.localStorage.getMapCenter();
+            var savedMapZoom = app.localStorage.getMapZoom();
+        	if(!PushPin.existsAndNotNull(savedMapCenter)) {
+                $('#tap-instr').html('Acquiring GPS Signal');
+		        $('#tap-instr').css('margin-left', '-100px');
+                app.positionHandler.getCurrentPosition(function(pos) {
+                       app.map.loadMap();
+                       app.map.setOnClickGrabFeature();
+
+                       var coord = [app.positionHandler.geoX, app.positionHandler.geoY];
+                       app.map.setCenter(coord, 17, 'EPSG:4326');
+
+                       app.setView(viewType, fileSystem);
+                       app.map.setVisibleLayerFromLocalStorage();
+                });
+            }
+            else {
+               app.map.loadMap();
+               app.map.setOnClickGrabFeature();
+               app.setView(viewType, fileSystem);
+               app.map.setVisibleLayerFromLocalStorage();
+
+               var zoom = PushPin.existsAndNotNull(savedMapZoom) ? savedMapZoom : 17;
+               app.map.setCenter(savedMapCenter, savedMapZoom, 'EPSG:3857');
+            }
+
+        	app.positionHandler.watchPosition();
+
     	}, function(e){
     		console.log("Could not get file system", e);
     	});
@@ -171,15 +191,5 @@ var app = {
 			default:
 				console.log("Error: Could not assign view");
     	}
-
-        var savedMapCenter = app.localStorage.getMapCenter();
-        var savedMapZoom = app.localStorage.getMapZoom();
-
-        if(!PushPin.existsAndNotNull(savedMapZoom))
-            savedMapZoom = 16;
-
-        if(PushPin.existsAndNotNull(savedMapCenter)){
-            app.map.setCenter(savedMapCenter, savedMapZoom, 'EPSG:3857');
-        }
     }
 };

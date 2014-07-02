@@ -247,6 +247,8 @@
     	
     	var fail = function(e){
     		console.log("error fetching points", e);
+    		$('#tap-instr').html(e);
+            $('#tap-instr').css('margin-left', '-65px');
     	};
     	
     	console.log("getting features");

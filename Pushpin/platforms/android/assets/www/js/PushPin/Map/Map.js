@@ -29,7 +29,7 @@
 	  			visible: true,
 	  	        source: new ol.source.OSM({layer: 'sat'})
 	    })];
-		
+
 		//Create Map Object
 	    this.map = new ol.Map({
 	      target: 'map',

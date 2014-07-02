@@ -20,7 +20,7 @@
 			
 			var nodes = osm.node;
 
-            if(nodes.length == undefined) {
+            if(PushPin.existsAndNotNull(nodes) && nodes.length == undefined) {
                 nodes = [nodes];
             }
 

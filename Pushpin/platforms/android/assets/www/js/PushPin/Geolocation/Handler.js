@@ -20,11 +20,12 @@
 	prototype.updatePosition = function(pos){
 		this.geoX = pos.coords.longitude;
 		this.geoY = pos.coords.latitude;
-		
-		var coordinate = ol.proj.transform([this.geoX, this.geoY],
+
+		coordinate = ol.proj.transform([this.geoX, this.geoY],
 				this.locationProj, this.mapProj);
-		
-		this.map.updateMarker(coordinate);
+
+		if(PushPin.existsAndNotNull(this.map.map))
+		    this.map.updateMarker(coordinate);
 	};
 	
 	prototype.updateError = function(e){
@@ -33,37 +34,47 @@
 		$('#tap-instr').removeClass('hide');
 	};
 	
-	prototype.getCurrentPosition = function(){
+	prototype.getCurrentPosition = function(success){
 
 	    var context = this;
-		
+
 		if(this.test){
 			this.test.getCurrentPosition(function(pos){
 				context.updatePosition(pos);
+
+				if(PushPin.existsAndNotNull(success)) {
+				    success(pos);
+				}
 			}, function(e){
 				context.updateError(e);
 			});
 		}else{
 			navigator.geolocation.getCurrentPosition(function(pos){
 				context.updatePosition(pos);
+
+				if(PushPin.existsAndNotNull(success)) {
+				    success(pos);
+				}
 			}, function(e){
 				context.updateError(e);
 			}, this.options);
 		}
 	};
 	
-	prototype.watchPosition = function(){
+	prototype.watchPosition = function(success){
 		var context = this;
 		
 		if(this.test){
 			this.watchId = this.test.watchPosition(function(pos){
 				context.updatePosition(pos);
+
 			}, function(e){
 				context.updateError(e);
 			});
 		}else{
 			this.watchId = navigator.geolocation.watchPosition(function(pos){
 				context.updatePosition(pos);
+
 			}, function(e){
 				context.updateError(e);
 			}, this.options);
