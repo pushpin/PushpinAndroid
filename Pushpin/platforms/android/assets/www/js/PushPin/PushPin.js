@@ -8,9 +8,18 @@ PushPin = (function(){
 		typeKeys: [
 		    'aerialway','aeroway','amenity', 'barrier','boundary','craft','emergency', 'geological',
             'highway','historic','landuse','leisure','man_made', 'military','natural', 'office','place',
-            'power','public_transport','railway','route','shop', 'sport', 'tourism','waterway'
+            'power','public_transport','railway','route','shop', 'sport', 'tourism','waterway', 'type'
         ],
-		
+
+        // * means to show all values of a given key
+        waysToShow: [
+            'natural=*', 'building=*', 'amenity=parking', 'leisure=*'
+        ],
+
+        relationsToShow: [
+            'type=multipolygon'
+        ],
+
 		existsAndNotNull: function(value){
 			if(value !== null && value !== undefined){
 				return true;

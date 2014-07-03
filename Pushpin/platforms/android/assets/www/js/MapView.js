@@ -100,9 +100,8 @@
     };
     
     prototype.transformFeatures = function(features){
-    	
+
     	for(var i = 0; i < features.length; i++){
-    		
     		features[i].getGeometry().transform(this.map.locationProj, this.map.mapProj);
     	}
     	
@@ -154,7 +153,7 @@
 
 			//console.log('key:', key);
 
-			var keyAssignment = { 'office':'office', 'aeroway':'airport', 'public_transport':'bus', 'railway':'aboveground-rail' }
+			var keyAssignment = { 'shop':'shop', 'office':'office', 'aeroway':'airport', 'public_transport':'bus', 'railway':'aboveground-rail' }
 
 			var iconReassignment = {'household':'shop','copyshop':'shop','boutique':'shop','wine':'bar','fast_food':'fast-food','toilets':'toilet',
 								'ice_cream':'icecream','optician':'glasses','shoes':'shoe','accountant':'office','hotel':'lodging','electronics':'battery',
@@ -223,7 +222,7 @@
 			parser: null
 		});
 		
-		features = this.transformFeatures(features);
+		//features = this.transformFeatures(features);
 		
 		vectorSource.addFeatures(features);
 		

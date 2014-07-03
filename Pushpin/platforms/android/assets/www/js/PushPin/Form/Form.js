@@ -186,7 +186,7 @@
 			//Display Classification
 			context.poiForm.find('.pushpin-classification').click(function() {
 
-                d$("#formBody").scrollTop(0);
+                $("#formBody").scrollTop(0);
 			    var updatedFeature = context.getFeatureWithUpdatedAttributes();
 			    context.localStorage.saveFeature(updatedFeature);
 
@@ -245,7 +245,7 @@
 		    $('#deletePOI').addClass('hide');
 		    $('#webView').addClass('hide');
 		}
-		else if(this.feature.element == 'way') {
+		else if(this.feature.element != 'node') {
     	    $('#deletePOI').addClass('hide');
     	}
 		

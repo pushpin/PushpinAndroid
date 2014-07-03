@@ -204,10 +204,12 @@
 			  	context.localStorage.saveMapZoom(mapZoom);
 			  	context.localStorage.setBoundingBox(context.getBoundingBox());
 
-			  	var isNode = true;
+			  	var osmElement = 'node';
                 var polygon = feature.get('polygon');
+                var multiPoly = feature.get('multipolygon');
 			  	if(PushPin.existsAndNotNull(polygon) || PushPin.existsAndNotNull(feature.values_.power)) {
-			  	    isNode = false;
+			  	    osmElement = 'way';
+
 
                     // Checking to see if its a building and if it is specified or not.
                     var building = feature.get('building');
@@ -219,6 +221,10 @@
 			  	    }
 
 			  	    context.displayPolygon(polygon);
+			  	}
+			  	else if (PushPin.existsAndNotNull(multiPoly)) {
+			  	    osmElement = 'relation';
+			  	    context.displayPolygon(multiPoly);
 			  	}
 
 			  	var user = feature.get('user');
@@ -241,13 +247,13 @@
 		     	var poi = {};
 		     	
 		     	poi['id'] = feature.getId();
-		     	poi['element'] = isNode ? 'node' : 'way';
+		     	poi['element'] = osmElement;
 		     	poi['version'] = feature.get('version');
 		     	poi['properties'] = {};
 		     	
 		     	for(var key in properties){
 		     		
-		     		if(key !== "geometry" && key !== 'version' && key !== 'polygon') {
+		     		if(key !== "geometry" && key !== 'version' && key !== 'polygon' && key !== 'multipolygon') {
 		     			poi['properties'][key] = {
 		     				value: properties[key],
 		     				updated: false

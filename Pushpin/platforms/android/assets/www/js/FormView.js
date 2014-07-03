@@ -205,6 +205,7 @@
         if(!PushPin.existsAndNotNull(elements)) {
             var nearby = new PushPin.Classification.Nearby([], type, this.form, this.localStorage);
             nearby.fillOutList();
+            return;
         }
 
         if(!PushPin.existsAndNotNull(elements.length)) {

@@ -113,9 +113,41 @@
 	
 	prototype.getRelationXML = function(changesetId){
 
-		// TODO: Don't support relations yet.
-		console.log("Relation's are not supported yet.");
-		return "";
+	    console.log('Relation Saving Not Yet Implemented');
+	    return "";
+
+		var version;
+		if(this.version)
+		    version = parseInt(this.version);
+
+		var xml = '<relation';
+		// If the element has an osmId, add it to the tag
+        if(PushPin.existsAndNotNull(this.osmId)){
+            xml += ' id="' + this.osmId + '"';
+        }
+
+        if(PushPin.existsAndNotNull(version)) {
+            xml += ' version="' + version + '"';
+        }
+
+        xml += ' changeset="' + changesetId + '" user="' + this.user + '">';
+
+        if(PushPin.existsAndNotNull(this.members)) {
+            this.members.forEach(function(member) {
+                xml += '<member type="' + member.element + '" ref="' + member.ref + '"/>';
+            });
+        }
+
+        if(PushPin.existsAndNotNull(this.tags)){
+            for(var key in this.tags){
+                if(key != 'member' && key != 'user')
+                    xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
+            }
+        }
+
+        xml += '</relation>';
+
+		return xml;
 	};
 	
 	prototype.getNodeXML = function(changesetId){
