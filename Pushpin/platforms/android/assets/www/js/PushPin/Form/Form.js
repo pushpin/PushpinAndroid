@@ -247,6 +247,8 @@
 		}
 		else if(this.feature.element != 'node') {
     	    $('#deletePOI').addClass('hide');
+    	    $('#movePointBtn').addClass('hide');
+    	    $('#poi-form').css('margin-top', '50px');
     	}
 		
 		//Create Initial Form HTML

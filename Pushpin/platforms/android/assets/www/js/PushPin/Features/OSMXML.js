@@ -161,8 +161,6 @@
 	
 	prototype.getNodeXML = function(changesetId){
 
-	    console.log('version:', this.version);
-
 	    var version;
 	    if(this.version)
 	        version = parseInt(this.version);
