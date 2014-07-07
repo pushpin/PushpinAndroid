@@ -54,8 +54,6 @@
             }
         });
 
-        console.log('nearby:', this.nearbyData);
-
         if(this.nearbyData.length == 0) {
             this.list.append('<li class="list-group-item" id="badSearch">No Results Found</li>')
         }

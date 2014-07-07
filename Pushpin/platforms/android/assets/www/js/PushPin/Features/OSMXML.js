@@ -12,6 +12,7 @@
         this.changesetId = changesetId;
 		this.lon = ol.proj.transform(localStorage.getPinPosition(),'EPSG:3857','EPSG:4326')[0];
 		this.lat = ol.proj.transform(localStorage.getPinPosition(),'EPSG:3857','EPSG:4326')[1];
+		this.members = feature.properties.members ? feature.properties.members.value : null;
 	};
 	
 	var prototype = PushPin.Features.OSMXML.prototype;
@@ -114,7 +115,6 @@
 	prototype.getRelationXML = function(changesetId){
 
 	    console.log('Relation Saving Not Yet Implemented');
-	    return "";
 
 		var version;
 		if(this.version)
@@ -134,13 +134,22 @@
 
         if(PushPin.existsAndNotNull(this.members)) {
             this.members.forEach(function(member) {
-                xml += '<member type="' + member.element + '" ref="' + member.ref + '"/>';
+
+                if(PushPin.existsAndNotNull(member._ref) && PushPin.existsAndNotNull(member._type)) {
+                    xml += '<member ';
+
+                    if(PushPin.existsAndNotNull(member._role)) {
+                        xml += 'role="' + member._role + '" ';
+                    }
+
+                    xml += 'type="' + member._type + '" ref="' + member._ref + '"/>';
+                }
             });
         }
 
         if(PushPin.existsAndNotNull(this.tags)){
             for(var key in this.tags){
-                if(key != 'member' && key != 'user')
+                if(key != 'members' && key != 'user')
                     xml += '<tag k="' + key + '" v="' + _.escape(this.tags[key].value) + '"/>';
             }
         }
