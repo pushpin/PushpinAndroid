@@ -116,6 +116,8 @@
     prototype.saveForm = function(){
     	var feature = this.form.getFeatureWithUpdatedAttributes();
 
+    	$('#tap-instr').removeClass('hide');
+
     	var savedFeature = function() {
     	    console.log('Feature Saved');
             window.location.href ='mapView.html';

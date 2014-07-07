@@ -70,8 +70,10 @@ var app = {
                        app.map.loadMap();
                        app.map.setOnClickGrabFeature();
 
-                       var coord = [app.positionHandler.geoX, app.positionHandler.geoY];
-                       app.map.setCenter(coord, 17, 'EPSG:4326');
+                       if(PushPin.existsAndNotNull(pos)) {
+                           var coord = [app.positionHandler.geoX, app.positionHandler.geoY];
+                           app.map.setCenter(coord, 17, 'EPSG:4326');
+                       }
 
                        app.setView(viewType, fileSystem);
                        app.map.setVisibleLayerFromLocalStorage();

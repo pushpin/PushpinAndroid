@@ -30,7 +30,7 @@
 	
 	prototype.updateError = function(e){
 		console.log("Error getting location", e);
-		$('#tap-instr').html(e.message);
+		$('#tap-instr').html('No GPS Signal Found');
 		$('#tap-instr').removeClass('hide');
 	};
 	
@@ -47,6 +47,10 @@
 				}
 			}, function(e){
 				context.updateError(e);
+
+				if(PushPin.existsAndNotNull(success)) {
+                    success();
+                }
 			});
 		}else{
 			navigator.geolocation.getCurrentPosition(function(pos){
@@ -57,6 +61,10 @@
 				}
 			}, function(e){
 				context.updateError(e);
+
+				if(PushPin.existsAndNotNull(success)) {
+                    success();
+                }
 			}, this.options);
 		}
 	};
