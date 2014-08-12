@@ -20,9 +20,9 @@
 		this.layers = [
 	  		new ol.layer.Tile({
 	  		  visible: false,
-		      source: new PushPin.ol.BingMaps({
-		      	key: 'AlcyscghNheU6SjKl-_AfYD8_UvdBkghZ_d5y3_g_H574kTHa8031xO79vEUp4Qt',
-		      	style: 'Aerial'
+		      source: new ol.source.BingMaps({
+		      	key: 'At6RaxhPq54eLy5XNbRrrlZ4wjGquuxCmM8hvIQqXpRfgslF96tEvQ38dFxDCV_k',
+		      	imagerySet: 'Aerial'
 		      })
 		    }),
 		    new ol.layer.Tile({
@@ -48,7 +48,7 @@
 		
 		//Set Visible Selected Map Layer
 		var mapLayer = this.localStorage.getMapLayer();
-		if(mapLayer == 'bing'){
+		if(mapLayer == this.localStorage.layerOptions.BING){
 		    this.layers[0].set('visible', true);
 		  	this.layers[1].set('visible', false);
 		}else {
@@ -250,9 +250,9 @@
 		     	poi['element'] = osmElement;
 		     	poi['version'] = feature.get('version');
 		     	poi['properties'] = {};
-		     	
+
 		     	for(var key in properties){
-		     		
+
 		     		if(key !== "geometry" && key !== 'version' && key !== 'polygon' && key !== 'multipolygon') {
 		     			poi['properties'][key] = {
 		     				value: properties[key],
@@ -260,7 +260,7 @@
 		     			};
 		     		}
 		     	}
-		     	
+
 		     	context.localStorage.saveFeature(JSON.stringify(poi));
 		     	context.localStorage.setPinPosition(pos);
 		     			    

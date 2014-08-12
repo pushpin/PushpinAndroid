@@ -52,7 +52,7 @@ var app = {
     		if(!PushPin.existsAndNotNull(app.osmAuth)){
         		app.initAuth();
         	}
-        	
+
         	app.localStorage = new PushPin.LocalStorage();
         	
         	app.map = new PushPin.Map(app.localStorage);
