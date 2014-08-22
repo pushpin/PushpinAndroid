@@ -57,7 +57,7 @@ var app = {
         	
         	app.map = new PushPin.Map(app.localStorage);
         	
-        	//app.test = new PushPin.Geolocation.Test();
+            //app.test = new PushPin.Geolocation.Test();
         	// Enable app.test if you need to mock gps
         	app.positionHandler = new PushPin.Geolocation.Handler(app.map/*, app.test*/);
 

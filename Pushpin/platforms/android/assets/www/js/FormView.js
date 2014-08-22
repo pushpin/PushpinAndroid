@@ -113,7 +113,7 @@
         uploader.deleteFeature();
     };
     
-    prototype.saveForm = function(){
+    prototype.saveForm = function() {
     	var feature = this.form.getFeatureWithUpdatedAttributes();
 
     	$('#tap-instr').removeClass('hide');
@@ -133,8 +133,8 @@
         var uploader = new PushPin.Features.OSMUploader(feature, this.localStorage, savedFeature, failedSave);
         uploader.upload();
     };
-    
-    prototype.movePoint = function(){
+
+    prototype.movePoint = function() {
     	window.location.href = 'addPoint.html';
     };
 

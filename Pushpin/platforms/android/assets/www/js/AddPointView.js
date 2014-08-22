@@ -2,6 +2,8 @@
 	PushPin.AddPointView = function(map, localStorage){
 		this.map = map;
 		this.localStorage = localStorage;
+
+		this.isPinPlaced = false;
 		
 		this.cancelPointBtn = $('#cancelPointBtn');
 		this.donePointBtn = $('#donePointBtn');
@@ -35,15 +37,23 @@
     };
     
     prototype.donePoint = function(){
-		var mapViewCenter = this.map.getCenter();
-		var mapZoom = this.map.getZoom();
-		this.localStorage.saveMapCenter(mapViewCenter);
-		this.localStorage.saveMapZoom(mapZoom);
-        window.location.href = 'formView.html';
+
+        if (!this.isPinPlaced) {
+            window.location.href = 'mapView.html';
+        }
+        else {
+            var mapViewCenter = this.map.getCenter();
+            var mapZoom = this.map.getZoom();
+            this.localStorage.saveMapCenter(mapViewCenter);
+            this.localStorage.saveMapZoom(mapZoom);
+            window.location.href = 'formView.html';
+        }
     };
     
     prototype.addPin = function(){
 		var position, pin;
+
+		this.isPinPlaced = true;
 		
 		$('#poi-pin').remove(); 
 		
